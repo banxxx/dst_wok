@@ -1,0 +1,16 @@
+#Tue May 06 08:23:52 CST 2025
+path.4=5/classes.dex
+path.3=1/classes.dex
+path.2=0/classes.dex
+path.1=12/classes.dex
+path.0=classes.dex
+base.4=E\:\\Projects\\Android\\dst_wok\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\5\\classes.dex
+base.3=E\:\\Projects\\Android\\dst_wok\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
+base.2=E\:\\Projects\\Android\\dst_wok\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.1=E\:\\Projects\\Android\\dst_wok\\android\\app\\build\\intermediates\\dex\\debug\\mergeLibDexDebug\\12\\classes.dex
+base.0=E\:\\Projects\\Android\\dst_wok\\android\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+renamed.3=classes4.dex
+renamed.2=classes3.dex
+renamed.1=classes2.dex
+renamed.0=classes.dex
+renamed.4=classes5.dex
