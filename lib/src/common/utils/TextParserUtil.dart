@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../repositories/constants/GameAssets.dart';
+import '../../repositories/constants/game_assets.dart';
+
 
 class TextParserUtil {
   /// 解析带有[img:xxx]标记的文本为InlineSpan集合

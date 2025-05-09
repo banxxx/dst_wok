@@ -65,20 +65,20 @@ class _RecipeCard extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           _buildInteractiveArea(),
-          const _CardDecorationLayer(), // 优化点2：独立装饰层
+          const _CardDecorationLayer(), // 独立装饰层
         ],
       ),
     );
   }
 
   Widget _buildInteractiveArea() {
-    return GestureDetector( // 优化点3：替换InkWell减少重绘
+    return GestureDetector( // 替换InkWell减少重绘
       onTap: () => onSelect(recipe),
       behavior: HitTestBehavior.opaque,
       child: Row(
         children: [
-          _LeftSection(recipe: recipe), // 优化点4：独立左侧区域
-          _RightSection( // 优化点5：独立右侧区域
+          _LeftSection(recipe: recipe), // 独立左侧区域
+          _RightSection( // 独立右侧区域
             recipe: recipe,
             selectedMethod: selectedMethod,
           ),
@@ -110,9 +110,9 @@ class _LeftSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      flex: 1, // 占横向1/3比例（保留原注释）
+      flex: 1, // 占横向1/3比例
       child: DottedBorder(
-        customPath: _dashPath, // 优化点6：缓存路径计算
+        customPath: _dashPath, // 缓存路径计算
         dashPattern: const [4, 4],
         radius: const Radius.circular(24),
         color: const Color(0xFFF1D7C3),
@@ -125,8 +125,8 @@ class _LeftSection extends StatelessWidget {
 
   /// 虚线路径生成（保留原注释）
   static Path _dashPath(Size size) => Path()
-    ..moveTo(size.width, 16) // 起点（右上角向下8px）（保留原注释）
-    ..lineTo(size.width, size.height - 16); // 终点（右下角向上8px）（保留原注释）
+    ..moveTo(size.width, 16) // 起点（右上角向下8px）
+    ..lineTo(size.width, size.height - 16); // 终点（右下角向上8px）
 }
 
 /// ---------------------- 左侧内容区域 ----------------------
@@ -142,7 +142,7 @@ class _RecipeContent extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _OptimizedImage(imageUrl: recipe.imageUrl), // 优化点7：优化图片加载
+          _OptimizedImage(imageUrl: recipe.imageUrl), // 优化图片加载
           const SizedBox(height: 8),
           _RecipeName(name: recipe.name),
         ],
@@ -161,14 +161,14 @@ class _OptimizedImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints(
-        maxWidth: 80, // 最大宽度限制（保留原注释）
-        maxHeight: 80, // 最大高度限制（保留原注释）
+        maxWidth: 80, // 最大宽度限制
+        maxHeight: 80, // 最大高度限制
       ),
       child: Center(
         child: Image.asset(
           imageUrl,
-          fit: BoxFit.contain, // 关键属性：保持比例缩放（保留原注释）
-          cacheWidth: 160, // 优化点8：指定缓存分辨率
+          fit: BoxFit.contain, // 关键属性：保持比例缩放
+          cacheWidth: 160, // 指定缓存分辨率
           cacheHeight: 160,
           filterQuality: FilterQuality.low,
         ),
@@ -186,7 +186,7 @@ class _RecipeName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 100, // 保持与图片相同的宽度约束（保留原注释）
+      width: 100, // 保持与图片相同的宽度约束
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -207,7 +207,7 @@ class _BackgroundImage extends StatelessWidget {
     return Image.asset(
       'assets/setting/bg.png',
       width: 100,
-      cacheWidth: 200, // 优化点9：预缓存背景图
+      cacheWidth: 200, // 预缓存背景图
       cacheHeight: 200,
     );
   }
@@ -329,9 +329,9 @@ class _StatusIndicators extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _StatusIndicator(imagePath: 'status_health_128', value: health),
-            _StatusIndicator(imagePath: 'status_hunger_128', value: hunger),
-            _StatusIndicator(imagePath: 'status_sanity_128', value: sanity),
+            _StatusIndicator(imagePath: 'status_health_64', value: health),
+            _StatusIndicator(imagePath: 'status_hunger_64', value: hunger),
+            _StatusIndicator(imagePath: 'status_sanity_64', value: sanity),
           ],
         ),
       ),
@@ -379,7 +379,7 @@ class _StatusIcon extends StatelessWidget {
         'assets/setting/$imagePath.png',
         width: 38,
         height: 38,
-        cacheWidth: 76, // 优化点12：2倍图预缩放
+        cacheWidth: 76, // 2倍图预缩放
         cacheHeight: 76,
       ),
     );
@@ -405,7 +405,7 @@ class _ValueIndicator extends StatelessWidget {
             Image.asset(
               'assets/setting/value_gold.png',
               fit: BoxFit.fill,
-              color: Colors.transparent, // 优化点13：禁用颜色混合
+              color: Colors.transparent, // 禁用颜色混合
               colorBlendMode: BlendMode.dstOver,
             ),
             Center(
@@ -414,7 +414,7 @@ class _ValueIndicator extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 14,
                   color: Colors.black,
-                  fontWeight: FontWeight.w500, // 优化点14：稳定字体渲染
+                  fontWeight: FontWeight.w500, // 稳定字体渲染
                 ),
               ),
             ),

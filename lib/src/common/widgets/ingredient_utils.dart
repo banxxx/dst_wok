@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../repositories/constants/GameAssets.dart'; // 确保导入模型依赖
+
+import '../../repositories/constants/game_assets.dart';
 
 class IngredientUtils {
   /// 通用食材图片构建方法

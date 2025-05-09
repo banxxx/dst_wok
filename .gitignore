@@ -11,6 +11,10 @@
 .svn/
 .swiftpm/
 migrate_working_dir/
+.metadata
+.packages
+pubspec.lock
+devtools_options.yaml
 
 # IntelliJ related
 *.iml
@@ -44,6 +48,9 @@ app.*.map.json
 # Keystore
 *.jks
 *.keystore
+.env
+.env.*
+*.key
 
 # Android Studio will place build artifacts here
 /android/app/debug
@@ -56,3 +63,6 @@ app.*.map.json
 *.aar
 *.ap_
 *.aab
+*.ipa
+*.apk.manifest
+*.dart.js

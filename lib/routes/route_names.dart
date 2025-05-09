@@ -11,8 +11,10 @@ class RouteNames {
   static const settings = 'settings';
   // 关于
   static const about = 'about';
-  // 关于
+  // 料理烹饪详情页
   static const recipeDetails = 'recipeDetails';
-
+  // 火源烹饪详情页
   static const recipeDetailsCampfire = 'recipeDetailsCampfire';
+  // 开源详情页
+  static const licenseDetailPage = 'licenseDetailPage';
 }

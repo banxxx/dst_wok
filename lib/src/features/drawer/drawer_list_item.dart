@@ -16,34 +16,37 @@ class DrawerListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: _buildIcon,
-      title: _buildTitle(context),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-      minVerticalPadding: 16,
-      visualDensity: VisualDensity.comfortable,
-      onTap: () => _handleTap(context),
+    return Material(
+      type: MaterialType.transparency, // 减少材质层深度
+      child: ListTile(
+        leading: _CachedImage(iconPath), // 使用优化后的图片组件
+        title: Text(title, style: Theme.of(context).textTheme.bodyMedium),
+        onTap: () => _navigateToRoute(context, routeName),
+      ),
     );
   }
 
-  Widget get _buildIcon => Image.asset(
-    iconPath,
-    width: 48,
-    height: 48,
-    filterQuality: FilterQuality.high,
-  );
-
-  Widget _buildTitle(BuildContext context) => Text(
-    title,
-    style: TextStyle(
-      fontSize: 16,
-      color: Theme.of(context).brightness == Brightness.dark
-          ? Colors.white70
-          : Colors.black87,
-    ),
-  );
-
-  void _handleTap(BuildContext context) {
+  void _navigateToRoute(BuildContext context, String routeName) {
+    // Navigator.pop(context); // 先关闭抽屉
     context.pushNamed(routeName);
+  }
+}
+
+// 带缓存的图片组件
+class _CachedImage extends StatelessWidget {
+  final String path;
+
+  const _CachedImage(this.path);
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      path,
+      width: 42,
+      height: 42,
+      filterQuality: FilterQuality.low, // 降低过滤质量
+      cacheWidth: 56, // 缓存为2倍尺寸
+      isAntiAlias: false, // 禁用抗锯齿
+    );
   }
 }

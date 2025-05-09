@@ -2,6 +2,7 @@ import 'package:dst_wok/src/common/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../common/enums/cooking_method.dart';
+import '../../common/widgets/custom_appBar.dart';
 import '../../common/widgets/recipe_recommendation.dart';
 import '../../common/widgets/richLabel_content.dart';
 import '../../models/base_recipe.dart';
@@ -16,11 +17,8 @@ class RecipeDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
+      appBar: CustomAppBar(
+        title: const Text(''),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -160,31 +158,31 @@ class RecipeDetails extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _buildStatusItem(
-                'assets/setting/status_health_128.png',
+                'assets/setting/status_health_64.png',
                 '健康值',
                 recipe.health.toString(),
                 Colors.redAccent,
               ),
               _buildStatusItem(
-                'assets/setting/status_hunger_128.png',
+                'assets/setting/status_hunger_64.png',
                 '饥饿值',
                 recipe.hunger.toString(),
                 Colors.orangeAccent,
               ),
               _buildStatusItem(
-                'assets/setting/status_sanity_128.png',
+                'assets/setting/status_sanity_64.png',
                 '理智值',
                 recipe.sanity.toString(),
                 Colors.deepOrange,
               ),
               _buildStatusItem(
-                'assets/setting/icon_spoil.png',
+                'assets/setting/status_spoil_64.png',
                 '保质期',
                 '${recipe.freshness} 天',
                 Colors.black26,
               ),
               _buildStatusItem(
-                'assets/setting/icon_food.png',
+                'assets/setting/status_food_64.png',
                 '烹饪时间',
                 '${recipe.cookTime} 秒',
                 Colors.green,

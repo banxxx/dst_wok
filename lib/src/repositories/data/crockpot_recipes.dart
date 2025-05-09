@@ -1,8 +1,8 @@
 import '../../models/recipe_example.dart';
-import '../constants/GameAssets.dart';
 import '../../common/enums/character.dart';
 import '../../models/crockpot_recipe.dart';
 import '../../common/enums/ingredient_tag.dart';
+import '../constants/game_assets.dart';
 
 /// 预定义的烹饪锅配方数据
 /// id: 食物ID

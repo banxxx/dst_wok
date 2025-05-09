@@ -4,7 +4,6 @@ import '../../../routes/route_names.dart';
 import '../../common/enums/cooking_method.dart';
 import '../drawer/app_end_drawer.dart';
 import 'method_selector.dart';
-import 'recipe_detail.dart';
 import '../../models/base_recipe.dart';
 import '../../repositories/recipe_repository.dart';
 import 'recipe_selector.dart';
@@ -43,20 +42,21 @@ class _CraftingScreenState extends State<CraftingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 80,  // 高度
+        toolbarHeight: 80, // 高度
         // 烹饪方式选择区域
         title: MethodSelector(
-        currentMethod: _currentMethod,
-        onMethodChanged: _updateMethodWithAnimation,
-      ),
+          currentMethod: _currentMethod,
+          onMethodChanged: _updateMethodWithAnimation,
+        ),
         centerTitle: false, // 关闭居中
         actions: [
           // 在右上角添加抽屉按钮
           Builder(
-            builder: (context) => IconButton(
-              icon: Image.asset('assets/other/birdcage.png',width: 42),
-              onPressed: () => Scaffold.of(context).openEndDrawer(),
-            ),
+            builder:
+                (context) => IconButton(
+                  icon: Image.asset('assets/other/birdcage.png', width: 42),
+                  onPressed: () => Scaffold.of(context).openEndDrawer(),
+                ),
           ),
         ],
       ),
@@ -96,14 +96,13 @@ class _CraftingScreenState extends State<CraftingScreen> {
     setState(() => _currentMethod = newMethod);
   }
 
-
   void _handleSelectRecipe(BaseRecipe selectedRecipe) {
-    if(CookingMethod.campfire == selectedRecipe.method) {
+    if (CookingMethod.campfire == selectedRecipe.method) {
       context.pushNamed(
         RouteNames.recipeDetailsCampfire,
         extra: selectedRecipe, // 传递数据
       );
-    }else {
+    } else {
       context.pushNamed(
         RouteNames.recipeDetails,
         extra: selectedRecipe, // 传递数据

@@ -1,4 +1,4 @@
-import '../repositories/constants/GameAssets.dart';
+import '../repositories/constants/game_assets.dart';
 
 /// 菜谱示例模型
 

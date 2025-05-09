@@ -21,7 +21,7 @@ class CampfireRecipe extends BaseRecipe {
     required super.health,
     required super.hunger,
     required super.sanity,
-    required super.cookTime,
+    super.cookTime = '',
     required super.desc,
     required super.freshness,
     super.favorites = const {},

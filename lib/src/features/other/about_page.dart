@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../../routes/route_names.dart';
+import '../../common/widgets/custom_appBar.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -7,9 +11,8 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('关于项目'),
-        centerTitle: true,
+      appBar: CustomAppBar(
+        title: const Text('关于'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -26,153 +29,42 @@ class AboutPage extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(20),
-                child: Image.asset('assets/setting/books01-7.png'), // 替换为你的应用图标路径
+                child: Image.asset('assets/setting/ic_launcher.png'), // 替换为你的应用图标路径
               ),
             ),
             const SizedBox(height: 24),
 
             // 项目名称
             Text(
-              '饥荒厨房模拟器',
+              '饥锅',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 16),
 
-            // 项目简介
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Text(
-                      '项目简介',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      '这是一个基于《饥荒》游戏的厨房模拟器应用，'
-                          '帮助玩家快速查询各种烹饪配方和食材组合。'
-                          '应用包含了游戏中所有烹饪锅、便携锅和火堆的配方，'
-                          '并提供了智能搜索和收藏功能。',
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // 应用简介
+            _buildInfoCard(context),
             const SizedBox(height: 20),
 
-            // GitHub链接
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.code),
-                title: const Text('GitHub 仓库'),
-                subtitle: const Text('查看项目源代码'),
-                trailing: const Icon(Icons.open_in_new),
-                onTap: () => _launchUrl('https://github.com/yourusername/dont-starve-cookbook'),
-              ),
-            ),
+            // 开源许可证模块
+            _buildLicenseCard(context),
             const SizedBox(height: 12),
 
-            // 作者信息
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Text(
-                      '开发团队',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
+            // GitHub链接
+            _buildGitHubCard(),
+            const SizedBox(height: 20),
 
-                    // 作者1
-                    _buildAuthorTile(
-                      context,
-                      avatar: 'assets/setting/books01-7.png', // 替换为作者头像路径
-                      name: '张三',
-                      role: '主开发者 & UI设计',
-                      email: 'zhangsan@example.com',
-                    ),
-                    const SizedBox(height: 12),
+            // 新增资料引用模块
+            _buildReferenceCard(context),
+            const SizedBox(height: 12),
 
-                    // 作者2
-                    _buildAuthorTile(
-                      context,
-                      avatar: 'assets/setting/books01-7.png', // 替换为作者头像路径
-                      name: '李四',
-                      role: '后端开发 & 数据整理',
-                      email: 'lisi@example.com',
-                    ),
-                  ],
-                ),
-              ),
-            ),
 
-            // 版本信息
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Text(
-                '版本 1.0.0',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(context).colorScheme.outline,
-                ),
-              ),
-            ),
+            // 版本信息模块（增加点击功能）
+            _buildVersionInfo(context),
           ],
         ),
       ),
-    );
-  }
-
-  // 作者信息组件
-  Widget _buildAuthorTile(
-      BuildContext context, {
-        required String avatar,
-        required String name,
-        required String role,
-        required String email,
-      }) {
-    return Row(
-      children: [
-        CircleAvatar(
-          radius: 30,
-          backgroundImage: AssetImage(avatar),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                name,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              Text(
-                role,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.outline,
-                ),
-              ),
-              GestureDetector(
-                onTap: () => _launchUrl('mailto:$email'),
-                child: Text(
-                  email,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 
@@ -183,4 +75,166 @@ class AboutPage extends StatelessWidget {
       throw Exception('无法打开: $url');
     }
   }
+
+  // 简介卡片
+  Widget _buildInfoCard(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            const SizedBox(height: 8),
+            const Text(
+              '这是一个基于《饥荒联机版》游戏的食谱查询应用，'
+                  '帮助玩家快速查询各种烹饪配方和食材组合。'
+                  '应用目前只包含了联机版游戏中的火源烹饪及料理烹饪的配方说明。'
+                  '资料参考灰机WIKI(饥荒板块)和哔哩哔哩饥荒WIKI',
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // GitHub链接
+  Widget _buildGitHubCard() {
+    return Card(
+      child: ListTile(
+        leading: Image.asset(
+          'assets/setting/wendy_gravestone.png',
+          width: 28,
+          height: 28,
+        ),
+        title: const Text('GitHub 仓库'),
+        subtitle: const Text('查看项目源代码'),
+        onTap: () => _launchUrl('https://github.com/banxxx/dst_wok'),
+      ),
+    );
+  }
+
+  // 构建许可证卡片
+  Widget _buildLicenseCard(BuildContext context) {
+    return Card(
+      child: ListTile(
+        leading: const Icon(Icons.article_outlined),
+        title: const Text('开源许可证'),
+        subtitle: const Text('GPL-3.0 协议'),
+        onTap: () => _navigateToLicense(context),
+      ),
+    );
+  }
+
+  // 构建资料引用卡片
+  Widget _buildReferenceCard(BuildContext context) {
+    final references = [
+      {
+        'title': '灰机WIKI - 饥荒板块',
+        'url': 'https://dontstarve.fandom.com/zh/wiki/%E9%A5%A5%E8%8D%92_Wiki'
+      },
+      {
+        'title': '哔哩哔哩饥荒WIKI',
+        'url': 'https://wiki.biligame.com/dst/%E9%A6%96%E9%A1%B5'
+      },
+    ];
+
+    return Card(
+      child: Column(
+        children: [
+          const ListTile(
+            leading: Icon(Icons.source_outlined),
+            title: Text('资料引用来源'),
+            subtitle: Text('点击查看详细信息'),
+          ),
+          ...references.map((ref) => ListTile(
+            title: Text(ref['title']!),
+            trailing: const Icon(Icons.open_in_new),
+            dense: true,
+            onTap: () => _launchUrl(ref['url']!),
+          )),
+        ],
+      ),
+    );
+  }
+
+// 构建版本信息
+  Widget _buildVersionInfo(BuildContext context) {
+    return Card(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12), // 保持圆角一致
+        onTap: () => _checkForUpdate(context),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // 图标
+              Icon(
+                Icons.system_update_alt_outlined,
+                size: 28,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(height: 12),
+              // 版本号
+              Text(
+                '当前版本',
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+              Text(
+                '1.0.0',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              // 更新提示
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.check_circle_outline,
+                    size: 16,
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    '已是最新版本',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.outline,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // 检查更新逻辑
+  void _checkForUpdate(BuildContext context) {
+    // 这里可以添加实际的更新检查逻辑
+    // 示例弹窗提示
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('已是最新版本'),
+        content: const Text('当前已安装最新版本的应用'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('确定'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 导航到许可证详情页
+  void _navigateToLicense(BuildContext context) {
+    context.pushNamed(RouteNames.licenseDetailPage);
+  }
+
 }
