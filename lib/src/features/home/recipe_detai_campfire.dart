@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../common/utils/TextParserUtil.dart';
 import '../../common/widgets/custom_appBar.dart';
 
-/// 食谱详情页面
+/// 火源食谱详情页面
 class RecipeDetailsCampfire extends StatelessWidget {
   final CampfireRecipe recipe;
 
@@ -14,21 +14,22 @@ class RecipeDetailsCampfire extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: const Text(''),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            _buildRecipeImage(),
-            _buildRecipeInfo(),
-            _buildRecipeDocs(),
-            if(recipe.tips.isNotEmpty)
-            _buildRecipeTips(),
-            _buildBottomImage(),
-            // 可以继续添加更多内容
-          ],
+      appBar: CustomAppBar(title: const Text('')),
+      body: SafeArea(
+        bottom: true, // 启用底部安全区域
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              _buildRecipeImage(),
+              _buildRecipeInfo(),
+              _buildRecipeDocs(),
+              if (recipe.tips.isNotEmpty) _buildRecipeTips(),
+              // 可以继续添加更多内容
+              // 添加底部安全区域间距（自动计算高度）
+              SizedBox(height: MediaQuery.of(context).padding.bottom),
+            ],
+          ),
         ),
       ),
     );
@@ -40,11 +41,12 @@ class RecipeDetailsCampfire extends StatelessWidget {
       child: Column(
         children: [
           Image.asset(recipe.imageUrl, width: 200, height: 200),
-          Image.asset('assets/setting/bg.png', width: 100),
+          Image.asset('assets/setting/top.png', width: 150),
           Text(
             recipe.name,
-            style: TextStyle(fontSize: 42, color: Colors.grey[600]),
+            style: TextStyle(fontSize: 38, color: Colors.grey[600]),
           ),
+          Image.asset('assets/setting/bottom.png', width: 150),
           Text(
             '代码: "${recipe.id}"',
             style: TextStyle(fontSize: 16, color: Colors.grey[600]),
@@ -185,11 +187,11 @@ class RecipeDetailsCampfire extends StatelessWidget {
 
   // 三维组件统一的状态项构建方法
   Widget _buildStatusItem(
-      String iconPath,
-      String label,
-      String value,
-      Color color,
-      ) {
+    String iconPath,
+    String label,
+    String value,
+    Color color,
+  ) {
     final parts = value.split(' ');
     final numberPart = parts[0];
     final unitPart = parts.length > 1 ? parts[1] : '';
@@ -295,15 +297,4 @@ class RecipeDetailsCampfire extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomImage() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 40), // 顶部间距
-      child: Image.asset(
-        'assets/setting/bg.png', // 你的图片路径
-        width: double.infinity, // 全屏宽度
-        fit: BoxFit.cover, // 图片填充方式
-        height: 120, // 固定高度
-      ),
-    );
-  }
 }

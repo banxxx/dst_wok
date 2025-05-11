@@ -87,7 +87,7 @@ const campfireRecipes = [
     freshness: '10',
     desc:
         '• 在火源[img:campfire]上烹饪鸟腿[img:drumstick]，就会变成炸鸟腿[img:drumstick_cooked_64]\n'
-        '• 在晾肉架[img:meatrack]上晾干鸟腿[img:drumstick]就会变成肉干[img:meat_dried]\n'
+        '• 在晾肉架[img:meatrack]上晾干鸟腿[img:drumstick]就会变成肉干[img:meat_dried_64]\n'
         '• 烹饪火鸡正餐[img:turkeydinner_64]需要至少 2 个鸟腿[img:drumstick]',
     sideEffect: '',
     condition: '',
@@ -105,7 +105,7 @@ const campfireRecipes = [
     sanity: 0,
     freshness: '6',
     desc:
-        '• 在火源[img:campfire]上烹饪小鱼块[img:fishmeat_small]，就会变成熟小鱼块[img:fish_meat_small_cooked_64]\n'
+        '• 在火源[img:campfire]上烹饪小鱼块[img:fishmeat_small]，就会变成熟小鱼块[img:fishmeat_small_cooked_64]\n'
         '• 在晾肉架[img:meatrack]上晾干小鱼块[img:fishmeat_small]就会变成小肉干[img:smallmeat_dried_64]\n'
         '• 小鱼块和熟小鱼块腐烂后会转变为变质的小鱼块[img:spoiled_fish_small]',
     sideEffect: '',
@@ -125,7 +125,7 @@ const campfireRecipes = [
     freshness: '3',
     desc:
         '• 在火源[img:campfire]上烹饪生鱼肉[img:fishmeat]，就会变成鱼排[img:fishmeat_cooked_64]\n'
-        '• 在晾肉架[img:meatrack]上晾干生鱼肉[img:fishmeat]就会变成肉干[img:meat_dried]\n'
+        '• 在晾肉架[img:meatrack]上晾干生鱼肉[img:fishmeat]就会变成肉干[img:meat_dried_64]\n'
         '• 生鱼肉和鱼排腐烂后会转变为变质的变质的鱼[img:spoiled_fish]',
     sideEffect: '',
     condition: '',
@@ -143,7 +143,7 @@ const campfireRecipes = [
     sanity: 0,
     freshness: '10',
     desc:
-        '• 在火源[img:campfire]上烹饪洞穴蝙蝠翅膀[img:batwing]，就会变成熟蝙蝠翅膀[img:batwing_cooked_64.png]\n'
+        '• 在火源[img:campfire]上烹饪洞穴蝙蝠翅膀[img:batwing]，就会变成熟蝙蝠翅膀[img:batwing_cooked_64]\n'
         '• 在晾肉架[img:meatrack]上晾干洞穴蝙蝠翅膀[img:batwing]就会变成肉干[img:smallmeat_dried_64]\n'
         '• 洞穴蝙蝠翅膀[img:batwing]和熟蝙蝠翅膀[img:batwing_cooked_64]可以喂食鸟笼[img:birdcage]中的鸟来换取一个鸟蛋[img:bird_egg]，也可以给予猪王[img:pigking]换取一个金块[img:goldnugget]',
     sideEffect: '',
@@ -223,8 +223,8 @@ const campfireRecipes = [
     sanity: 0,
     freshness: '6',
     desc:
-        '• 在火源[img:campfire]上烹饪胡萝卜[img:carrot.png]，就会变成烤胡萝卜[img:carrot_cooked_64]\n'
-        '• 胡萝卜和烤胡萝卜可作为食材放入锅[img:cookpot]/[img:portablecookpot_64]中烹饪，提供 1 蔬菜度\n',
+        '• 在火源[img:campfire]上烹饪胡萝卜[img:carrot]，就会变成烤胡萝卜[img:carrot_cooked_64]\n'
+        '• 胡萝卜和烤胡萝卜可作为食材放入锅[img:cookpot]/[img:portablecookpot]中烹饪，提供 1 蔬菜度\n',
     sideEffect: '',
     condition: '',
     notContain: '',
@@ -243,8 +243,8 @@ const campfireRecipes = [
     desc:
         '• 在火源[img:campfire]上烹饪玉米[img:corn]，就会变成爆米花[img:carrot_cooked_64]\n'
         '• 爆米花可以给予小乌鸦[img:perdling_crow]来换取 1 个鸦年华代币[img:carnival_gametoken]和 4-8 个奖票[img:carnival_prizeticket]\n'
-        '• 烹饪鱼肉玉米卷[img:fishtacos_64]需要至少 1 个玉米[img:corn.png]爆米花[img:carrot_cooked_64]玉米鳕鱼[img:oceanfish_medium_5_inv]/爆米花鱼[img:oceanfish_small_5_inv]\n'
-        '• 烹饪芝士蛋糕[img:powcake_64]需要至少 1 个玉米[img:corn.png]爆米花[img:carrot_cooked_64]玉米鳕鱼[img:oceanfish_medium_5_inv]/爆米花鱼[img:oceanfish_small_5_inv]',
+        '• 烹饪鱼肉玉米卷[img:fishtacos_64]需要至少 1 个玉米[img:corn]爆米花[img:carrot_cooked_64]玉米鳕鱼[img:oceanfish_medium_5_inv]/爆米花鱼[img:oceanfish_small_5_inv]\n'
+        '• 烹饪芝士蛋糕[img:powcake_64]需要至少 1 个玉米[img:corn]爆米花[img:carrot_cooked_64]玉米鳕鱼[img:oceanfish_medium_5_inv]/爆米花鱼[img:oceanfish_small_5_inv]',
     sideEffect: '',
     condition: '',
     notContain: '',
@@ -300,7 +300,7 @@ const campfireRecipes = [
     desc:
         '• 在火源[img:campfire]上烹饪榴莲[img:durian]，就会变成超臭榴莲[img:durian_cooked_64]\n'
         '• 会为沃特额外恢复15点饥饿，且不扣除生命值和理智值\n'
-        '• 榴莲和超臭榴莲具有怪物度，因此在放入烹饪锅制作料理时应当注意放入的榴莲数量不能超过 2 个，否则将做出怪物千层饼[img:monsterlasagna]',
+        '• 榴莲和超臭榴莲具有怪物度，因此在放入烹饪锅制作料理时应当注意放入的榴莲数量不能超过 2 个，否则将做出怪物千层饼[img:monsterlasagna_64]',
     sideEffect: '',
     condition: '',
     notContain: '',
@@ -397,7 +397,7 @@ const campfireRecipes = [
     freshness: '6',
     favorites: {Character.Wolfgang},
     desc:
-        '• 在火源[img:campfire]上烹饪土豆[img:potato.png]，就会变成烤土豆[img:potato_cooked_64]\n'
+        '• 在火源[img:campfire]上烹饪土豆[img:potato]，就会变成烤土豆[img:potato_cooked_64]\n'
         '• 会为沃尔夫冈额外恢复15点饥饿\n'
         '• 烹饪花式回旋块茎[img:potatotornado_64]需要至少1个土豆[img:potato]/烤土豆[img:potato_cooked_64]\n'
         '• 烹饪恐怖国王饼[img:nightmarepie_64]需要至少1个土豆[img:potato]/烤土豆[img:potato_cooked_64]\n'
@@ -723,8 +723,8 @@ const campfireRecipes = [
     sanity: -0,
     freshness: '2',
     desc:
-        '• 在火源[img:campfire]上烹饪石果[img:rock_avocado_fruit_ripe]，就会变成熟石果[img:rock_avocado_fruit_ripe_cooked_64]\n'
-        '• 烹饪鳄梨酱[img:guacamole_64]需要至少 1 个仙人掌肉[img:cactus_meat]/熟仙人掌肉[img:cactus_meat_cooked_64]/成熟石果[img:rock_avocado_fruit_ripe_64]/熟石果[img:rock_avocado_fruit_ripe_cooked_64]',
+        '• 在火源[img:campfire]上烹饪成熟石果[img:rock_avocado_fruit_ripe]，就会变成熟石果[img:rock_avocado_fruit_ripe_cooked_64]\n'
+        '• 烹饪鳄梨酱[img:guacamole_64]需要至少 1 个仙人掌肉[img:cactus_meat]/熟仙人掌肉[img:cactus_meat_cooked_64]/成熟石果[img:rock_avocado_fruit_ripe]/熟石果[img:rock_avocado_fruit_ripe_cooked_64]',
     sideEffect: '',
     condition: '',
     notContain: '',
@@ -742,7 +742,7 @@ const campfireRecipes = [
     freshness: '10',
     desc:
         '• 在火源[img:campfire]上烹饪蛙腿[img:froglegs]，就会变成熟蛙腿[img:froglegs_cooked_64]\n'
-        '• 烹饪蛙腿三明治[img:frogglebunwich64]需要至少1个蛙腿[img:froglegs]/熟蛙腿[img:froglegs_cooked_64]\n'
+        '• 烹饪蛙腿三明治[img:frogglebunwich_64]需要至少1个蛙腿[img:froglegs]/熟蛙腿[img:froglegs_cooked_64]\n'
         '• 烹饪无花果蛙腿三明治[img:frognewton_64]需要至少1个蛙腿[img:froglegs]/熟蛙腿[img:froglegs_cooked_64]\n'
         '• 烹饪蓝带鱼排[img:frogfishbowl_64]需要至少2个蛙腿[img:froglegs]/熟蛙腿[img:froglegs_cooked_64]',
     sideEffect: '',
@@ -870,8 +870,7 @@ const campfireRecipes = [
     freshness: '3',
     desc:
         '• 在火源[img:campfire]上烹饪夜莓[img:ancientfruit_nightvision]，就会变成熟夜莓[img:ancientfruit_nightvision_cooked_64]\n'
-        '吃曼德拉草或熟曼德拉草，会对 15 距离单位内的所有生物施加7层睡眠，使睡眠 10~11 秒\n'
-        '• 烹饪曼德拉草汤[img:mandrakesoup_64]需要至少1个曼德拉草[img:mandrake]',
+        '• 食用熟夜莓不会获得任何特殊效果',
     sideEffect: '',
     condition: '',
     notContain: '',

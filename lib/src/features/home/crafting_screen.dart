@@ -54,7 +54,7 @@ class _CraftingScreenState extends State<CraftingScreen> {
           Builder(
             builder:
                 (context) => IconButton(
-                  icon: Image.asset('assets/other/birdcage.png', width: 42),
+                  icon: Image.asset('assets/setting/drawer.png', width: 38),
                   onPressed: () => Scaffold.of(context).openEndDrawer(),
                 ),
           ),

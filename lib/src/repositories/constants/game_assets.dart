@@ -1,3 +1,7 @@
+import 'dart:collection';
+
+import 'package:flutter/cupertino.dart';
+
 import '../../common/enums/character.dart';
 
 /// 食材常量池
@@ -30,6 +34,8 @@ abstract class GameAssets {
   static const _crockPot64Path = 'assets/crockPot_64'; // 烹饪锅烹饪64分辨率
   static const _ingredientsPath = 'assets/ingredients'; // 原始食材素材
   static const _portableCookerPath = 'assets/portableCooker'; // 便携锅烹饪
+  static const _portableCooker64Path = 'assets/portableCooker_64'; // 便携锅烹饪64分辨率
+  static const _otherPath = 'assets/other'; // 其他
 
   //========== 食材分类 ==========//
 
@@ -261,6 +267,11 @@ abstract class GameAssets {
     imageAsset: '$_campfire64Path/acorn_cooked_64.png',
     displayName: '烤桦栗果',
   );
+  static const ancientfruitNightvisionCooked64 = Ingredient(
+    id: 'ancientfruit_nightvision_cooked_64',
+    imageAsset: '$_campfirePath/ancientfruit_nightvision_cooked_64.png',
+    displayName: '熟夜莓',
+  );
   static const asparagusCooked64 = Ingredient(
     id: 'asparagus_cooked_64',
     imageAsset: '$_campfire64Path/asparagus_cooked_64.png',
@@ -319,7 +330,7 @@ abstract class GameAssets {
   static const cookedmandrake64 = Ingredient(
     id: 'cookedmandrake_64',
     imageAsset: '$_campfire64Path/cookedmandrake_64.png',
-    displayName: '熟香蕉',
+    displayName: '熟曼德拉草',
   );
   static const cookedmeat64 = Ingredient(
     id: 'cookedmeat_64',
@@ -372,13 +383,13 @@ abstract class GameAssets {
     displayName: '熟无花果',
   );
   static const fishMeatCooked64 = Ingredient(
-    id: 'fish_meat_cooked_64',
-    imageAsset: '$_campfire64Path/fish_meat_cooked_64.png',
+    id: 'fishmeat_cooked_64',
+    imageAsset: '$_campfire64Path/fishmeat_cooked_64.png',
     displayName: '鱼排',
   );
   static const fishMeatSmallCooked64 = Ingredient(
-    id: 'fish_meat_small_cooked_64',
-    imageAsset: '$_campfire64Path/fish_meat_small_cooked_64.png',
+    id: 'fishmeat_small_cooked_64',
+    imageAsset: '$_campfire64Path/fishmeat_small_cooked_64.png',
     displayName: '熟小鱼块',
   );
   static const froglegsCooked64 = Ingredient(
@@ -498,15 +509,355 @@ abstract class GameAssets {
   );
 
   ///烹饪锅烹饪
+  static const asparagussoup = Ingredient(
+    id: 'asparagussoup',
+    imageAsset: '$_crockPotPath/asparagussoup.png',
+    displayName: '芦笋汤',
+  );
+  static const baconeggs = Ingredient(
+    id: 'baconeggs',
+    imageAsset: '$_crockPotPath/baconeggs.png',
+    displayName: '培根煎蛋',
+  );
+  static const bananajuice = Ingredient(
+    id: 'bananajuice',
+    imageAsset: '$_crockPotPath/bananajuice.png',
+    displayName: '香蕉奶昔',
+  );
+  static const bananapop = Ingredient(
+    id: 'bananapop',
+    imageAsset: '$_crockPotPath/bananapop.png',
+    displayName: '香蕉冻',
+  );
+  static const barnaclepita = Ingredient(
+    id: 'barnaclepita',
+    imageAsset: '$_crockPotPath/barnaclepita.png',
+    displayName: '藤壶皮塔饼',
+  );
+  static const barnaclestuffedfishhead = Ingredient(
+    id: 'barnaclestuffedfishhead',
+    imageAsset: '$_crockPotPath/barnaclestuffedfishhead.png',
+    displayName: '酿鱼头',
+  );
+  static const barnaclesushi = Ingredient(
+    id: 'barnaclesushi',
+    imageAsset: '$_crockPotPath/barnaclesushi.png',
+    displayName: '藤壶握寿司',
+  );
+  static const barnaclinguine = Ingredient(
+    id: 'barnaclinguine',
+    imageAsset: '$_crockPotPath/barnaclinguine.png',
+    displayName: '藤壶中细面',
+  );
+  static const batnosehat = Ingredient(
+    id: 'batnosehat',
+    imageAsset: '$_crockPotPath/batnosehat.png',
+    displayName: '牛奶帽',
+  );
+  static const beefalofeed = Ingredient(
+    id: 'beefalofeed',
+    imageAsset: '$_crockPotPath/beefalofeed.png',
+    displayName: '蒸树枝',
+  );
+  static const beefalotreat = Ingredient(
+    id: 'beefalotreat',
+    imageAsset: '$_crockPotPath/beefalotreat.png',
+    displayName: '皮弗娄牛零食',
+  );
+  static const bonestew = Ingredient(
+    id: 'bonestew',
+    imageAsset: '$_crockPotPath/bonestew.png',
+    displayName: '炖肉汤',
+  );
+  static const bunnystew = Ingredient(
+    id: 'bunnystew',
+    imageAsset: '$_crockPotPath/bunnystew.png',
+    displayName: '炖兔子',
+  );
+  static const butterflymuffin = Ingredient(
+    id: 'butterflymuffin',
+    imageAsset: '$_crockPotPath/butterflymuffin.png',
+    displayName: '蝴蝶松饼',
+  );
+  static const californiaroll = Ingredient(
+    id: 'californiaroll',
+    imageAsset: '$_crockPotPath/californiaroll.png',
+    displayName: '加州卷',
+  );
+  static const ceviche = Ingredient(
+    id: 'ceviche',
+    imageAsset: '$_crockPotPath/ceviche.png',
+    displayName: '酸橘汁腌鱼',
+  );
+  static const dragonpie = Ingredient(
+    id: 'dragonpie',
+    imageAsset: '$_crockPotPath/dragonpie.png',
+    displayName: '火龙果派',
+  );
+  static const dustmeringue = Ingredient(
+    id: 'dustmeringue',
+    imageAsset: '$_crockPotPath/dustmeringue.png',
+    displayName: '琥珀美食',
+  );
+  static const figatoni = Ingredient(
+    id: 'figatoni',
+    imageAsset: '$_crockPotPath/figatoni.png',
+    displayName: '无花果意面',
+  );
+  static const figkabab = Ingredient(
+    id: 'figkabab',
+    imageAsset: '$_crockPotPath/figkabab.png',
+    displayName: '无花果烤串',
+  );
+  static const fishsticks = Ingredient(
+    id: 'fishsticks',
+    imageAsset: '$_crockPotPath/fishsticks.png',
+    displayName: '炸鱼排',
+  );
+  static const fishtacos = Ingredient(
+    id: 'fishtacos',
+    imageAsset: '$_crockPotPath/fishtacos.png',
+    displayName: '鱼肉玉米卷',
+  );
+  static const flowersalad = Ingredient(
+    id: 'flowersalad',
+    imageAsset: '$_crockPotPath/flowersalad.png',
+    displayName: '花沙拉',
+  );
+  static const frogglebunwich = Ingredient(
+    id: 'frogglebunwich',
+    imageAsset: '$_crockPotPath/frogglebunwich.png',
+    displayName: '蛙腿三明治',
+  );
+  static const frognewton = Ingredient(
+    id: 'frognewton',
+    imageAsset: '$_crockPotPath/frognewton.png',
+    displayName: '无花果蛙腿三明治',
+  );
+  static const frozenbananadaiquiri = Ingredient(
+    id: 'frozenbananadaiquiri',
+    imageAsset: '$_crockPotPath/frozenbananadaiquiri.png',
+    displayName: '冰香蕉冻唇蜜',
+  );
+  static const fruitmedley = Ingredient(
+    id: 'fruitmedley',
+    imageAsset: '$_crockPotPath/fruitmedley.png',
+    displayName: '水果圣代',
+  );
+  static const guacamole = Ingredient(
+    id: 'guacamole',
+    imageAsset: '$_crockPotPath/guacamole.png',
+    displayName: '鳄梨酱',
+  );
+  static const honeyham = Ingredient(
+    id: 'honeyham',
+    imageAsset: '$_crockPotPath/honeyham.png',
+    displayName: '蜜汁火腿',
+  );
+  static const honeynuggets = Ingredient(
+    id: 'honeynuggets',
+    imageAsset: '$_crockPotPath/honeynuggets.png',
+    displayName: '蜜汁卤肉',
+  );
+  static const hotchili = Ingredient(
+    id: 'hotchili',
+    imageAsset: '$_crockPotPath/hotchili.png',
+    displayName: '辣椒炖肉',
+  );
+  static const icecream = Ingredient(
+    id: 'icecream',
+    imageAsset: '$_crockPotPath/icecream.png',
+    displayName: '冰淇淋',
+  );
+  static const jammypreserves = Ingredient(
+    id: 'jammypreserves',
+    imageAsset: '$_crockPotPath/jammypreserves.png',
+    displayName: '果酱',
+  );
+  static const jellybean = Ingredient(
+    id: 'jellybean',
+    imageAsset: '$_crockPotPath/jellybean.png',
+    displayName: '彩虹糖豆',
+  );
+  static const justeggs = Ingredient(
+    id: 'justeggs',
+    imageAsset: '$_crockPotPath/justeggs.png',
+    displayName: '普通煎蛋',
+  );
+  static const kabobs = Ingredient(
+    id: 'kabobs',
+    imageAsset: '$_crockPotPath/kabobs.png',
+    displayName: '肉串',
+  );
+  static const koalefigTrunk = Ingredient(
+    id: 'koalefig_trunk',
+    imageAsset: '$_crockPotPath/koalefig_trunk.png',
+    displayName: '无花果酿象鼻',
+  );
+  static const leafloaf = Ingredient(
+    id: 'leafloaf',
+    imageAsset: '$_crockPotPath/leafloaf.png',
+    displayName: '叶肉糕',
+  );
+  static const leafymeatburger = Ingredient(
+    id: 'leafymeatburger',
+    imageAsset: '$_crockPotPath/leafymeatburger.png',
+    displayName: '素食堡',
+  );
+  static const leafymeatsouffle = Ingredient(
+    id: 'leafymeatsouffle',
+    imageAsset: '$_crockPotPath/leafymeatsouffle.png',
+    displayName: '果冻沙拉',
+  );
+  static const lobsterbisque = Ingredient(
+    id: 'lobsterbisque',
+    imageAsset: '$_crockPotPath/lobsterbisque.png',
+    displayName: '龙虾汤',
+  );
+  static const lobsterdinner = Ingredient(
+    id: 'lobsterdinner',
+    imageAsset: '$_crockPotPath/lobsterdinner.png',
+    displayName: '龙虾正餐',
+  );
+  static const mandrakesoup = Ingredient(
+    id: 'mandrakesoup',
+    imageAsset: '$_crockPotPath/mandrakesoup.png',
+    displayName: '曼德拉草汤',
+  );
+  static const mashedpotatoes = Ingredient(
+    id: 'mashedpotatoes',
+    imageAsset: '$_crockPotPath/mashedpotatoes.png',
+    displayName: '奶油土豆泥',
+  );
   static const meatballs = Ingredient(
     id: 'meatballs',
     imageAsset: '$_crockPotPath/meatballs.png',
     displayName: '肉丸',
   );
+  static const meatysalad = Ingredient(
+    id: 'meatysalad',
+    imageAsset: '$_crockPotPath/meatysalad.png',
+    displayName: '牛肉绿叶菜',
+  );
+  static const monsterlasagna = Ingredient(
+    id: 'monsterlasagna',
+    imageAsset: '$_crockPotPath/monsterlasagna.png',
+    displayName: '怪物千层饼',
+  );
+  static const pepperpopper = Ingredient(
+    id: 'pepperpopper',
+    imageAsset: '$_crockPotPath/pepperpopper.png',
+    displayName: '爆炒填馅辣椒',
+  );
+  static const perogies = Ingredient(
+    id: 'perogies',
+    imageAsset: '$_crockPotPath/perogies.png',
+    displayName: '波兰水饺',
+  );
+  static const potatotornado = Ingredient(
+    id: 'potatotornado',
+    imageAsset: '$_crockPotPath/potatotornado.png',
+    displayName: '花式回旋块茎',
+  );
+  static const powcake = Ingredient(
+    id: 'powcake',
+    imageAsset: '$_crockPotPath/powcake.png',
+    displayName: '芝士蛋糕',
+  );
+  static const pumpkincookie = Ingredient(
+    id: 'pumpkincookie',
+    imageAsset: '$_crockPotPath/pumpkincookie.png',
+    displayName: '南瓜饼干',
+  );
+  static const ratatouille = Ingredient(
+    id: 'ratatouille',
+    imageAsset: '$_crockPotPath/ratatouille.png',
+    displayName: '蔬菜杂烩',
+  );
+  static const salsa = Ingredient(
+    id: 'salsa',
+    imageAsset: '$_crockPotPath/salsa.png',
+    displayName: '生鲜萨尔萨酱',
+  );
+  static const seafoodgumbo = Ingredient(
+    id: 'seafoodgumbo',
+    imageAsset: '$_crockPotPath/seafoodgumbo.png',
+    displayName: '海鲜浓汤',
+  );
+  static const shroombait = Ingredient(
+    id: 'shroombait',
+    imageAsset: '$_crockPotPath/shroombait.png',
+    displayName: '酿夜帽',
+  );
+  static const shroomcake = Ingredient(
+    id: 'shroomcake',
+    imageAsset: '$_crockPotPath/shroomcake.png',
+    displayName: '蘑菇蛋糕',
+  );
+  static const stuffedeggplant = Ingredient(
+    id: 'stuffedeggplant',
+    imageAsset: '$_crockPotPath/stuffedeggplant.png',
+    displayName: '酿茄子',
+  );
+  static const surfnturf = Ingredient(
+    id: 'surfnturf',
+    imageAsset: '$_crockPotPath/surfnturf.png',
+    displayName: '海鲜牛排',
+  );
+  static const sweettea = Ingredient(
+    id: 'sweettea',
+    imageAsset: '$_crockPotPath/sweettea.png',
+    displayName: '舒缓茶',
+  );
+  static const taffy = Ingredient(
+    id: 'taffy',
+    imageAsset: '$_crockPotPath/taffy.png',
+    displayName: '太妃糖',
+  );
+  static const talleggs = Ingredient(
+    id: 'talleggs',
+    imageAsset: '$_crockPotPath/talleggs.png',
+    displayName: '苏格兰高鸟蛋',
+  );
+  static const trailmix = Ingredient(
+    id: 'trailmix',
+    imageAsset: '$_crockPotPath/trailmix.png',
+    displayName: '什锦干果',
+  );
   static const turkeydinner = Ingredient(
     id: 'turkeydinner',
     imageAsset: '$_crockPotPath/turkeydinner.png',
     displayName: '火鸡正餐',
+  );
+  static const unagi = Ingredient(
+    id: 'unagi',
+    imageAsset: '$_crockPotPath/unagi.png',
+    displayName: '鳗鱼料理',
+  );
+  static const veggieomlet = Ingredient(
+    id: 'veggieomlet',
+    imageAsset: '$_crockPotPath/veggieomlet.png',
+    displayName: '早餐锅',
+  );
+  static const vegstinger = Ingredient(
+    id: 'vegstinger',
+    imageAsset: '$_crockPotPath/vegstinger.png',
+    displayName: '蔬菜鸡尾酒',
+  );
+  static const waffles = Ingredient(
+    id: 'waffles',
+    imageAsset: '$_crockPotPath/waffles.png',
+    displayName: '华夫饼',
+  );
+  static const watermelonicle = Ingredient(
+    id: 'watermelonicle',
+    imageAsset: '$_crockPotPath/watermelonicle.png',
+    displayName: '西瓜冰棍',
+  );
+  static const wetgoop = Ingredient(
+    id: 'wetgoop',
+    imageAsset: '$_crockPotPath/wetgoop.png',
+    displayName: '潮湿黏糊',
   );
 
   ///烹饪锅烹饪64分辨率
@@ -514,6 +865,11 @@ abstract class GameAssets {
     id: 'asparagussoup_64',
     imageAsset: '$_crockPot64Path/asparagussoup_64.png',
     displayName: '芦笋汤',
+  );
+  static const baconeggs64 = Ingredient(
+    id: 'baconeggs_64',
+    imageAsset: '$_crockPot64Path/baconeggs_64.png',
+    displayName: '培根煎蛋',
   );
   static const bananajuice64 = Ingredient(
     id: 'bananajuice_64',
@@ -560,6 +916,11 @@ abstract class GameAssets {
     imageAsset: '$_crockPot64Path/bonesoup_64.png',
     displayName: '骨头汤',
   );
+  static const butterflymuffin64 = Ingredient(
+    id: 'butterflymuffin_64',
+    imageAsset: '$_crockPot64Path/butterflymuffin_64.png',
+    displayName: '蝴蝶松饼',
+  );
   static const californiaroll64 = Ingredient(
     id: 'californiaroll_64',
     imageAsset: '$_crockPot64Path/californiaroll_64.png',
@@ -584,6 +945,11 @@ abstract class GameAssets {
     id: 'figkabab_64',
     imageAsset: '$_crockPot64Path/figkabab_64.png',
     displayName: '无花果烤串',
+  );
+  static const fishsticks64 = Ingredient(
+    id: 'fishsticks_64',
+    imageAsset: '$_crockPot64Path/fishsticks_64.png',
+    displayName: '炸鱼排',
   );
   static const fishtacos64 = Ingredient(
     id: 'fishtacos_64',
@@ -610,6 +976,11 @@ abstract class GameAssets {
     imageAsset: '$_crockPot64Path/frozenbananadaiquiri_64.png',
     displayName: '冰香蕉冻唇蜜',
   );
+  static const fruitmedley64 = Ingredient(
+    id: 'fruitmedley_64',
+    imageAsset: '$_crockPot64Path/fruitmedley_64.png',
+    displayName: '水果圣代',
+  );
   static const gazpacho64 = Ingredient(
     id: 'gazpacho_64',
     imageAsset: '$_crockPot64Path/gazpacho_64.png',
@@ -619,6 +990,26 @@ abstract class GameAssets {
     id: 'guacamole_64',
     imageAsset: '$_crockPot64Path/guacamole_64.png',
     displayName: '鳄梨酱',
+  );
+  static const honeyham64 = Ingredient(
+    id: 'honeyham_64',
+    imageAsset: '$_crockPot64Path/honeyham_64.png',
+    displayName: '蜜汁火腿',
+  );
+  static const jammypreserves64 = Ingredient(
+    id: 'jammypreserves_64',
+    imageAsset: '$_crockPot64Path/jammypreserves_64.png',
+    displayName: '果酱',
+  );
+  static const jellybean64 = Ingredient(
+    id: 'jellybean_64',
+    imageAsset: '$_crockPot64Path/jellybean_64.png',
+    displayName: '彩虹糖豆',
+  );
+  static const kabobs64 = Ingredient(
+    id: 'kabobs_64',
+    imageAsset: '$_crockPot64Path/kabobs_64.png',
+    displayName: '肉串',
   );
   static const koalefig_trunk64 = Ingredient(
     id: 'koalefig_trunk_64',
@@ -700,10 +1091,20 @@ abstract class GameAssets {
     imageAsset: '$_crockPot64Path/salsa_64.png',
     displayName: '生鲜萨尔萨酱',
   );
+  static const seafoodgumbo64 = Ingredient(
+    id: 'seafoodgumbo_64',
+    imageAsset: '$_crockPot64Path/seafoodgumbo_64.png',
+    displayName: '海鲜浓汤',
+  );
   static const stuffedeggplant64 = Ingredient(
     id: 'stuffedeggplant_64',
     imageAsset: '$_crockPot64Path/stuffedeggplant_64.png',
     displayName: '酿茄子',
+  );
+  static const talleggs64 = Ingredient(
+    id: 'talleggs_64',
+    imageAsset: '$_crockPot64Path/talleggs_64.png',
+    displayName: '苏格兰高鸟蛋',
   );
   static const trailmix64 = Ingredient(
     id: 'trailmix_64',
@@ -719,6 +1120,11 @@ abstract class GameAssets {
     id: 'unagi_64',
     imageAsset: '$_crockPot64Path/unagi_64.png',
     displayName: '鳗鱼料理',
+  );
+  static const veggieomlet64 = Ingredient(
+    id: 'veggieomlet_64',
+    imageAsset: '$_crockPot64Path/veggieomlet_64.png',
+    displayName: '早餐锅',
   );
   static const vegstinger64 = Ingredient(
     id: 'vegstinger_64',
@@ -751,6 +1157,11 @@ abstract class GameAssets {
     id: 'asparagus',
     imageAsset: '$_ingredientsPath/asparagus.png',
     displayName: '芦笋',
+  );
+  static const bandage = Ingredient(
+    id: 'bandage',
+    imageAsset: '$_ingredientsPath/bandage.png',
+    displayName: '蜂蜜药膏',
   );
   static const barnacle = Ingredient(
     id: 'barnacle',
@@ -877,6 +1288,11 @@ abstract class GameAssets {
     imageAsset: '$_ingredientsPath/fig.png',
     displayName: '无花果',
   );
+  static const fish = Ingredient(
+    id: 'fish',
+    imageAsset: '$_ingredientsPath/fish.png',
+    displayName: '鱼',
+  );
   static const fishmeat = Ingredient(
     id: 'fishmeat',
     imageAsset: '$_ingredientsPath/fishmeat.png',
@@ -886,6 +1302,11 @@ abstract class GameAssets {
     id: 'fishmeat_small',
     imageAsset: '$_ingredientsPath/fishmeat_small.png',
     displayName: '小鱼块',
+  );
+  static const forgetmelots = Ingredient(
+    id: 'forgetmelots',
+    imageAsset: '$_ingredientsPath/forgetmelots.png',
+    displayName: '必忘我',
   );
   static const froglegs = Ingredient(
     id: 'froglegs',
@@ -962,6 +1383,11 @@ abstract class GameAssets {
     imageAsset: '$_ingredientsPath/meat.png',
     displayName: '肉',
   );
+  static const milkywhites = Ingredient(
+    id: 'milkywhites',
+    imageAsset: '$_ingredientsPath/milkywhites.png',
+    displayName: '乳白物',
+  );
   static const monstermeat = Ingredient(
     id: 'monstermeat',
     imageAsset: '$_ingredientsPath/monstermeat.png',
@@ -970,7 +1396,12 @@ abstract class GameAssets {
   static const moonCap = Ingredient(
     id: 'moon_cap',
     imageAsset: '$_ingredientsPath/moon_cap.png',
-    displayName: '怪物肉',
+    displayName: '月亮蘑菇',
+  );
+  static const moonbutterflywings = Ingredient(
+    id: 'moonbutterflywings',
+    imageAsset: '$_ingredientsPath/moonbutterflywings.png',
+    displayName: '月蛾翅膀',
   );
   static const nightmarefuel = Ingredient(
     id: 'nightmarefuel',
@@ -1052,9 +1483,14 @@ abstract class GameAssets {
     imageAsset: '$_ingredientsPath/red_cap.png',
     displayName: '采摘的红蘑菇',
   );
-  static const rockAvocadoFruitRipe64 = Ingredient(
-    id: 'rock_avocado_fruit_ripe_64',
-    imageAsset: '$_ingredientsPath/rock_avocado_fruit_ripe_64.png',
+  static const refinedDust = Ingredient(
+    id: 'refined_dust',
+    imageAsset: '$_ingredientsPath/refined_dust.png',
+    displayName: '尘土块',
+  );
+  static const rockAvocadoFruitRipe = Ingredient(
+    id: 'rock_avocado_fruit_ripe',
+    imageAsset: '$_ingredientsPath/rock_avocado_fruit_ripe.png',
     displayName: '成熟石果',
   );
   static const royalJelly = Ingredient(
@@ -1200,10 +1636,47 @@ abstract class GameAssets {
     displayName: '伏特羊肉冻',
   );
 
-  //========== 映射表（按需添加） ==========//
-  static const List<Ingredient> all = [
+  /// 便携锅烹饪64
+  static const monstertartare64 = Ingredient(
+    id: 'monstertartare_64',
+    imageAsset: '$_portableCooker64Path/monstertartare_64.png',
+    displayName: '怪物鞑靼',
+  );
+
+  ///其他
+  static const mole = Ingredient(
+      id: 'mole',
+      imageAsset: '$_otherPath/mole.png',
+      displayName: '鼹鼠',
+  );
+  static const dustmoth = Ingredient(
+      id: 'dustmoth',
+      imageAsset: '$_otherPath/dustmoth.png',
+      displayName: '尘蛾',
+  );
+  static const primeMate = Ingredient(
+      id: 'prime_mate',
+      imageAsset: '$_otherPath/prime_mate.png',
+      displayName: '大副',
+  );
+  static const beefalo = Ingredient(
+      id: 'beefalo',
+      imageAsset: '$_otherPath/beefalo.png',
+      displayName: '皮弗娄牛',
+  );
+  static const cookiecutter = Ingredient(
+      id: 'cookiecutter',
+      imageAsset: '$_otherPath/cookiecutter.png',
+      displayName: '饼干切割机',
+  );
+
+  //========== 分块数据整合 ==========//
+
+  /// 火源烹饪食材分块
+  static const List<Ingredient> campfireIngredients = [
     acornCooked,
     ancientfruitNightvisionCooked,
+    ancientfruitNightvisionCooked64,
     asparagusCooked,
     barnacleCooked,
     batnoseCooked,
@@ -1246,6 +1719,10 @@ abstract class GameAssets {
     trunkCooked,
     watermelonCooked,
     wobsterShellerDeadCooked,
+  ];
+
+  /// 火源烹饪64食材分块
+  static const List<Ingredient> campfire64Ingredients = [
     acornCooked64,
     asparagusCooked64,
     barnacleCooked64,
@@ -1294,9 +1771,86 @@ abstract class GameAssets {
     trunkCooked64,
     watermelonCooked64,
     wobsterShellerDeadCooked64,
+  ];
+
+  /// 烹饪锅食材分块
+  static const List<Ingredient> crockPotIngredients = [
+    asparagussoup,
+    baconeggs,
+    bananajuice,
+    bananapop,
+    barnaclepita,
+    barnaclestuffedfishhead,
+    barnaclesushi,
+    barnaclinguine,
+    batnosehat,
+    beefalofeed,
+    beefalotreat,
+    bonestew,
+    bunnystew,
+    butterflymuffin,
+    californiaroll,
+    ceviche,
+    dragonpie,
+    dustmeringue,
+    figatoni,
+    figkabab,
+    fishsticks,
+    fishtacos,
+    flowersalad,
+    frogglebunwich,
+    frognewton,
+    frozenbananadaiquiri,
+    fruitmedley,
+    guacamole,
+    honeyham,
+    honeynuggets,
+    hotchili,
+    icecream,
+    jammypreserves,
+    jellybean,
+    justeggs,
+    kabobs,
+    koalefigTrunk,
+    leafloaf,
+    leafymeatburger,
+    leafymeatsouffle,
+    lobsterbisque,
+    lobsterdinner,
+    mandrakesoup,
+    mashedpotatoes,
     meatballs,
+    meatysalad,
+    monsterlasagna,
+    pepperpopper,
+    perogies,
+    potatotornado,
+    powcake,
+    pumpkincookie,
+    ratatouille,
+    salsa,
+    seafoodgumbo,
+    shroombait,
+    shroomcake,
+    stuffedeggplant,
+    surfnturf,
+    sweettea,
+    taffy,
+    talleggs,
+    trailmix,
     turkeydinner,
+    unagi,
+    veggieomlet,
+    vegstinger,
+    waffles,
+    watermelonicle,
+    wetgoop,
+  ];
+
+  /// 烹饪锅64食材分块
+  static const List<Ingredient> crockPot64Ingredients = [
     asparagussoup64,
+    baconeggs64,
     bananajuice64,
     bananapop64,
     barnaclepita64,
@@ -1306,18 +1860,25 @@ abstract class GameAssets {
     batnosehat64,
     beefalotreat64,
     bonesoup64,
+    butterflymuffin64,
     californiaroll64,
     dragonchilisalad64,
     dragonpie64,
     figatoni64,
     figkabab64,
+    fishsticks64,
     fishtacos64,
     frogfishbowl64,
     frogglebunwich64,
     frognewton64,
     frozenbananadaiquiri64,
+    fruitmedley64,
     gazpacho64,
     guacamole64,
+    honeyham64,
+    jammypreserves64,
+    jellybean64,
+    kabobs64,
     koalefig_trunk64,
     leafloaf64,
     leafymeatburger64,
@@ -1334,16 +1895,44 @@ abstract class GameAssets {
     powcake64,
     pumpkincookie64,
     salsa64,
+    seafoodgumbo64,
     stuffedeggplant64,
+    talleggs64,
     trailmix64,
     turkeydinner64,
     unagi64,
+    veggieomlet64,
     vegstinger64,
     waffles64,
     watermelonicle64,
+  ];
+
+  /// 便携锅食材分块
+  static const List<Ingredient> portableCookerIngredients = [
+    bonesoup,
+    dragonchilisalad,
+    freshfruitcrepes,
+    frogfishbowl,
+    gazpacho,
+    glowberrymousse,
+    monstertartare,
+    moqueca,
+    nightmarepie,
+    potatosouffle,
+    voltgoatjelly,
+  ];
+
+  /// 便携锅64食材分块
+  static const List<Ingredient> portableCooker64Ingredients = [
+    monstertartare64
+  ];
+
+  /// 原始食材分块
+  static const List<Ingredient> defaultIngredients = [
     acorn,
     ancientfruitNightvision,
     asparagus,
+    bandage,
     barnacle,
     batnose,
     batwing,
@@ -1369,8 +1958,10 @@ abstract class GameAssets {
     eel,
     eggplant,
     fig,
+    fish,
     fishmeat,
     fishmeatSmall,
+    forgetmelots,
     froglegs,
     garlic,
     goatmilk,
@@ -1386,8 +1977,10 @@ abstract class GameAssets {
     lureplantbulb,
     mandrake,
     meat,
+    milkywhites,
     monstermeat,
     moonCap,
+    moonbutterflywings,
     nightmarefuel,
     oceanfishMedium5Inv,
     oceanfishMedium8Inv,
@@ -1404,7 +1997,8 @@ abstract class GameAssets {
     potato,
     pumpkin,
     redCap,
-    rockAvocadoFruitRipe64,
+    refinedDust,
+    rockAvocadoFruitRipe,
     royalJelly,
     salmon,
     saltrock,
@@ -1422,41 +2016,93 @@ abstract class GameAssets {
     wobsterShellerLand,
     wormlight,
     wormlightLesser,
-    bonesoup,
-    dragonchilisalad,
-    freshfruitcrepes,
-    frogfishbowl,
-    gazpacho,
-    glowberrymousse,
-    monstertartare,
-    moqueca,
-    nightmarepie,
-    potatosouffle,
-    voltgoatjelly,
   ];
 
-  // 食材映射表 (id -> Ingredient)
-  static late final Map<String, Ingredient> ingredients = {
-    for (final ing in all) ing.id: ing,
-  };
+  /// 其他烹饪食材分块
+  static const List<Ingredient> otherIngredients = [
+    mole,
+    dustmoth,
+    primeMate,
+    beefalo,
+    cookiecutter
+  ];
 
-  // 角色映射表 (id -> Character)
-  static late final Map<String, Character> characters = {
-    for (final char in Character.values) char.id: char,
-  };
+  //========== 映射表（按需添加） ==========//
+  static const List<Ingredient> all = [
+    ...campfireIngredients,
+    ...campfire64Ingredients,
+    ...crockPotIngredients,
+    ...crockPot64Ingredients,
+    ...portableCookerIngredients,
+    ...portableCooker64Ingredients,
+    ...defaultIngredients,
+    ...otherIngredients
+  ];
 
-  //========== 解析方法 ==========//
-  /// 根据 id 查找图片路径（优先食材，再角色，最后尝试通用路径）
-  static String getImagePath(String id) {
-    // 1. 查找食材
-    if (ingredients.containsKey(id)) {
-      return ingredients[id]!.imageAsset;
+  /// 预生成全局索引（包含所有数据）
+  static late final Map<String, Ingredient> _ingredientMap = _buildIngredientMap();
+
+  /// 延迟加载的角色映射表（首次访问时初始化）
+  static late final Map<String, Character> _characterMap = () {
+    // 使用 LinkedHashMap 保证有序性（如果不需要有序可用普通 HashMap）
+    final map = LinkedHashMap<String, Character>(
+      equals: (a, b) => a == b,
+      hashCode: (key) => key.hashCode,
+    );
+
+    // 批量添加角色数据
+    for (final char in Character.values) {
+      map[char.id] = char;
     }
-    // 2. 查找角色
-    if (characters.containsKey(id)) {
-      return characters[id]!.imageAsset;
+
+    return UnmodifiableMapView(map); // 返回不可修改的视图
+  }(); // 立即执行匿名函数
+
+  //========== 索引构建方法 ==========//
+
+  /// 构建食材哈希映射（时间复杂度 O(n) → 仅执行一次）
+  static Map<String, Ingredient> _buildIngredientMap() {
+    final map = HashMap<String, Ingredient>(
+      equals: (a, b) => a == b,
+      hashCode: (key) => key.hashCode,
+      isValidKey: (key) => key is String,
+    );
+
+    // 分块填充提升CPU缓存命中率
+    void addBlock(List<Ingredient> block) {
+      for (var i = 0; i < block.length; i++) {
+        final ing = block[i];
+        map[ing.id] = ing;
+      }
     }
-    // 3. 通用图片（如道具、UI元素）
-    return 'assets/other/$id.png'; // 自定义兜底规则
+
+    addBlock(campfireIngredients);
+    addBlock(campfire64Ingredients);
+    addBlock(crockPotIngredients);
+    addBlock(crockPot64Ingredients);
+    addBlock(portableCookerIngredients);
+    addBlock(portableCooker64Ingredients);
+    addBlock(defaultIngredients);
+    addBlock(otherIngredients);
+    // ... 其他分块
+
+    return UnmodifiableMapView(map); // 防止外部修改
   }
+
+  //========== 解析方法优化 ==========//
+
+  /// 图像路径查询（时间复杂度 O(1)）
+  static String getImagePath(String id) {
+    // 1. 优先查询食材索引
+    final ingredient = _ingredientMap[id];
+    if (ingredient != null) return ingredient.imageAsset;
+
+    // 2. 延迟加载角色数据
+    final character = _characterMap[id];
+    if (character != null) return character.imageAsset;
+
+    // 3. 兜底逻辑
+    return 'assets/other/$id.png';
+  }
+
 }

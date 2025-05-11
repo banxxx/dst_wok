@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../routes/route_names.dart';
@@ -8,62 +12,60 @@ import '../../common/widgets/custom_appBar.dart';
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
 
+  // 公共常量提取
+  static const _cardElevation = 0.0;
+  static const _itemSpacing = 12.0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: const Text('关于'),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // 项目图标
-            Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Theme.of(context).colorScheme.primaryContainer,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Image.asset('assets/setting/ic_launcher.png'), // 替换为你的应用图标路径
-              ),
-            ),
-            const SizedBox(height: 24),
+      appBar: CustomAppBar(title: const Text('关于')),
+      body: SafeArea(
+        bottom: true, // 启用底部安全区域
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // 开源许可证模块
+              _buildLicenseCard(context),
+              const SizedBox(height: _itemSpacing),
 
-            // 项目名称
-            Text(
-              '饥锅',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
+              // GitHub链接
+              _buildGitHubCard(),
+              const SizedBox(height: _itemSpacing),
 
-            // 应用简介
-            _buildInfoCard(context),
-            const SizedBox(height: 20),
+              // 新增资料引用模块
+              _buildReferenceCard(context),
+              const SizedBox(height: _itemSpacing),
 
-            // 开源许可证模块
-            _buildLicenseCard(context),
-            const SizedBox(height: 12),
+              _buildClearCacheCard(context),
+              const SizedBox(height: _itemSpacing),
 
-            // GitHub链接
-            _buildGitHubCard(),
-            const SizedBox(height: 20),
+              // 版本信息模块（增加点击功能）
+              _buildVersionInfo(context),
 
-            // 新增资料引用模块
-            _buildReferenceCard(context),
-            const SizedBox(height: 12),
-
-
-            // 版本信息模块（增加点击功能）
-            _buildVersionInfo(context),
-          ],
+              // 添加底部安全区域间距（自动计算高度）
+              SizedBox(height: MediaQuery.of(context).padding.bottom),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  // 可复用的卡片点击效果
+  Widget _customCard({required Widget child, VoidCallback? onTap}) {
+    return Card(
+      elevation: _cardElevation,
+      shape: RoundedRectangleBorder(
+        // 添加圆角
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12), // 圆角匹配卡片
+        onTap: onTap,
+        child: child,
       ),
     );
   }
@@ -71,56 +73,29 @@ class AboutPage extends StatelessWidget {
   // 打开URL
   Future<void> _launchUrl(String url) async {
     final Uri uri = Uri.parse(url);
-    if (!await launchUrl(uri)) {
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
       throw Exception('无法打开: $url');
     }
   }
 
-  // 简介卡片
-  Widget _buildInfoCard(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            const SizedBox(height: 8),
-            const Text(
-              '这是一个基于《饥荒联机版》游戏的食谱查询应用，'
-                  '帮助玩家快速查询各种烹饪配方和食材组合。'
-                  '应用目前只包含了联机版游戏中的火源烹饪及料理烹饪的配方说明。'
-                  '资料参考灰机WIKI(饥荒板块)和哔哩哔哩饥荒WIKI',
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   // GitHub链接
   Widget _buildGitHubCard() {
-    return Card(
+    return _customCard(
+      onTap: () => _launchUrl('https://github.com/banxxx/dst_wok'),
       child: ListTile(
-        leading: Image.asset(
-          'assets/setting/wendy_gravestone.png',
-          width: 28,
-          height: 28,
-        ),
         title: const Text('GitHub 仓库'),
         subtitle: const Text('查看项目源代码'),
-        onTap: () => _launchUrl('https://github.com/banxxx/dst_wok'),
       ),
     );
   }
 
   // 构建许可证卡片
   Widget _buildLicenseCard(BuildContext context) {
-    return Card(
+    return _customCard(
+      onTap: () => _navigateToLicense(context),
       child: ListTile(
-        leading: const Icon(Icons.article_outlined),
         title: const Text('开源许可证'),
         subtitle: const Text('GPL-3.0 协议'),
-        onTap: () => _navigateToLicense(context),
       ),
     );
   }
@@ -130,83 +105,100 @@ class AboutPage extends StatelessWidget {
     final references = [
       {
         'title': '灰机WIKI - 饥荒板块',
-        'url': 'https://dontstarve.fandom.com/zh/wiki/%E9%A5%A5%E8%8D%92_Wiki'
-      },
-      {
-        'title': '哔哩哔哩饥荒WIKI',
-        'url': 'https://wiki.biligame.com/dst/%E9%A6%96%E9%A1%B5'
+        'url': 'https://dontstarve.huijiwiki.com/wiki/',
       },
     ];
 
-    return Card(
+    return _customCard(
       child: Column(
         children: [
-          const ListTile(
-            leading: Icon(Icons.source_outlined),
-            title: Text('资料引用来源'),
-            subtitle: Text('点击查看详细信息'),
+          ListTile(
+            title: const Text('资料引用来源'),
+            subtitle: const Text('点击查看详细信息'),
           ),
-          ...references.map((ref) => ListTile(
-            title: Text(ref['title']!),
-            trailing: const Icon(Icons.open_in_new),
-            dense: true,
-            onTap: () => _launchUrl(ref['url']!),
-          )),
+          // 添加分割线
+          const Divider(
+            height: 1, // 分割线高度
+            thickness: 1, // 线宽
+            indent: 16, // 左侧缩进
+            endIndent: 16, // 右侧缩进
+            color: Colors.black12, // 颜色设置
+          ),
+          ...references.map(
+            (ref) => Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.circular(12), // 底部圆角匹配卡片
+                ),
+                onTap: () => _launchUrl(ref['url']!),
+                child: ListTile(
+                  title: Text(
+                    ref['title']!,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  dense: true,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 
-// 构建版本信息
+  // 新增缓存清理卡片
+  Widget _buildClearCacheCard(BuildContext context) {
+    return _customCard(
+      child: ListTile(
+        title: const Text('清除缓存'),
+        subtitle: FutureBuilder<String>(
+          future: _getCacheSize(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Text('当前缓存：${snapshot.data ?? "未知"}');
+            }
+            return Text('正在计算缓存大小...');
+          },
+        ),
+        trailing: IconButton(
+          icon: Image.asset('assets/setting/wendy_gravestone.png', width: 26),
+          onPressed: () async {
+            final messenger = ScaffoldMessenger.of(context);
+            try {
+              await _clearCache();
+              messenger.showSnackBar(const SnackBar(content: Text('缓存清理成功')));
+            } catch (e) {
+              messenger.showSnackBar(SnackBar(content: Text('清理失败：$e')));
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  // 构建版本信息
   Widget _buildVersionInfo(BuildContext context) {
     return Card(
+      elevation: 0,
       child: InkWell(
-        borderRadius: BorderRadius.circular(12), // 保持圆角一致
+        borderRadius: BorderRadius.circular(12),
         onTap: () => _checkForUpdate(context),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // 图标
-              Icon(
-                Icons.system_update_alt_outlined,
-                size: 28,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(height: 12),
-              // 版本号
-              Text(
-                '当前版本',
-                style: Theme.of(context).textTheme.labelSmall,
-              ),
-              Text(
-                '1.0.0',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              // 更新提示
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.check_circle_outline,
-                    size: 16,
-                    color: Theme.of(context).colorScheme.outline,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    '已是最新版本',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.outline,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+        child: ListTile(
+          title: const Text('检查更新'),
+          subtitle: FutureBuilder<String>(
+            future: getAppVersion(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Text(
+                  '当前版本: ${snapshot.data ?? "未知"}', // 成功时显示版本号，失败显示"未知"
+                );
+              } else {
+                return Text(
+                  '正在获取版本号...', // 加载中的提示
+                );
+              }
+            },
           ),
         ),
       ),
@@ -219,16 +211,17 @@ class AboutPage extends StatelessWidget {
     // 示例弹窗提示
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('已是最新版本'),
-        content: const Text('当前已安装最新版本的应用'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('确定'),
+      builder:
+          (context) => AlertDialog(
+            title: const Text('已是最新版本'),
+            content: const Text('当前已安装最新版本的应用'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('确定'),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 
@@ -237,4 +230,45 @@ class AboutPage extends StatelessWidget {
     context.pushNamed(RouteNames.licenseDetailPage);
   }
 
+  // 异步获取版本信息
+  Future<String> getAppVersion() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo.version; // 返回版本号
+  }
+
+  // 新增方法：获取缓存目录路径
+  Future<Directory> _getCacheDir() async {
+    return await getTemporaryDirectory();
+  }
+
+  // 新增方法：获取缓存大小
+  Future<String> _getCacheSize() async {
+    final dir = await _getCacheDir();
+    int size = 0;
+
+    if (await dir.exists()) {
+      final files = dir.listSync(recursive: true);
+      for (var file in files) {
+        if (file is File) {
+          size += await file.length();
+        }
+      }
+    }
+
+    if (size < 1024) {
+      return '${size}B';
+    } else if (size < 1048576) {
+      return '${(size / 1024).toStringAsFixed(2)}KB';
+    } else {
+      return '${(size / 1048576).toStringAsFixed(2)}MB';
+    }
+  }
+
+  // 新增方法：清除缓存
+  Future<void> _clearCache() async {
+    final dir = await _getCacheDir();
+    if (await dir.exists()) {
+      await dir.delete(recursive: true);
+    }
+  }
 }

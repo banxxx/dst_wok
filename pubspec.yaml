@@ -11,11 +11,22 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # 状态管理库，用于跨组件状态共享和业务逻辑解耦
   provider: ^6.1.2
+  # iOS风格图标库，包含苹果官方设计规范的图标资源
   cupertino_icons: ^1.0.8
+  # 虚线边框组件库，用于创建自定义虚线/点线边框效果
   dotted_border: ^2.0.0
+  # 声明式路由导航库，支持深层链接和复杂导航场景
   go_router: ^12.0.0
+  # URL启动器，支持调用浏览器/地图/电话等原生功能
   url_launcher: ^6.1.11
+  # 应用信息获取工具，可读取版本号/包名等元数据
+  package_info_plus: ^5.0.0
+  # 文件路径获取工具，支持访问设备文档/缓存等系统目录
+  path_provider: ^2.1.1
+  # .9类型图片处理工具
+  ninepatch_image: ^0.0.4
 
 dev_dependencies:
   flutter_test:
