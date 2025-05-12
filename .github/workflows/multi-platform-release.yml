@@ -65,9 +65,13 @@ jobs:
 
       - name: Build unsigned IPA
         run: |
+          # 清理旧构建
+          flutter clean
+          # 确保输出目录存在
           mkdir -p build/ios/ipa
-          flutter build ipa --release --no-codesign
-          # 重命名 IPA 文件
+          # 构建并指定输出路径 (Flutter 3.16+)
+          flutter build ipa --release --no-codesign --export-options-plist=ExportOptions.plist
+          # 重命名文件
           mv build/ios/ipa/Runner.ipa dstwok_ios_${{ github.ref_name }}.ipa
 
       - uses: actions/upload-artifact@v4
