@@ -40,6 +40,10 @@ jobs:
           channel: stable
           flutter-version: 3.29.3
 
+      - name: Generate iOS Project
+        run: |
+          flutter create --platforms ios --project-name dst_wok .
+          
       - name: Install CocoaPods
         run: |
           cd ios
