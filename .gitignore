@@ -60,6 +60,7 @@ app.*.map.json
 /build
 /.gradle
 /local.properties
+key.properties
 *.apk
 *.aar
 *.ap_
