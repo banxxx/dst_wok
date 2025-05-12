@@ -70,7 +70,7 @@ jobs:
           # 确保输出目录存在
           mkdir -p build/ios/ipa
           # 构建并指定输出路径 (Flutter 3.16+)
-          flutter build ipa --release --no-codesign
+          flutter build ipa --release --no-codesign --export-method development
           # 重命名文件
           mv build/ios/ipa/Runner.ipa dstwok_ios_${{ github.ref_name }}.ipa
 
