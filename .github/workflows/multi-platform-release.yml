@@ -16,6 +16,14 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           accept-licenses: true
+          components: |
+            ndk;29.0.13113456
+            cmake;3.22.1
+
+      - name: Accept NDK Licenses (强制措施)
+        run: |
+          yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses
+          ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "ndk;29.0.13113456"
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -27,12 +35,12 @@ jobs:
         run: |
           flutter build apk --release
           # 重命名 APK 文件
-          mv build/app/outputs/apk/release/app-release.apk Dstwok_android_${{ github.ref_name }}.apk
+          mv build/app/outputs/apk/release/app-release.apk dstwok_android_${{ github.ref_name }}.apk
 
       - uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: Dstwok_android_${{ github.ref_name }}.apk
+          path: dstwok_android_${{ github.ref_name }}.apk
 
   build-ios:
     runs-on: macos-latest
@@ -57,14 +65,15 @@ jobs:
 
       - name: Build unsigned IPA
         run: |
-          flutter build ipa --release --no-codesign
+          mkdir -p build/ios/ipa
+          flutter build ipa --release --no-codesign --output build/ios/ipa/dstwok.ipa
           # 重命名 IPA 文件
-          mv build/ios/ipa/Runner.ipa Dstwok_ios_${{ github.ref_name }}.ipa
+          mv build/ios/ipa/Runner.ipa dstwok_ios_${{ github.ref_name }}.ipa
 
       - uses: actions/upload-artifact@v4
         with:
           name: ios-ipa
-          path: Dstwok_ios_${{ github.ref_name }}.ipa
+          path: dstwok_ios_${{ github.ref_name }}.ipa
 
   build-windows:
     runs-on: windows-latest
@@ -82,12 +91,12 @@ jobs:
           flutter build windows --release
           ls build/windows/runner/Release
           cd build/windows/runner/Release
-          7z a Dstwok_windows_${{ github.ref_name }}.zip ./*
+          7z a dstwok_windows_${{ github.ref_name }}.zip ./*
 
       - uses: actions/upload-artifact@v4
         with:
           name: windows-exe
-          path: build/windows/runner/Release/Dstwok_windows_${{ github.ref_name }}.zip
+          path: build/windows/runner/Release/dstwok_windows_${{ github.ref_name }}.zip
 
   create-release:
     runs-on: ubuntu-latest
@@ -101,13 +110,13 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
-          name: Dstwok ${{ github.ref_name }}
+          name: dstwok ${{ github.ref_name }}
           body: |
             ### Multi-Platform Release
-            - Android: Dstwok_android_${{ github.ref_name }}.apk
-            - iOS (Unsigned): Dstwok_ios_${{ github.ref_name }}.ipa
-            - Windows: Dstwok_windows_${{ github.ref_name }}.zip
+            - Android: dstwok_android_${{ github.ref_name }}.apk
+            - iOS (Unsigned): dstwok_ios_${{ github.ref_name }}.ipa
+            - Windows: dstwok_windows_${{ github.ref_name }}.zip
           files: |
-            artifacts/android-apk/Dstwok_android_${{ github.ref_name }}.apk
-            artifacts/ios-ipa/Dstwok_ios_${{ github.ref_name }}.ipa
-            artifacts/windows-exe/Dstwok_windows_${{ github.ref_name }}.zip
+            artifacts/android-apk/dstwok_android_${{ github.ref_name }}.apk
+            artifacts/ios-ipa/dstwok_ios_${{ github.ref_name }}.ipa
+            artifacts/windows-exe/dstwok_windows_${{ github.ref_name }}.zip
