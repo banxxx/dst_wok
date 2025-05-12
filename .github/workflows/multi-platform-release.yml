@@ -16,18 +16,18 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: 3.22.2
+          flutter-version: 3.29.3
 
       - name: Build Android APK
         run: |
           flutter build apk --release
           # 重命名 APK 文件
-          mv build/app/outputs/apk/release/app-release.apk DSTwok_android_${{ github.ref_name }}.apk
+          mv build/app/outputs/apk/release/app-release.apk Dstwok_android_${{ github.ref_name }}.apk
 
       - uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: DSTwok_android_${{ github.ref_name }}.apk
+          path: Dstwok_android_${{ github.ref_name }}.apk
 
   build-ios:
     runs-on: macos-latest
@@ -38,7 +38,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: 3.22.2
+          flutter-version: 3.29.3
 
       - name: Install CocoaPods
         run: |
@@ -50,12 +50,12 @@ jobs:
         run: |
           flutter build ipa --release --no-codesign
           # 重命名 IPA 文件
-          mv build/ios/ipa/Runner.ipa DSTwok_ios_${{ github.ref_name }}.ipa
+          mv build/ios/ipa/Runner.ipa Dstwok_ios_${{ github.ref_name }}.ipa
 
       - uses: actions/upload-artifact@v4
         with:
           name: ios-ipa
-          path: DSTwok_ios_${{ github.ref_name }}.ipa
+          path: Dstwok_ios_${{ github.ref_name }}.ipa
 
   build-windows:
     runs-on: windows-latest
@@ -66,20 +66,19 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: 3.22.2
+          flutter-version: 3.29.3
 
       - name: Build Windows
         run: |
           flutter build windows --release
-          # 压缩文件并重命名
+          ls build/windows/runner/Release
           cd build/windows/runner/Release
-          ren DSTwok.exe DSTwok_${{ github.ref_name }}.exe
-          7z a DSTwok_windows_${{ github.ref_name }}.zip ./*
+          7z a Dstwok_windows_${{ github.ref_name }}.zip ./*
 
       - uses: actions/upload-artifact@v4
         with:
           name: windows-exe
-          path: build/windows/runner/Release/DSTwok_windows_${{ github.ref_name }}.zip
+          path: build/windows/runner/Release/Dstwok_windows_${{ github.ref_name }}.zip
 
   create-release:
     runs-on: ubuntu-latest
@@ -93,13 +92,13 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
-          name: DSTwok ${{ github.ref_name }}
+          name: Dstwok ${{ github.ref_name }}
           body: |
             ### Multi-Platform Release
-            - Android: DSTwok_android_${{ github.ref_name }}.apk
-            - iOS (Unsigned): DSTwok_ios_${{ github.ref_name }}.ipa
-            - Windows: DSTwok_windows_${{ github.ref_name }}.zip
+            - Android: Dstwok_android_${{ github.ref_name }}.apk
+            - iOS (Unsigned): Dstwok_ios_${{ github.ref_name }}.ipa
+            - Windows: Dstwok_windows_${{ github.ref_name }}.zip
           files: |
-            artifacts/android-apk/DSTwok_android_${{ github.ref_name }}.apk
-            artifacts/ios-ipa/DSTwok_ios_${{ github.ref_name }}.ipa
-            artifacts/windows-exe/DSTwok_windows_${{ github.ref_name }}.zip
+            artifacts/android-apk/Dstwok_android_${{ github.ref_name }}.apk
+            artifacts/ios-ipa/Dstwok_ios_${{ github.ref_name }}.ipa
+            artifacts/windows-exe/Dstwok_windows_${{ github.ref_name }}.zip
