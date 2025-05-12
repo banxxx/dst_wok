@@ -66,7 +66,7 @@ jobs:
       - name: Build unsigned IPA
         run: |
           mkdir -p build/ios/ipa
-          flutter build ipa --release --no-codesign --output build/ios/ipa/dstwok.ipa
+          flutter build ipa --release --no-codesign
           # 重命名 IPA 文件
           mv build/ios/ipa/Runner.ipa dstwok_ios_${{ github.ref_name }}.ipa
 
