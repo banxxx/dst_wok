@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../repositories/constants/game_assets.dart';
+import '../constants/app_colors.dart';
 
 class IngredientUtils {
   /// 通用食材图片构建方法
@@ -25,7 +26,7 @@ class IngredientUtils {
   static TextStyle _defaultTextStyle() {
     return const TextStyle(
       fontSize: 12,
-      color: Colors.black,
+      color: AppColors.recipeTitle,
     ).copyWith(
       fontFeatures: const [FontFeature.tabularFigures()], // 优化文本渲染性能
     );

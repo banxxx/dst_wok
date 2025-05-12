@@ -52,12 +52,12 @@ class RecipeDetails extends StatelessWidget {
           Image.asset('assets/setting/top.png', width: 150),
           Text(
             recipe.name,
-            style: TextStyle(fontSize: 38, color: Colors.grey[600]),
+            style: TextStyle(fontSize: 38, color: AppColors.recipeTitle),
           ),
           Image.asset('assets/setting/bottom.png', width: 150),
           Text(
             '代码: "${recipe.id}"',
-            style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+            style: TextStyle(fontSize: 16, color: AppColors.recipePrimary),
           ),
         ],
       ),
@@ -71,7 +71,7 @@ class RecipeDetails extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Color(0xFFF1D7C3), width: 2),
+          border: Border.all(color: AppColors.recipeDetailBorder, width: 2),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -94,7 +94,7 @@ class RecipeDetails extends StatelessWidget {
                           style: TextStyle(
                             // 基础样式
                             fontSize: 16,
-                            color: AppColors.recipeText,
+                            color: AppColors.recipePrimary,
                           ),
                           children: [
                             // 使用工具类解析描述文本
@@ -104,7 +104,7 @@ class RecipeDetails extends StatelessWidget {
                               textStyle: TextStyle(
                                 // 保持原有文本样式
                                 fontSize: 16,
-                                color: AppColors.recipeText,
+                                color: AppColors.recipePrimary,
                               ),
                             ),
                           ],
@@ -153,9 +153,9 @@ class RecipeDetails extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.9),
+          color: AppColors.recipeDetailBg,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Color(0xFFF1D7C3), width: 2),
+          border: Border.all(color: AppColors.recipeDetailBorder, width: 2),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -236,7 +236,7 @@ class RecipeDetails extends StatelessWidget {
             style: TextStyle(
               // 全局基础样式
               fontSize: 20,
-              color: Colors.brown,
+              color: AppColors.recipePrimary,
               fontWeight: FontWeight.bold,
               height: 1.2, // 统一行高
             ),
@@ -297,7 +297,7 @@ class RecipeDetails extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 18),
-        Text("推荐食谱:", style: TextStyle(fontSize: 16, color: Colors.grey[600])),
+        Text("推荐食谱:", style: TextStyle(fontSize: 16, color: AppColors.recipePrimary)),
         // 遍历所有需要的推荐组
         for (final cookbook in recipe.cookbook)
           RecipeRecommendation(slots: cookbook.slots),

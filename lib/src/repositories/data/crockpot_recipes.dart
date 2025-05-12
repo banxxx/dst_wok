@@ -840,7 +840,7 @@ var crockpotRecipes = [
     desc: '',
     favorites: const {},
     sideEffect: '无',
-    condition: '至少一个鳗鱼[img:]或活鳗鱼[img:pondeel]或烤鳗鱼[img:eel_cooked_64]，至少一个苔藓[img:cutlichen]或海带叶[img:kelp]或熟海带叶[img:kelp_cooked_64]或干海带叶[img:kelp_dried_64]',
+    condition: '至少一个鳗鱼[img:eel]或活鳗鱼[img:pondeel]或烤鳗鱼[img:eel_cooked_64]，至少一个苔藓[img:cutlichen]或海带叶[img:kelp]或熟海带叶[img:kelp_cooked_64]或干海带叶[img:kelp_dried_64]',
     notContain: '无',
     cookbook: [
       RecipeExample(
@@ -878,7 +878,7 @@ var crockpotRecipes = [
     desc: '',
     favorites: const {},
     sideEffect: '无',
-    condition: '蛋度大于 0，至少一个黄油[img:butter]，至少 1 个浆果[img:berries]/烤浆果[img:berries_cooked_64]/多汁浆果[img:berriesJuicy]/烤多汁浆果[img:berries_juicy_cooked_64]',
+    condition: '蛋度大于 0，至少一个黄油[img:butter]，至少 1 个浆果[img:berries]/烤浆果[img:berries_cooked_64]/多汁浆果[img:berries_juicy]/烤多汁浆果[img:berries_juicy_cooked_64]',
     notContain: '无',
     cookbook: [
       RecipeExample(
@@ -942,7 +942,7 @@ var crockpotRecipes = [
     desc: '',
     favorites: const {Character.Walter},
     sideEffect: '无',
-    condition: '至少 1 个桦栗果[img:acorn]/烤桦栗果[img:acorn_cooked_64]，种子度大于等于 1，至少一个浆果[img:berries]/烤浆果[img:berries_cooked_64]/多汁浆果[img:berriesJuicy]/烤多汁浆果[img:berries_juicy_cooked_64]，水果度大于等于 1',
+    condition: '至少 1 个桦栗果[img:acorn]/烤桦栗果[img:acorn_cooked_64]，种子度大于等于 1，至少一个浆果[img:berries]/烤浆果[img:berries_cooked_64]/多汁浆果[img:berries_juicy]/烤多汁浆果[img:berries_juicy_cooked_64]，水果度大于等于 1',
     notContain: '不包含肉度、蔬菜度、蛋度、乳制品度',
     cookbook: [
       RecipeExample(
@@ -1038,7 +1038,7 @@ var crockpotRecipes = [
     desc: '',
     favorites: const {},
     sideEffect: '制作花沙拉所必须的原材料仙人掌花只在夏季开放，所以通常来讲至少要到第一个夏天才能做出花沙拉',
-    condition: '至少 1 个仙人掌花[img:cactusFlower]，蔬菜度大于等于 2',
+    condition: '至少 1 个仙人掌花[img:cactus_flower]，蔬菜度大于等于 2',
     notContain: '不包含肉度、不可食用度、蛋度、甜味剂度、水果度',
     cookbook: [
       RecipeExample(
@@ -1286,7 +1286,7 @@ var crockpotRecipes = [
     desc: '每次烹饪产出 3 个',
     favorites: const {},
     sideEffect: '食用彩虹糖豆可以在 2 分钟内每 2 秒恢复 2 生命值，加上即时效果一共恢复 122 生命值',
-    condition: '不可食用度和怪物度为 0，至少含有 1 个蜂王浆[img:royalJelly]',
+    condition: '不可食用度和怪物度为 0，至少含有 1 个蜂王浆[img:royal_jelly]',
     notContain: '无',
     cookbook: [
       RecipeExample(
@@ -1949,7 +1949,7 @@ var crockpotRecipes = [
     desc: '',
     favorites: const {},
     sideEffect: '食用蘑菇蛋糕会获得催眠抗性，由10秒提升至33.3秒，持续时间为 1 天',
-    condition: '红色[img:redCap]、绿色[img:greenCap]、蓝色[img:blueCap]三种蘑菇各一个，月亮蘑菇[img:moonCap]一个（注意：所有材料均不可用烤熟的版本替代）',
+    condition: '红色[img:red_cap]、绿色[img:green_cap]、蓝色[img:blue_cap]三种蘑菇各一个，月亮蘑菇[img:moon_cap]一个（注意：所有材料均不可用烤熟的版本替代）',
     notContain: '不可用烤熟的蘑菇',
     cookbook: [
       RecipeExample(
@@ -2441,7 +2441,7 @@ var crockpotRecipes = [
     desc: '',
     favorites: const {},
     sideEffect: '食用酿夜帽会给食用者增加10点催眠值，催眠时间为20秒',
-    condition: '至少两个月亮蘑菇[img:moon_cap]，至少一个怪物肉[img:]',
+    condition: '至少两个月亮蘑菇[img:moon_cap]，至少一个怪物肉[img:monstermeat]',
     notContain: '无',
     cookbook: [
       RecipeExample(

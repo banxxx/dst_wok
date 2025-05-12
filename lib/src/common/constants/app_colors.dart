@@ -7,13 +7,24 @@ class AppColors {
   static const Color secondary = Color(0xFF1B3F66);
   static const Color accent = Color(0xFFA94049);
 
-  // 文本颜色
-  static const Color textPrimary = Color(0xFF2E2E2E);
-  static const Color textSecondary = Color(0xFF6C757D);
+  // 食谱文本颜色
+  static const Color recipeTitle = Color(0xFF603C27);  // 文本标题
+  static const Color recipePrimary = Color(0xFFB2744E);   // 文本详情
+  static const Color recipeState = Color(0xFF757575);   // 状态类文本
+  static const Color recipeBuff = Color(0xFF209888); // '特殊效果'文字
+  static const Color recipeCondition = Color(0xFF1B3F66); // '必要条件'文字
+  static const Color recipeNotInclude = Color(0xFFA94049); // '不能包含'文字
+
+  // 食谱背景颜色
+  static const Color recipeSelectorBg = Color(0xFFFEFCF8);      // 主页面卡片背景
+  static const Color recipeSelectorBorderOut = Color(0xFFB2744E);  // 主页面外边框
+  static const Color recipeSelectorBorderIn = Color(0xFFF1D7C3);  // 主页面内边框
+  static const Color recipeSelectorCutLine = Color(0xFFF1D7C3); // 主页面分割线
+  static const Color recipeDetailBg = Color(0xE6FFFFFF);        // 详情页背景
+  static const Color recipeDetailBorder = Color(0xFFF1D7C3);    // 详情页边框
 
   // 食谱专用
   static const Color recipeSpecial = Color(0xFF209888);
-  static const Color recipeCondition = Color(0xFF1B3F66);
   static const Color recipeText = Color(0xFFB2744E);
   static const Color recipeForbidden = Color(0xFFA94049);
 

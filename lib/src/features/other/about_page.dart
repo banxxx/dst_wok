@@ -9,9 +9,17 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../routes/route_names.dart';
 import '../../common/widgets/custom_appBar.dart';
 
-class AboutPage extends StatelessWidget {
+class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
 
+  @override
+  State<AboutPage> createState() => _AboutPageState();
+
+}
+
+class _AboutPageState extends State<AboutPage> {
+  // SnackBar控制器
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? _snackBarController;
   // 公共常量提取
   static const _cardElevation = 0.0;
   static const _itemSpacing = 12.0;
@@ -163,18 +171,36 @@ class AboutPage extends StatelessWidget {
         ),
         trailing: IconButton(
           icon: Image.asset('assets/setting/wendy_gravestone.png', width: 26),
-          onPressed: () async {
-            final messenger = ScaffoldMessenger.of(context);
-            try {
-              await _clearCache();
-              messenger.showSnackBar(const SnackBar(content: Text('缓存清理成功')));
-            } catch (e) {
-              messenger.showSnackBar(SnackBar(content: Text('清理失败：$e')));
-            }
-          },
+          onPressed: _handleClearCache,
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // 页面销毁时关闭SnackBar
+    _snackBarController?.close();
+    super.dispose();
+  }
+
+  void _handleClearCache() async {
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      await _clearCache();
+      if (mounted) {
+        // 保存SnackBar控制器
+        _snackBarController = messenger.showSnackBar(
+          const SnackBar(content: Text('缓存清理成功')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        _snackBarController = messenger.showSnackBar(
+          SnackBar(content: Text('清理失败：$e')),
+        );
+      }
+    }
   }
 
   // 构建版本信息

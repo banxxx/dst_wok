@@ -269,7 +269,7 @@ abstract class GameAssets {
   );
   static const ancientfruitNightvisionCooked64 = Ingredient(
     id: 'ancientfruit_nightvision_cooked_64',
-    imageAsset: '$_campfirePath/ancientfruit_nightvision_cooked_64.png',
+    imageAsset: '$_campfire64Path/ancientfruit_nightvision_cooked_64.png',
     displayName: '熟夜莓',
   );
   static const asparagusCooked64 = Ingredient(

@@ -1,5 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import '../../common/constants/app_colors.dart';
 import '../../common/widgets/ingredient_utils.dart';
 import '../../models/base_recipe.dart';
 import '../../common/enums/cooking_method.dart';
@@ -90,12 +91,12 @@ class _RecipeCard extends StatelessWidget {
 
 /// ---------------------- 样式常量 ----------------------
 class _CardStyle {
-  static const Color cardColor = Color(0xFFFEFCF8);
+  static const Color cardColor = AppColors.recipeSelectorBg;
   static const double elevation = 3;
   static final ShapeBorder cardShape = RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(8),
     side: const BorderSide(
-      color: Color(0xFFB2744E),
+      color: AppColors.recipeSelectorBorderOut,
       width: 3.2,
     ),
   );
@@ -115,7 +116,7 @@ class _LeftSection extends StatelessWidget {
         customPath: _dashPath, // 缓存路径计算
         dashPattern: const [4, 4],
         radius: const Radius.circular(24),
-        color: const Color(0xFFF1D7C3),
+        color: AppColors.recipeSelectorBorderIn,
         strokeWidth: 2,
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: _RecipeContent(recipe: recipe),
@@ -229,7 +230,7 @@ class _NameText extends StatelessWidget {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Colors.black, // 根据背景色调整文字颜色
+            color: AppColors.recipeTitle, // 根据背景色调整文字颜色
           ),
           textAlign: TextAlign.center, // 文字居中
         ),
@@ -413,7 +414,7 @@ class _ValueIndicator extends StatelessWidget {
                 '$value',
                 style: const TextStyle(
                   fontSize: 14,
-                  color: Colors.black,
+                  color: AppColors.recipeTitle,
                   fontWeight: FontWeight.w500, // 稳定字体渲染
                 ),
               ),
@@ -439,7 +440,7 @@ class _CardDecorationLayer extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
               border: const Border.fromBorderSide(
-                BorderSide(color: Color(0xFFF1D7C3), width: 2),
+                BorderSide(color: AppColors.recipeSelectorBorderIn, width: 2),
               ),
             ),
           ),

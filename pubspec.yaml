@@ -45,10 +45,11 @@ flutter:
     - assets/ingredients/
     - assets/other/
     - assets/portableCooker/
+    - assets/portableCooker_64/
     - assets/setting/
     - assets/document/
   fonts:
-    - family: LoveLight  # 字体家族名称
+    - family: LoveLight  # 字体名称
       fonts:
         - asset: assets/fonts/LoveLight-Regular.ttf
           weight: 100  # 字重（100-900）
