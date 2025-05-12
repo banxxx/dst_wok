@@ -63,16 +63,24 @@ jobs:
           sudo gem install cocoapods
           pod install --repo-update
 
-      - name: Build unsigned IPA
+      - name: Build IPA
         run: |
-          # 清理旧构建
+          # 确保 ExportOptions.plist 存在
+          if [ ! -f "ios/ExportOptions.plist" ]; then
+            mkdir -p ios
+            echo '<?xml version="1.0" ... </dict></plist>' > ios/ExportOptions.plist
+          fi
+
+          # 构建命令
           flutter clean
-          # 确保输出目录存在
-          mkdir -p build/ios/ipa
-          # 构建并指定输出路径 (Flutter 3.16+)
-          flutter build ipa --release --no-codesign --export-method development
-          # 重命名文件
-          mv build/ios/ipa/Runner.ipa dstwok_ios_${{ github.ref_name }}.ipa
+          flutter build ipa --release --no-codesign \
+            --export-options-plist=ios/ExportOptions.plist \
+            --export-method development \
+            --output build/ipa
+
+          # 重命名并验证
+          [ -f build/ipa/Runner.ipa ] && mv build/ipa/Runner.ipa dstwok_ios_${{ github.ref_name }}.ipa
+          ls -lh *.ipa
 
       - uses: actions/upload-artifact@v4
         with:
