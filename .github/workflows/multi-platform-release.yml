@@ -1,6 +1,7 @@
 name: Multi-Platform Build & Release
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - 'v*'  # 触发条件：推送 v 开头的标签 (如 v1.0.0)
