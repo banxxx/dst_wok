@@ -50,41 +50,33 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
-          flutter-version: 3.29.3
+          channel: 'stable'
+          architecture: x64
+      - run: flutter pub get
 
-      - name: Generate iOS Project
-        run: |
-          flutter create --platforms ios --project-name dst_wok .
+      - run: pod repo update
+        working-directory: ios
+
+      - run: flutter build ios --release --no-codesign
           
-      - name: Install CocoaPods
-        run: |
-          cd ios
-          sudo gem install cocoapods
-          pod install --repo-update
+      - run: mkdir Payload
+        working-directory: build/ios/iphoneos
 
-      - name: Build IPA
-        run: |
-          # 确保 ExportOptions.plist 存在
-          if [ ! -f "ios/ExportOptions.plist" ]; then
-            mkdir -p ios
-            echo '<?xml version="1.0" ... </dict></plist>' > ios/ExportOptions.plist
-          fi
+      - run: mv Runner.app/ Payload
+        working-directory: build/ios/iphoneos
 
-          # 构建命令
-          flutter clean
-          flutter build ipa --release --no-codesign \
-            --export-options-plist=ios/ExportOptions.plist \
-            --export-method development \
-            --output build/ipa
+      - name: Zip output
+        run: zip -qq -r -9 dstwok.ipa Payload
+        working-directory: build/ios/iphoneos
 
-          # 重命名并验证
-          [ -f build/ipa/Runner.ipa ] && mv build/ipa/Runner.ipa dstwok_ios_${{ github.ref_name }}.ipa
-          ls -lh *.ipa
-
-      - uses: actions/upload-artifact@v4
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
         with:
           name: ios-ipa
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/ios/iphoneos/dstwok.ipa
+          tag: v1.0
+          overwrite: true
           path: dstwok_ios_${{ github.ref_name }}.ipa
 
   build-windows:
