@@ -26,10 +26,21 @@ jobs:
             ndk;29.0.13113456
             cmake;3.22.1
 
+      - name: Accept NDK Licenses (强制措施)
+        run: |
+          yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses
+          ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "ndk;29.0.13113456"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.29.3
+
       - name: Build Android APK
         run: |
           flutter build apk --release
-          mv build/app/outputs/apk/release/app-release.apk "dstwok_android_${{ steps.extract-version.outputs.version }}.apk"
+          mv build/app/outputs/apk/release/app-release.apk dstwok_android_${{ steps.extract-version.outputs.version }}.apk
 
       - uses: actions/upload-artifact@v4
         with:
