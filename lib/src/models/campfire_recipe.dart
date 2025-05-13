@@ -1,4 +1,5 @@
 import '../common/enums/cooking_method.dart';
+import '../repositories/constants/game_assets.dart';
 import 'base_recipe.dart';
 
 /// 火堆烧烤配方实现
@@ -8,7 +9,7 @@ class CampfireRecipe extends BaseRecipe {
   final Set<String> cookableItemIds;
 
   /// 说明
-  final String tips;
+  final List<Ingredient> tips;
 
   /// 构造函数
   const CampfireRecipe({
@@ -28,7 +29,7 @@ class CampfireRecipe extends BaseRecipe {
     required super.sideEffect,
     required super.condition,
     required super.notContain,
-    this.tips = '',
+    required this.tips,
   }) : super(method: CookingMethod.campfire);
 
   /// 实现匹配逻辑：

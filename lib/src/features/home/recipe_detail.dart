@@ -136,7 +136,7 @@ class RecipeDetails extends StatelessWidget {
                     const SizedBox(width: 8),
                     Text(
                       "喜欢的食物",
-                      style: TextStyle(fontSize: 16, color: Color(0xFFB2744E)),
+                      style: TextStyle(fontSize: 16, color: AppColors.recipeSelectorBorderOut),
                     ),
                   ],
                 ),

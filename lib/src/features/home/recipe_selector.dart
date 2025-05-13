@@ -4,7 +4,9 @@ import '../../common/constants/app_colors.dart';
 import '../../common/widgets/ingredient_utils.dart';
 import '../../models/base_recipe.dart';
 import '../../common/enums/cooking_method.dart';
+import '../../models/campfire_recipe.dart';
 import '../../models/recipe_example.dart';
+import '../../repositories/constants/game_assets.dart';
 
 /// 配方展示网格组件
 class RecipeSelector extends StatelessWidget {
@@ -255,7 +257,9 @@ class _RightSection extends StatelessWidget {
       flex: 2, // 占横向2/3比例
       child: Column(
         children: [
-          if (selectedMethod != CookingMethod.campfire)
+          if (selectedMethod == CookingMethod.campfire)
+            _BiologyIngredients(tips: (recipe as CampfireRecipe).tips)
+          else
             _CookpotIngredients(slots: recipe.cookbook.first.slots),
           _StatusIndicators(
             health: recipe.health,
@@ -265,6 +269,89 @@ class _RightSection extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+/// ---------------------- 生物掉落组件 ----------------------
+class _BiologyIngredients extends StatelessWidget {
+
+  final List<Ingredient> tips;
+
+  const _BiologyIngredients({required this.tips});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 52,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          itemCount: tips.length + 1,
+          itemBuilder: (context, index) {
+            if (index == 0) return _VerticalLabel();
+
+            // 重要修复：确保索引正确映射
+            final itemIndex = index - 1;
+            if (itemIndex < tips.length) {
+              return _buildDynamicImage(tips[itemIndex]);
+            }
+            return const SizedBox.shrink(); // 安全回退
+          },
+          separatorBuilder: (_, index) => SizedBox(
+            width: index == 0 ? 8 : 4, // 保持首项间距
+          ),
+          // 边缘留白
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+        ),
+      ),
+    );
+  }
+
+  /// 构建单个生物食材项
+  Widget _buildDynamicImage(Ingredient ingredient) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 2), // 单边间距
+      child: Image.asset(
+        ingredient.imageAsset,
+        width: 48,
+        height: 48,
+        cacheWidth: 96,  // 2倍图优化
+        filterQuality: FilterQuality.low,
+      ),
+    );
+  }
+}
+
+/// 竖排标签组件
+class _VerticalLabel extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 2),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: _buildVerticalText(),
+      ),
+    );
+  }
+
+  List<Widget> _buildVerticalText() {
+    return '掉落自'.split('').map((char) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 3),
+        child: Text(
+          char,
+          style: const TextStyle(
+            fontSize: 13,
+            color: AppColors.recipeTitle,
+            height: 0.75,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      );
+    }).toList();
   }
 }
 
@@ -308,6 +395,7 @@ class _CookpotIngredients extends StatelessWidget {
     );
   }
 }
+
 
 /// ---------------------- 状态指示器行 ----------------------
 class _StatusIndicators extends StatelessWidget {

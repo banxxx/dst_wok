@@ -24,7 +24,6 @@ class RecipeDetailsCampfire extends StatelessWidget {
               _buildRecipeImage(),
               _buildRecipeInfo(),
               _buildRecipeDocs(),
-              if (recipe.tips.isNotEmpty) _buildRecipeTips(),
               // 可以继续添加更多内容
               // 添加底部安全区域间距（自动计算高度）
               SizedBox(height: MediaQuery.of(context).padding.bottom),
@@ -44,12 +43,12 @@ class RecipeDetailsCampfire extends StatelessWidget {
           Image.asset('assets/setting/top.png', width: 150),
           Text(
             recipe.name,
-            style: TextStyle(fontSize: 38, color: Colors.grey[600]),
+            style: TextStyle(fontSize: 38, color: AppColors.recipeTitle),
           ),
           Image.asset('assets/setting/bottom.png', width: 150),
           Text(
             '代码: "${recipe.id}"',
-            style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+            style: TextStyle(fontSize: 16, color: AppColors.recipePrimary),
           ),
         ],
       ),
@@ -63,7 +62,7 @@ class RecipeDetailsCampfire extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Color(0xFFF1D7C3), width: 2),
+          border: Border.all(color: AppColors.recipeDetailBorder, width: 2),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -86,7 +85,7 @@ class RecipeDetailsCampfire extends StatelessWidget {
                           style: TextStyle(
                             // 基础样式
                             fontSize: 16,
-                            color: AppColors.recipeText,
+                            color: AppColors.recipePrimary,
                           ),
                           children: [
                             // 使用工具类解析描述文本
@@ -96,7 +95,7 @@ class RecipeDetailsCampfire extends StatelessWidget {
                               textStyle: TextStyle(
                                 // 保持原有文本样式
                                 fontSize: 16,
-                                color: AppColors.recipeText,
+                                color: AppColors.recipePrimary,
                               ),
                             ),
                           ],
@@ -128,7 +127,7 @@ class RecipeDetailsCampfire extends StatelessWidget {
                     const SizedBox(width: 8),
                     Text(
                       "喜欢的食物",
-                      style: TextStyle(fontSize: 16, color: Color(0xFFB2744E)),
+                      style: TextStyle(fontSize: 16, color: AppColors.recipeSelectorBorderOut),
                     ),
                   ],
                 ),
@@ -147,7 +146,7 @@ class RecipeDetailsCampfire extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.9),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Color(0xFFF1D7C3), width: 2),
+          border: Border.all(color: AppColors.recipeDetailBorder, width: 2),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -222,7 +221,7 @@ class RecipeDetailsCampfire extends StatelessWidget {
             style: TextStyle(
               // 全局基础样式
               fontSize: 20,
-              color: Colors.brown,
+              color: AppColors.recipePrimary,
               fontWeight: FontWeight.bold,
               height: 1.2, // 统一行高
             ),
@@ -244,56 +243,6 @@ class RecipeDetailsCampfire extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  // 其他补充说明
-  Widget _buildRecipeTips() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Color(0xFFF1D7C3), width: 2),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (recipe.tips.isNotEmpty)
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            // 基础样式
-                            fontSize: 16,
-                            color: AppColors.recipeText,
-                          ),
-                          children: [
-                            // 使用工具类解析描述文本
-                            ...TextParserUtil.parseCondition(
-                              recipe.tips,
-                              imgSize: 26, // 调整图片尺寸匹配当前上下文
-                              textStyle: TextStyle(
-                                // 保持原有文本样式
-                                fontSize: 16,
-                                color: AppColors.recipeText,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 

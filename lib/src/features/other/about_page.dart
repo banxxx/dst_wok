@@ -262,39 +262,49 @@ class _AboutPageState extends State<AboutPage> {
     return packageInfo.version; // 返回版本号
   }
 
-  // 新增方法：获取缓存目录路径
-  Future<Directory> _getCacheDir() async {
-    return await getTemporaryDirectory();
-  }
-
   // 新增方法：获取缓存大小
   Future<String> _getCacheSize() async {
-    final dir = await _getCacheDir();
-    int size = 0;
+    try {
+      final dir = await getTemporaryDirectory();
+      if (!await dir.exists()) return '0B';
 
-    if (await dir.exists()) {
+      int size = 0;
       final files = dir.listSync(recursive: true);
-      for (var file in files) {
-        if (file is File) {
-          size += await file.length();
+      for (var entity in files) {
+        if (entity is File) {
+          size += entity.lengthSync();
         }
       }
-    }
 
-    if (size < 1024) {
-      return '${size}B';
-    } else if (size < 1048576) {
-      return '${(size / 1024).toStringAsFixed(2)}KB';
-    } else {
+      if (size < 1024) return '${size}B';
+      if (size < 1048576) return '${(size / 1024).toStringAsFixed(2)}KB';
       return '${(size / 1048576).toStringAsFixed(2)}MB';
+    } catch (e) {
+      return '未知';
     }
   }
 
   // 新增方法：清除缓存
   Future<void> _clearCache() async {
-    final dir = await _getCacheDir();
-    if (await dir.exists()) {
-      await dir.delete(recursive: true);
+    final dir = await getTemporaryDirectory();
+    if (!await dir.exists()) return;
+
+    final files = dir.listSync(recursive: true);
+    for (var entity in files) {
+      try {
+        if (entity is File) {
+          await entity.delete();
+        } else if (entity is Directory) {
+          await entity.delete(recursive: true);
+        }
+      } catch (e) {
+        if (e is FileSystemException && Platform.isWindows) {
+          throw Exception('文件被其他程序占用，请关闭后重试');
+        }
+        rethrow;
+      }
     }
+
+    await dir.create();
   }
 }

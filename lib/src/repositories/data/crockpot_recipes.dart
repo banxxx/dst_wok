@@ -627,7 +627,7 @@ var crockpotRecipes = [
     sanity: 0,
     cookTime: '10',
     freshness: '18750',
-    desc: '芝士蛋糕没有食用正收益但具有超长的保质期，一般用来做火鸡陷阱勾引火鸡[img:perd]',
+    desc: '芝士蛋糕没有食用正收益但具有超长的保质期，一般用来做火鸡陷阱勾引火鸡[img:perd_other]',
     favorites: const {},
     sideEffect: '无',
     condition: '至少一个玉米[img:corn]爆米花[img:carrot_cooked_64]玉米鳕鱼[img:oceanfish_medium_5_inv]/爆米花鱼[img:oceanfish_small_5_inv]、至少一个蜂蜜[img:honey]、至少一个树枝[img:twigs]',
@@ -1006,17 +1006,17 @@ var crockpotRecipes = [
     desc: '',
     favorites: const {},
     sideEffect: '无',
-    condition: '至少 1 个鼹鼠[img:mole]，至少 1 个仙人掌肉[img:cactus_meat]/成熟石果[img:rock_avocado_fruit_ripe]',
+    condition: '至少 1 个鼹鼠[img:mole_other]，至少 1 个仙人掌肉[img:cactus_meat]/成熟石果[img:rock_avocado_fruit_ripe]',
     notContain: '不包含水果度',
     cookbook: [
       RecipeExample(
-        slot1: PositionalIngredient(ingredient: GameAssets.mole),
+        slot1: PositionalIngredient(ingredient: GameAssets.moleOther),
         slot2: PositionalIngredient(ingredient: GameAssets.cactusMeat),
         slot3: PositionalIngredient(ingredient: GameAssets.twigs),
         slot4: PositionalIngredient(ingredient: GameAssets.twigs),
       ),
       RecipeExample(
-        slot1: PositionalIngredient(ingredient: GameAssets.mole),
+        slot1: PositionalIngredient(ingredient: GameAssets.moleOther),
         slot2: PositionalIngredient(ingredient: GameAssets.rockAvocadoFruitRipe),
         slot3: PositionalIngredient(ingredient: GameAssets.twigs),
         slot4: PositionalIngredient(ingredient: GameAssets.twigs),
@@ -1905,7 +1905,7 @@ var crockpotRecipes = [
     '装备时会每 5 秒恢复 3.9 饱食度，并且每分钟减少 1.325 理智值，共恢复 187.5 饱食度并损失 5.3 理智值',
     favorites: const {},
     sideEffect: '无',
-    condition: '至少有一个裸露鼻孔[img:batnose]和一个海带叶[[img:kelp]，乳制品度大于等于 1',
+    condition: '至少有一个裸露鼻孔[img:batnose]和一个海带叶[img:kelp]，乳制品度大于等于 1',
     notContain: '无',
     cookbook: [
       RecipeExample(
@@ -2362,7 +2362,7 @@ var crockpotRecipes = [
     sanity: 0,
     cookTime: '10',
     freshness: '20',
-    desc: '目前游戏内只有皮弗娄牛[img:beefalo]和饼干切割机[img:cookiecutter]可以吃蒸树枝',
+    desc: '目前游戏内只有皮弗娄牛[img:beefalo_other]和饼干切割机[img:cookiecutter]可以吃蒸树枝',
     favorites: const {},
     sideEffect: '无',
     condition: '不可食用度大于 0',

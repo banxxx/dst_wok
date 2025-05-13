@@ -35,6 +35,7 @@ abstract class GameAssets {
   static const _ingredientsPath = 'assets/ingredients'; // 原始食材素材
   static const _portableCookerPath = 'assets/portableCooker'; // 便携锅烹饪
   static const _portableCooker64Path = 'assets/portableCooker_64'; // 便携锅烹饪64分辨率
+  static const _biologyPath = 'assets/biology'; // 生物分类
   static const _otherPath = 'assets/other'; // 其他
 
   //========== 食材分类 ==========//
@@ -1643,10 +1644,487 @@ abstract class GameAssets {
     displayName: '怪物鞑靼',
   );
 
+  /// 生物分类
+  static const ancienttreeNightvision = Ingredient(
+    id: 'ancienttree_nightvision',
+    imageAsset: '$_biologyPath/ancienttree_nightvision.png',
+    displayName: '阴郁之棘',
+  );
+  static const asparagusOversized = Ingredient(
+    id: 'asparagus_oversized',
+    imageAsset: '$_biologyPath/asparagus_oversized.png',
+    displayName: '巨型芦笋',
+  );
+  static const bananabush = Ingredient(
+    id: 'bananabush',
+    imageAsset: '$_biologyPath/bananabush.png',
+    displayName: '香蕉丛',
+  );
+  static const bat = Ingredient(
+    id: 'bat',
+    imageAsset: '$_biologyPath/bat.png',
+    displayName: '蝙蝠',
+  );
+  static const beefalo = Ingredient(
+    id: 'beefalo',
+    imageAsset: '$_biologyPath/beefalo.png',
+    displayName: '皮弗娄牛',
+  );
+  static const berrybush = Ingredient(
+    id: 'berrybush',
+    imageAsset: '$_biologyPath/berrybush.png',
+    displayName: '浆果丛',
+  );
+  static const berrybushJuicy = Ingredient(
+    id: 'berrybush_juicy',
+    imageAsset: '$_biologyPath/berrybush_juicy.png',
+    displayName: '多汁浆果丛',
+  );
+  static const birchnutdrake = Ingredient(
+    id: 'birchnutdrake',
+    imageAsset: '$_biologyPath/birchnutdrake.png',
+    displayName: '桦栗果精',
+  );
+  static const blueMushroom = Ingredient(
+    id: 'blue_mushroom',
+    imageAsset: '$_biologyPath/blue_mushroom.png',
+    displayName: '蓝蘑菇',
+  );
+  static const bunnymen = Ingredient(
+    id: 'bunnymen',
+    imageAsset: '$_biologyPath/bunnymen.png',
+    displayName: '兔人',
+  );
+  static const buzzard = Ingredient(
+    id: 'buzzard',
+    imageAsset: '$_biologyPath/buzzard.png',
+    displayName: '秃鹫',
+  );
+  static const cactus = Ingredient(
+    id: 'cactus',
+    imageAsset: '$_biologyPath/cactus.png',
+    displayName: '仙人掌',
+  );
+  static const cageling = Ingredient(
+    id: 'cageling',
+    imageAsset: '$_biologyPath/cageling.png',
+    displayName: '笼中鸟',
+  );
+  static const carrat = Ingredient(
+    id: 'carrat',
+    imageAsset: '$_biologyPath/carrat.png',
+    displayName: '胡萝卜鼠',
+  );
+  static const carrotOversized = Ingredient(
+    id: 'carrot_oversized',
+    imageAsset: '$_biologyPath/carrot_oversized.png',
+    displayName: '巨型胡萝卜',
+  );
+  static const catcoon = Ingredient(
+    id: 'catcoon',
+    imageAsset: '$_biologyPath/catcoon.png',
+    displayName: '浣猫',
+  );
+  static const caveBananaTree = Ingredient(
+    id: 'cave_banana_tree',
+    imageAsset: '$_biologyPath/cave_banana_tree.png',
+    displayName: '洞穴香蕉树',
+  );
+  static const cornOversized = Ingredient(
+    id: 'corn_oversized',
+    imageAsset: '$_biologyPath/corn_oversized.png',
+    displayName: '巨型玉米',
+  );
+  static const crabking = Ingredient(
+    id: 'crabking',
+    imageAsset: '$_biologyPath/crabking.png',
+    displayName: '帝王蟹',
+  );
+  static const crow = Ingredient(
+    id: 'crow',
+    imageAsset: '$_biologyPath/crow.png',
+    displayName: '乌鸦',
+  );
+  static const deciduouspoison = Ingredient(
+    id: 'deciduouspoison',
+    imageAsset: '$_biologyPath/deciduouspoison.png',
+    displayName: '毒桦栗树',
+  );
+  static const deciduoustree = Ingredient(
+    id: 'deciduoustree',
+    imageAsset: '$_biologyPath/deciduoustree.png',
+    displayName: '桦栗树',
+  );
+  static const dragonfruitOversized = Ingredient(
+    id: 'dragonfruit_oversized',
+    imageAsset: '$_biologyPath/dragonfruit_oversized.png',
+    displayName: '巨型火龙果',
+  );
+  static const durianOversized = Ingredient(
+    id: 'durian_oversized',
+    imageAsset: '$_biologyPath/durian_oversized.png',
+    displayName: '巨型榴莲',
+  );
+  static const eggplantOversized = Ingredient(
+    id: 'eggplant_oversized',
+    imageAsset: '$_biologyPath/eggplant_oversized.png',
+    displayName: '巨型茄子',
+  );
+  static const farmPlantAsparagus = Ingredient(
+    id: 'farm_plant_asparagus',
+    imageAsset: '$_biologyPath/farm_plant_asparagus.png',
+    displayName: '芦笋蕨',
+  );
+  static const farmPlantCarrot = Ingredient(
+    id: 'farm_plant_carrot',
+    imageAsset: '$_biologyPath/farm_plant_carrot.png',
+    displayName: '胡萝卜植株',
+  );
+  static const farmPlantCorn = Ingredient(
+    id: 'farm_plant_corn',
+    imageAsset: '$_biologyPath/farm_plant_corn.png',
+    displayName: '玉米杆',
+  );
+  static const farmPlantDragonfruit = Ingredient(
+    id: 'farm_plant_dragonfruit',
+    imageAsset: '$_biologyPath/farm_plant_dragonfruit.png',
+    displayName: '火龙果藤',
+  );
+  static const farmPlantDurian = Ingredient(
+    id: 'farm_plant_durian',
+    imageAsset: '$_biologyPath/farm_plant_durian.png',
+    displayName: '榴莲藤',
+  );
+  static const farmPlantEggplant = Ingredient(
+    id: 'farm_plant_eggplant',
+    imageAsset: '$_biologyPath/farm_plant_eggplant.png',
+    displayName: '茄子杆',
+  );
+  static const farmPlantGarlic = Ingredient(
+    id: 'farm_plant_garlic',
+    imageAsset: '$_biologyPath/farm_plant_garlic.png',
+    displayName: '大蒜植株',
+  );
+  static const farmPlantOnion = Ingredient(
+    id: 'farm_plant_onion',
+    imageAsset: '$_biologyPath/farm_plant_onion.png',
+    displayName: '洋葱植株',
+  );
+  static const farmPlantPepper = Ingredient(
+    id: 'farm_plant_pepper',
+    imageAsset: '$_biologyPath/farm_plant_pepper.png',
+    displayName: '辣椒植株',
+  );
+  static const farmPlantPomegranate = Ingredient(
+    id: 'farm_plant_pomegranate',
+    imageAsset: '$_biologyPath/farm_plant_pomegranate.png',
+    displayName: '石榴枝',
+  );
+  static const farmPlantPotato = Ingredient(
+    id: 'farm_plant_potato',
+    imageAsset: '$_biologyPath/farm_plant_potato.png',
+    displayName: '土豆植株',
+  );
+  static const farmPlantPumpkin = Ingredient(
+    id: 'farm_plant_pumpkin',
+    imageAsset: '$_biologyPath/farm_plant_pumpkin.png',
+    displayName: '南瓜植株',
+  );
+  static const farmPlantTomato = Ingredient(
+    id: 'farm_plant_tomato',
+    imageAsset: '$_biologyPath/farm_plant_tomato.png',
+    displayName: '番茄植株',
+  );
+  static const farmPlantWatermelon = Ingredient(
+    id: 'farm_plant_watermelon',
+    imageAsset: '$_biologyPath/farm_plant_watermelon.png',
+    displayName: '西瓜植株',
+  );
+  static const frogs = Ingredient(
+    id: 'frogs',
+    imageAsset: '$_biologyPath/frogs.png',
+    displayName: '青蛙',
+  );
+  static const fruitdragon = Ingredient(
+    id: 'fruitdragon',
+    imageAsset: '$_biologyPath/fruitdragon.png',
+    displayName: '沙拉蝾螈',
+  );
+  static const fruitfly = Ingredient(
+    id: 'fruitfly',
+    imageAsset: '$_biologyPath/fruitfly.png',
+    displayName: '果蝇王',
+  );
+  static const garlicOversized = Ingredient(
+    id: 'garlic_oversized',
+    imageAsset: '$_biologyPath/garlic_oversized.png',
+    displayName: '巨型大蒜',
+  );
+  static const gnarwail = Ingredient(
+    id: 'gnarwail',
+    imageAsset: '$_biologyPath/gnarwail.png',
+    displayName: '一角鲸',
+  );
+  static const greenMushroom = Ingredient(
+    id: 'green_mushroom',
+    imageAsset: '$_biologyPath/green_mushroom.png',
+    displayName: '绿蘑菇',
+  );
+  static const hound = Ingredient(
+    id: 'hound',
+    imageAsset: '$_biologyPath/hound.png',
+    displayName: '猎犬',
+  );
+  static const koalefantSummer = Ingredient(
+    id: 'koalefant_summer',
+    imageAsset: '$_biologyPath/koalefant_summer.png',
+    displayName: '考拉象',
+  );
+  static const koalefantWinter = Ingredient(
+    id: 'koalefant_winter',
+    imageAsset: '$_biologyPath/koalefant_winter.png',
+    displayName: '考拉冬象',
+  );
+  static const lunarthrallPlant = Ingredient(
+    id: 'lunarthrall_plant',
+    imageAsset: '$_biologyPath/lunarthrall_plant.png',
+    displayName: '致命亮茄',
+  );
+  static const mandrake_b = Ingredient(
+    id: 'mandrake_b',
+    imageAsset: '$_biologyPath/mandrake_b.png',
+    displayName: '曼达拉草',
+  );
+  static const mermking = Ingredient(
+    id: 'mermking',
+    imageAsset: '$_biologyPath/mermking.png',
+    displayName: '鱼人之王',
+  );
+  static const merms = Ingredient(
+    id: 'merms',
+    imageAsset: '$_biologyPath/merms.png',
+    displayName: '鱼人',
+  );
+  static const molebats = Ingredient(
+    id: 'molebats',
+    imageAsset: '$_biologyPath/molebats.png',
+    displayName: '裸鼹蝠',
+  );
+  static const molehill = Ingredient(
+    id: 'molehill',
+    imageAsset: '$_biologyPath/molehill.png',
+    displayName: '鼹鼠',
+  );
+  static const mossling = Ingredient(
+    id: 'mossling',
+    imageAsset: '$_biologyPath/mossling.png',
+    displayName: '麋鹿鹅幼崽',
+  );
+  static const mushtreeMedium = Ingredient(
+    id: 'mushtree_medium',
+    imageAsset: '$_biologyPath/mushtree_medium.png',
+    displayName: '红蘑菇树',
+  );
+  static const mushtreeMoon = Ingredient(
+    id: 'mushtree_moon',
+    imageAsset: '$_biologyPath/mushtree_moon.png',
+    displayName: '月亮蘑菇',
+  );
+  static const mushtreeSmall = Ingredient(
+    id: 'mushtree_small',
+    imageAsset: '$_biologyPath/mushtree_small.png',
+    displayName: '绿蘑菇树',
+  );
+  static const mushtreeTall = Ingredient(
+    id: 'mushtree_tall',
+    imageAsset: '$_biologyPath/mushtree_tall.png',
+    displayName: '蓝蘑菇树',
+  );
+  static const oasisCactus = Ingredient(
+    id: 'oasis_cactus',
+    imageAsset: '$_biologyPath/oasis_cactus.png',
+    displayName: '绿洲仙人掌',
+  );
+  static const oceanBullkelp = Ingredient(
+    id: 'ocean_bullkelp',
+    imageAsset: '$_biologyPath/ocean_bullkelp.png',
+    displayName: '公牛海带',
+  );
+  static const oceanWobsterden = Ingredient(
+    id: 'ocean_wobsterden',
+    imageAsset: '$_biologyPath/ocean_wobsterden.png',
+    displayName: '龙虾窝',
+  );
+  static const oceanfishMedium1Inv = Ingredient(
+    id: 'oceanfish_medium_1_inv',
+    imageAsset: '$_biologyPath/oceanfish_medium_1_inv.png',
+    displayName: '泥鱼',
+  );
+  static const oceanfishMedium2Inv = Ingredient(
+    id: 'oceanfish_medium_2_inv',
+    imageAsset: '$_biologyPath/oceanfish_medium_2_inv.png',
+    displayName: '斑鱼',
+  );
+  static const oceanfishMedium5Inv_b = Ingredient(
+    id: 'oceanfish_medium_5_inv_b',
+    imageAsset: '$_biologyPath/oceanfish_medium_5_inv_b.png',
+    displayName: '玉米鳕鱼',
+  );
+  static const oceanfishSmall1Inv = Ingredient(
+    id: 'oceanfish_small_1_inv',
+    imageAsset: '$_biologyPath/oceanfish_small_1_inv.png',
+    displayName: '小孔雀鱼',
+  );
+  static const oceanfishSmall2Inv = Ingredient(
+    id: 'oceanfish_small_2_inv',
+    imageAsset: '$_biologyPath/oceanfish_small_2_inv.png',
+    displayName: '针鼻喷墨鱼',
+  );
+  static const oceanfishSmall3Inv = Ingredient(
+    id: 'oceanfish_small_3_inv',
+    imageAsset: '$_biologyPath/oceanfish_small_3_inv.png',
+    displayName: '小饵鱼',
+  );
+  static const oceanfishSmall4Inv = Ingredient(
+    id: 'oceanfish_small_4_inv',
+    imageAsset: '$_biologyPath/oceanfish_small_4_inv.png',
+    displayName: '三文鱼苗',
+  );
+  static const oceanvine = Ingredient(
+    id: 'oceanvine',
+    imageAsset: '$_biologyPath/oceanvine.png',
+    displayName: '苔藓藤条',
+  );
+  static const onionOversized = Ingredient(
+    id: 'onion_oversized',
+    imageAsset: '$_biologyPath/onion_oversized.png',
+    displayName: '巨型洋葱',
+  );
+  static const otter = Ingredient(
+    id: 'otter',
+    imageAsset: '$_biologyPath/otter.png',
+    displayName: '水獭掠夺者',
+  );
+  static const pengull = Ingredient(
+    id: 'pengull',
+    imageAsset: '$_biologyPath/pengull.png',
+    displayName: '企鹅',
+  );
+  static const pepperOversized = Ingredient(
+    id: 'pepper_oversized',
+    imageAsset: '$_biologyPath/pepper_oversized.png',
+    displayName: '巨型辣椒',
+  );
+  static const perd = Ingredient(
+    id: 'perd',
+    imageAsset: '$_biologyPath/perd.png',
+    displayName: '火鸡',
+  );
+  static const pigguard = Ingredient(
+    id: 'pigguard',
+    imageAsset: '$_biologyPath/pigguard.png',
+    displayName: '猪人守卫',
+  );
+  static const pigman = Ingredient(
+    id: 'pigman',
+    imageAsset: '$_biologyPath/pigman.png',
+    displayName: '猪人',
+  );
+  static const pomegranateOversized = Ingredient(
+    id: 'pomegranate_oversized',
+    imageAsset: '$_biologyPath/pomegranate_oversized.png',
+    displayName: '巨型石榴',
+  );
+  static const pondCave = Ingredient(
+    id: 'pond_cave',
+    imageAsset: '$_biologyPath/pond_cave.png',
+    displayName: '苔藓池塘',
+  );
+  static const potatoOversized = Ingredient(
+    id: 'potato_oversized',
+    imageAsset: '$_biologyPath/potato_oversized.png',
+    displayName: '巨型土豆',
+  );
+  static const pumpkinOversized = Ingredient(
+    id: 'pumpkin_oversized',
+    imageAsset: '$_biologyPath/pumpkin_oversized.png',
+    displayName: '巨型南瓜',
+  );
+  static const rabbits = Ingredient(
+    id: 'rabbits',
+    imageAsset: '$_biologyPath/rabbits.png',
+    displayName: '兔子',
+  );
+  static const redMushroom = Ingredient(
+    id: 'red_mushroom',
+    imageAsset: '$_biologyPath/red_mushroom.png',
+    displayName: '红蘑菇',
+  );
+  static const robin = Ingredient(
+    id: 'robin',
+    imageAsset: '$_biologyPath/robin.png',
+    displayName: '红雀',
+  );
+  static const rockAvocadBush = Ingredient(
+    id: 'rock_avocado_bush',
+    imageAsset: '$_biologyPath/rock_avocado_bush.png',
+    displayName: '石果灌木丛',
+  );
+  static const rockAvocadoFruit = Ingredient(
+    id: 'rock_avocado_fruit',
+    imageAsset: '$_biologyPath/rock_avocado_fruit.png',
+    displayName: '石果',
+  );
+  static const saladmanderRipe = Ingredient(
+    id: 'saladmander_ripe',
+    imageAsset: '$_biologyPath/saladmander_ripe.png',
+    displayName: '沙拉蝾螈',
+  );
+  static const shark = Ingredient(
+    id: 'shark',
+    imageAsset: '$_biologyPath/shark.png',
+    displayName: '岩石大白鲨',
+  );
+  static const spiders = Ingredient(
+    id: 'spiders',
+    imageAsset: '$_biologyPath/spiders.png',
+    displayName: '蜘蛛',
+  );
+  static const tallbirdnest = Ingredient(
+    id: 'tallbirdnest',
+    imageAsset: '$_biologyPath/tallbirdnest.png',
+    displayName: '高脚鸟巢',
+  );
+  static const toadstool = Ingredient(
+    id: 'toadstool',
+    imageAsset: '$_biologyPath/toadstool.png',
+    displayName: '毒菌蟾蜍',
+  );
+  static const tomatoOversized = Ingredient(
+    id: 'tomato_oversized',
+    imageAsset: '$_biologyPath/tomato_oversized.png',
+    displayName: '巨型番茄',
+  );
+  static const watermelonOversized = Ingredient(
+    id: 'watermelon_oversized',
+    imageAsset: '$_biologyPath/watermelon_oversized.png',
+    displayName: '蜘蛛',
+  );
+  static const waterplant = Ingredient(
+    id: 'waterplant',
+    imageAsset: '$_biologyPath/waterplant.png',
+    displayName: '海草',
+  );
+
   ///其他
-  static const mole = Ingredient(
-      id: 'mole',
-      imageAsset: '$_otherPath/mole.png',
+  static const beefaloOther = Ingredient(
+      id: 'beefalo_other',
+      imageAsset: '$_otherPath/beefalo_other.png',
+      displayName: '皮弗娄牛',
+  );
+  static const moleOther = Ingredient(
+      id: 'mole_other',
+      imageAsset: '$_otherPath/mole_other.png',
       displayName: '鼹鼠',
   );
   static const dustmoth = Ingredient(
@@ -1658,11 +2136,6 @@ abstract class GameAssets {
       id: 'prime_mate',
       imageAsset: '$_otherPath/prime_mate.png',
       displayName: '大副',
-  );
-  static const beefalo = Ingredient(
-      id: 'beefalo',
-      imageAsset: '$_otherPath/beefalo.png',
-      displayName: '皮弗娄牛',
   );
   static const cookiecutter = Ingredient(
       id: 'cookiecutter',
@@ -1927,6 +2400,104 @@ abstract class GameAssets {
     monstertartare64
   ];
 
+  /// 生物分类分块
+  static const List<Ingredient> biologyIngredients = [
+    ancienttreeNightvision,
+    asparagusOversized,
+    bananabush,
+    bat,
+    beefalo,
+    berrybush,
+    berrybushJuicy,
+    birchnutdrake,
+    blueMushroom,
+    bunnymen,
+    buzzard,
+    cactus,
+    cageling,
+    carrat,
+    carrotOversized,
+    catcoon,
+    caveBananaTree,
+    cornOversized,
+    crabking,
+    crow,
+    deciduouspoison,
+    deciduoustree,
+    dragonfruitOversized,
+    durianOversized,
+    eggplantOversized,
+    farmPlantAsparagus,
+    farmPlantCarrot,
+    farmPlantCorn,
+    farmPlantDragonfruit,
+    farmPlantDurian,
+    farmPlantEggplant,
+    farmPlantGarlic,
+    farmPlantOnion,
+    farmPlantPepper,
+    farmPlantPomegranate,
+    farmPlantPotato,
+    farmPlantPumpkin,
+    farmPlantTomato,
+    farmPlantWatermelon,
+    frogs,
+    fruitdragon,
+    fruitfly,
+    garlicOversized,
+    gnarwail,
+    greenMushroom,
+    hound,
+    koalefantSummer,
+    koalefantWinter,
+    lunarthrallPlant,
+    mandrake_b,
+    mermking,
+    merms,
+    molebats,
+    molehill,
+    mossling,
+    mushtreeMedium,
+    mushtreeMoon,
+    mushtreeSmall,
+    mushtreeTall,
+    oasisCactus,
+    oceanBullkelp,
+    oceanWobsterden,
+    oceanfishMedium1Inv,
+    oceanfishMedium2Inv,
+    oceanfishMedium5Inv_b,
+    oceanfishSmall1Inv,
+    oceanfishSmall2Inv,
+    oceanfishSmall3Inv,
+    oceanfishSmall4Inv,
+    oceanvine,
+    onionOversized,
+    otter,
+    pengull,
+    pepperOversized,
+    perd,
+    pigguard,
+    pigman,
+    pomegranateOversized,
+    pondCave,
+    potatoOversized,
+    pumpkinOversized,
+    rabbits,
+    redMushroom,
+    robin,
+    rockAvocadBush,
+    rockAvocadoFruit,
+    saladmanderRipe,
+    shark,
+    spiders,
+    tallbirdnest,
+    toadstool,
+    tomatoOversized,
+    watermelonOversized,
+    waterplant,
+  ];
+
   /// 原始食材分块
   static const List<Ingredient> defaultIngredients = [
     acorn,
@@ -2020,10 +2591,11 @@ abstract class GameAssets {
 
   /// 其他烹饪食材分块
   static const List<Ingredient> otherIngredients = [
-    mole,
+    beefaloOther,
+    moleOther,
     dustmoth,
     primeMate,
-    beefalo,
+    beefaloOther,
     cookiecutter
   ];
 
@@ -2035,6 +2607,7 @@ abstract class GameAssets {
     ...crockPot64Ingredients,
     ...portableCookerIngredients,
     ...portableCooker64Ingredients,
+    ...biologyIngredients,
     ...defaultIngredients,
     ...otherIngredients
   ];
@@ -2082,6 +2655,7 @@ abstract class GameAssets {
     addBlock(crockPot64Ingredients);
     addBlock(portableCookerIngredients);
     addBlock(portableCooker64Ingredients);
+    addBlock(biologyIngredients);
     addBlock(defaultIngredients);
     addBlock(otherIngredients);
     // ... 其他分块
