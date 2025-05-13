@@ -45,7 +45,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: "dstwok_android_${{ steps.extract-version.outputs.version }}.apk"
+          path: dstwok_android_${{ steps.extract-version.outputs.version }}.apk
 
   build-ios:
     runs-on: macos-latest
@@ -80,7 +80,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: ios-ipa
-          path: "build/ios/iphoneos/dstwok_ios_${{ steps.extract-version.outputs.version }}.ipa"
+          path: build/ios/iphoneos/dstwok_ios_${{ steps.extract-version.outputs.version }}.ipa
 
   create-release:
     runs-on: ubuntu-latest
