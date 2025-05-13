@@ -4,19 +4,13 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - 'v*.*.*'  # 匹配语义化版本标签，如 v1.0.0
+      - 'v*.*.*'  # 触发条件：推送 v 开头的标签 (如 v1.0.0)
 
 jobs:
   build-android:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Extract Version
-        id: extract-version
-        run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -26,26 +20,32 @@ jobs:
             ndk;29.0.13113456
             cmake;3.22.1
 
+      - name: Accept NDK Licenses (强制措施)
+        run: |
+          yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses
+          ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "ndk;29.0.13113456"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.29.3
+
       - name: Build Android APK
         run: |
           flutter build apk --release
-          mv build/app/outputs/apk/release/app-release.apk "dstwok_android_${{ steps.extract-version.outputs.version }}.apk"
+          # 重命名 APK 文件
+          mv build/app/outputs/apk/release/app-release.apk dstwok_android_${{ steps.extract-version.outputs.version }}.apk
 
       - uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: "dstwok_android_${{ steps.extract-version.outputs.version }}.apk"
+          path: dstwok_android_${{ steps.extract-version.outputs.version }}.apk
 
   build-ios:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Extract Version
-        id: extract-version
-        run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -58,43 +58,40 @@ jobs:
         working-directory: ios
 
       - run: flutter build ios --release --no-codesign
+          
+      - run: mkdir Payload
+        working-directory: build/ios/iphoneos
 
-      - name: Package IPA
+      - run: mv Runner.app/ Payload
+        working-directory: build/ios/iphoneos
+
+      - name: Zip output
         run: |
           cd build/ios/iphoneos
-          mkdir Payload
-          mv Runner.app Payload/
-          zip -qr "dstwok_ios_${{ steps.extract-version.outputs.version }}.ipa" Payload
+          zip -qq -r -9 dstwok_ios_${{ steps.extract-version.outputs.version }}.ipa Payload
 
       - uses: actions/upload-artifact@v4
         with:
           name: ios-ipa
-          path: "build/ios/iphoneos/dstwok_ios_${{ steps.extract-version.outputs.version }}.ipa"
+          path: build/ios/iphoneos/dstwok_ios_${{ steps.extract-version.outputs.version }}.ipa
 
   create-release:
     runs-on: ubuntu-latest
     needs: [build-android, build-ios]
     steps:
-      - name: Extract Version
-        id: extract-version  # 👈 必须在此作业中重新提取版本号
-        run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-
       - uses: actions/download-artifact@v4
         with:
           path: artifacts
-          pattern: '*-apk,*-ipa'  # 👈 明确指定下载模式
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref_name }}
-          name: dstwok ${{ github.ref_name }}
+          tag_name: ${{ steps.extract-version.outputs.version }}
+          name: dstwok ${{ steps.extract-version.outputs.version }}
           body: |
             ### Multi-Platform Release
-            - Android: [dstwok_android_${{ steps.extract-version.outputs.version }}.apk](dstwok_android_${{ steps.extract-version.outputs.version }}.apk)
-            - iOS (Unsigned): [dstwok_ios_${{ steps.extract-version.outputs.version }}.ipa](dstwok_ios_${{ steps.extract-version.outputs.version }}.ipa)
+            - Android: dstwok_android_${{ steps.extract-version.outputs.version }}.apk
+            - iOS (Unsigned): dstwok_ios_${{ steps.extract-version.outputs.version }}.ipa
           files: |
             artifacts/android-apk/dstwok_android_${{ steps.extract-version.outputs.version }}.apk
             artifacts/ios-ipa/dstwok_ios_${{ steps.extract-version.outputs.version }}.ipa
