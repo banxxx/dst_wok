@@ -303,40 +303,45 @@ class _BiologyIngredients extends StatelessWidget {
       flex: 52,
       child: Padding(
         padding: const EdgeInsets.only(top: 12),
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          itemCount: tips.length + 1,
-          itemBuilder: (context, index) {
-            if (index == 0) return _VerticalLabel();
-
-            // 重要修复：确保索引正确映射
-            final itemIndex = index - 1;
-            if (itemIndex < tips.length) {
-              return _buildDynamicImage(tips[itemIndex]);
-            }
-            return const SizedBox.shrink(); // 安全回退
-          },
-          separatorBuilder: (_, index) => SizedBox(
-            width: index == 0 ? 8 : 4, // 保持首项间距
-          ),
-          // 边缘留白
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-        ),
+        child: _buildStaticContent(), // 使用静态布局方法
       ),
     );
   }
 
   /// 构建单个生物食材项
+  Widget _buildStaticContent() {
+    return Row(
+      children: [
+        const SizedBox(width: 8),
+        // 竖排标签
+        _VerticalLabel(),
+        // 标签与第一个图片的间距
+        const SizedBox(width: 4),
+        // 动态生成图片列表
+        ..._buildImageList(),
+      ],
+    );
+  }
+
+  /// 构建图片列表
+  List<Widget> _buildImageList() {
+    return List.generate(tips.length, (index) {
+      return Padding(
+        // 图片之间的间距（首图已处理）
+        padding: EdgeInsets.only(left: index == 0 ? 0 : 8),
+        child: _buildDynamicImage(tips[index]),
+      );
+    });
+  }
+
+  /// 单个图片组件（保持原实现）
   Widget _buildDynamicImage(Ingredient ingredient) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 2), // 单边间距
-      child: Image.asset(
-        ingredient.imageAsset,
-        width: 48,
-        height: 48,
-        cacheWidth: 96,  // 2倍图优化
-        filterQuality: FilterQuality.low,
-      ),
+    return Image.asset(
+      ingredient.imageAsset,
+      width: 48,
+      height: 48,
+      cacheWidth: 96,
+      filterQuality: FilterQuality.low,
     );
   }
 }
@@ -346,7 +351,7 @@ class _VerticalLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 2),
+      padding: const EdgeInsets.only(right: 8),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,

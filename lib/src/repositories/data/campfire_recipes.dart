@@ -40,7 +40,6 @@ const campfireRecipes = [
     cookbook: [],
     tips: [
       GameAssets.beefalo,
-      GameAssets.catcoon,
       GameAssets.mossling,
       GameAssets.otter,
       GameAssets.pigman,
@@ -63,7 +62,12 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.rabbits,GameAssets.robin,GameAssets.molehill,GameAssets.pengull],
+    tips: [
+      GameAssets.rabbits,
+      GameAssets.robin,
+      GameAssets.molehill,
+      GameAssets.pengull,
+    ],
   ),
   CampfireRecipe(
     id: 'cookedmonstermeat',
@@ -81,7 +85,12 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.spiders,GameAssets.bat,GameAssets.hound,GameAssets.molebats],
+    tips: [
+      GameAssets.spiders,
+      GameAssets.bat,
+      GameAssets.hound,
+      GameAssets.molebats,
+    ],
   ),
   CampfireRecipe(
     id: 'drumstick_cooked',
@@ -100,7 +109,12 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.perd,GameAssets.buzzard,GameAssets.mossling,GameAssets.pengull],
+    tips: [
+      GameAssets.perd,
+      GameAssets.buzzard,
+      GameAssets.mossling,
+      GameAssets.pengull,
+    ],
   ),
   CampfireRecipe(
     id: 'fishmeat_small_cooked',
@@ -119,7 +133,12 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.oceanfishSmall1Inv,GameAssets.oceanfishSmall2Inv,GameAssets.oceanfishSmall3Inv,GameAssets.oceanfishSmall4Inv],
+    tips: [
+      GameAssets.oceanfishSmall1Inv,
+      GameAssets.oceanfishSmall2Inv,
+      GameAssets.oceanfishSmall3Inv,
+      GameAssets.oceanfishSmall4Inv,
+    ],
   ),
   CampfireRecipe(
     id: 'fishmeat_cooked',
@@ -138,7 +157,12 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.shark,GameAssets.gnarwail,GameAssets.oceanfishMedium1Inv,GameAssets.oceanfishMedium2Inv],
+    tips: [
+      GameAssets.shark,
+      GameAssets.gnarwail,
+      GameAssets.oceanfishMedium1Inv,
+      GameAssets.oceanfishMedium2Inv,
+    ],
   ),
   CampfireRecipe(
     id: 'batwing_cooked',
@@ -178,7 +202,12 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.fruitdragon,GameAssets.carrat,GameAssets.lunarthrallPlant,GameAssets.fruitfly],
+    tips: [
+      GameAssets.fruitdragon,
+      GameAssets.carrat,
+      GameAssets.lunarthrallPlant,
+      GameAssets.fruitfly,
+    ],
   ),
   CampfireRecipe(
     id: 'barnacle_cooked',
@@ -199,7 +228,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.waterplant,GameAssets.crabking,GameAssets.shark],
+    tips: [GameAssets.waterplant, GameAssets.crabking, GameAssets.shark],
   ),
   CampfireRecipe(
     id: 'batnose_cooked',
@@ -236,7 +265,11 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.farmPlantCarrot,GameAssets.carrotOversized,GameAssets.bunnymen],
+    tips: [
+      GameAssets.farmPlantCarrot,
+      GameAssets.carrotOversized,
+      GameAssets.bunnymen,
+    ],
   ),
   CampfireRecipe(
     id: 'carrot_cooked',
@@ -256,7 +289,11 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.farmPlantCorn,GameAssets.oceanfishMedium5Inv_b,GameAssets.cornOversized],
+    tips: [
+      GameAssets.farmPlantCorn,
+      GameAssets.oceanfishMedium5Inv_b,
+      GameAssets.cornOversized,
+    ],
   ),
   CampfireRecipe(
     id: 'pumpkin_cooked',
@@ -274,7 +311,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.farmPlantPumpkin,GameAssets.pumpkinOversized],
+    tips: [GameAssets.farmPlantPumpkin, GameAssets.pumpkinOversized],
   ),
   CampfireRecipe(
     id: 'eggplant_cooked',
@@ -292,7 +329,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.farmPlantEggplant,GameAssets.eggplantOversized],
+    tips: [GameAssets.farmPlantEggplant, GameAssets.eggplantOversized],
   ),
   CampfireRecipe(
     id: 'durian_cooked',
@@ -312,7 +349,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.farmPlantDurian,GameAssets.durianOversized],
+    tips: [GameAssets.farmPlantDurian, GameAssets.durianOversized],
   ),
   CampfireRecipe(
     id: 'pomegranate_cooked',
@@ -331,10 +368,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [
-      GameAssets.farmPlantPomegranate,
-      GameAssets.pomegranateOversized,
-    ],
+    tips: [GameAssets.farmPlantPomegranate, GameAssets.pomegranateOversized],
   ),
   CampfireRecipe(
     id: 'dragonfruit_cooked',
@@ -353,7 +387,11 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.farmPlantDragonfruit,GameAssets.dragonfruitOversized,GameAssets.saladmanderRipe],
+    tips: [
+      GameAssets.farmPlantDragonfruit,
+      GameAssets.dragonfruitOversized,
+      GameAssets.saladmanderRipe,
+    ],
   ),
   CampfireRecipe(
     id: 'watermelon_cooked',
@@ -371,7 +409,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.farmPlantWatermelon,GameAssets.watermelonOversized],
+    tips: [GameAssets.farmPlantWatermelon, GameAssets.watermelonOversized],
   ),
   CampfireRecipe(
     id: 'tomato_cooked',
@@ -391,7 +429,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.farmPlantTomato,GameAssets.tomatoOversized],
+    tips: [GameAssets.farmPlantTomato, GameAssets.tomatoOversized],
   ),
   CampfireRecipe(
     id: 'potato_cooked',
@@ -414,7 +452,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.farmPlantPotato,GameAssets.potatoOversized],
+    tips: [GameAssets.farmPlantPotato, GameAssets.potatoOversized],
   ),
   CampfireRecipe(
     id: 'asparagus_cooked',
@@ -434,7 +472,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.farmPlantAsparagus,GameAssets.asparagusOversized],
+    tips: [GameAssets.farmPlantAsparagus, GameAssets.asparagusOversized],
   ),
   CampfireRecipe(
     id: 'onion_cooked',
@@ -456,7 +494,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.farmPlantOnion,GameAssets.onionOversized],
+    tips: [GameAssets.farmPlantOnion, GameAssets.onionOversized],
   ),
   CampfireRecipe(
     id: 'garlic_cooked',
@@ -474,7 +512,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.farmPlantGarlic,GameAssets.garlicOversized],
+    tips: [GameAssets.farmPlantGarlic, GameAssets.garlicOversized],
   ),
   CampfireRecipe(
     id: 'pepper_cooked',
@@ -493,7 +531,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.farmPlantPepper,GameAssets.pepperOversized],
+    tips: [GameAssets.farmPlantPepper, GameAssets.pepperOversized],
   ),
   CampfireRecipe(
     id: 'berries_cooked',
@@ -553,7 +591,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.bananabush,GameAssets.caveBananaTree],
+    tips: [GameAssets.bananabush, GameAssets.caveBananaTree],
   ),
   CampfireRecipe(
     id: 'cactus_meat_cooked',
@@ -572,7 +610,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.cactus,GameAssets.oasisCactus],
+    tips: [GameAssets.cactus, GameAssets.oasisCactus],
   ),
   CampfireRecipe(
     id: 'fig_cooked',
@@ -629,7 +667,12 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.robin,GameAssets.crow,GameAssets.fruitfly,GameAssets.mermking],
+    tips: [
+      GameAssets.robin,
+      GameAssets.crow,
+      GameAssets.fruitfly,
+      GameAssets.mermking,
+    ],
   ),
   CampfireRecipe(
     id: 'acorn_cooked',
@@ -648,7 +691,11 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.deciduoustree,GameAssets.deciduouspoison,GameAssets.birchnutdrake],
+    tips: [
+      GameAssets.deciduoustree,
+      GameAssets.deciduouspoison,
+      GameAssets.birchnutdrake,
+    ],
   ),
   CampfireRecipe(
     id: 'red_cap_cooked',
@@ -665,7 +712,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.redMushroom,GameAssets.mushtreeMedium],
+    tips: [GameAssets.redMushroom, GameAssets.mushtreeMedium],
   ),
   CampfireRecipe(
     id: 'green_cap_cooked',
@@ -682,7 +729,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.greenMushroom,GameAssets.mushtreeSmall],
+    tips: [GameAssets.greenMushroom, GameAssets.mushtreeSmall],
   ),
   CampfireRecipe(
     id: 'blue_cap_cooked',
@@ -699,7 +746,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.blueMushroom,GameAssets.mushtreeTall],
+    tips: [GameAssets.blueMushroom, GameAssets.mushtreeTall],
   ),
   CampfireRecipe(
     id: 'moon_cap_cooked',
@@ -735,7 +782,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.rockAvocadoFruit,GameAssets.rockAvocadBush],
+    tips: [GameAssets.rockAvocadoFruit, GameAssets.rockAvocadBush],
   ),
   CampfireRecipe(
     id: 'froglegs_cooked',
@@ -755,7 +802,12 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.frogs,GameAssets.merms,GameAssets.mermking,GameAssets.toadstool],
+    tips: [
+      GameAssets.frogs,
+      GameAssets.merms,
+      GameAssets.mermking,
+      GameAssets.toadstool,
+    ],
   ),
   CampfireRecipe(
     id: 'bird_egg_cooked',
@@ -772,7 +824,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.pengull,GameAssets.cageling],
+    tips: [GameAssets.pengull, GameAssets.cageling],
   ),
   CampfireRecipe(
     id: 'tallbirdegg_cooked',
@@ -844,7 +896,7 @@ const campfireRecipes = [
     condition: '',
     notContain: '',
     cookbook: [],
-    tips: [GameAssets.koalefantSummer,GameAssets.koalefantWinter],
+    tips: [GameAssets.koalefantSummer, GameAssets.koalefantWinter],
   ),
   CampfireRecipe(
     id: 'cookedmandrake',

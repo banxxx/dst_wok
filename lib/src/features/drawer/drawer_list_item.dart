@@ -44,9 +44,6 @@ class _CachedImage extends StatelessWidget {
       path,
       width: 42,
       height: 42,
-      filterQuality: FilterQuality.low, // 降低过滤质量
-      cacheWidth: 56, // 缓存为2倍尺寸
-      isAntiAlias: false, // 禁用抗锯齿
     );
   }
 }

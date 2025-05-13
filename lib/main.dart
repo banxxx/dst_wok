@@ -1,13 +1,16 @@
 import 'package:dst_wok/routes/app_router.dart';
+import 'package:dst_wok/services/cache_manager.dart';
 import 'package:dst_wok/src/theme/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 /// 应用入口函数
-void main() {
+void main() async {
   // 初始化绑定
   WidgetsFlutterBinding.ensureInitialized();
+  // 初始化缓存系统
+  await CacheManager().initCacheDirs();
   // 锁定竖屏方向
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp, // 竖屏正方向

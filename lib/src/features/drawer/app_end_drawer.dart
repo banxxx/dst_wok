@@ -32,16 +32,16 @@ class AppEndDrawer extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 40),
       addRepaintBoundaries: false, // 对静态列表禁用重绘边界
       children: const [
-        DrawerListItem(
-            iconPath: 'assets/setting/foodbook_98.png',
-            title: '食物图鉴',
-            routeName: RouteNames.foodbook
-        ),
-        DrawerListItem(
-            iconPath: 'assets/setting/maketool_98.png',
-            title: '合成工具',
-            routeName: RouteNames.maketool
-        ),
+        // DrawerListItem(
+        //     iconPath: 'assets/setting/foodbook_98.png',
+        //     title: '食物图鉴',
+        //     routeName: RouteNames.foodbook
+        // ),
+        // DrawerListItem(
+        //     iconPath: 'assets/setting/maketool_98.png',
+        //     title: '合成工具',
+        //     routeName: RouteNames.maketool
+        // ),
         // DrawerListItem(
         //     iconPath: 'assets/setting/setting_64.png',
         //     title: '设置',

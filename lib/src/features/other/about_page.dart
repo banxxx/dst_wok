@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../routes/route_names.dart';
+import '../../../services/cache_manager.dart';
 import '../../common/widgets/custom_appBar.dart';
 
 class AboutPage extends StatefulWidget {
@@ -20,6 +21,8 @@ class AboutPage extends StatefulWidget {
 class _AboutPageState extends State<AboutPage> {
   // SnackBar控制器
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? _snackBarController;
+  // 缓存管理器实例
+  final CacheManager _cacheManager = CacheManager();
   // 公共常量提取
   static const _cardElevation = 0.0;
   static const _itemSpacing = 12.0;
@@ -186,18 +189,19 @@ class _AboutPageState extends State<AboutPage> {
 
   void _handleClearCache() async {
     final messenger = ScaffoldMessenger.of(context);
+
     try {
-      await _clearCache();
+      await _cacheManager.clearAllCache();
       if (mounted) {
-        // 保存SnackBar控制器
         _snackBarController = messenger.showSnackBar(
-          const SnackBar(content: Text('缓存清理成功')),
+          const SnackBar(content: Text('所有缓存已成功清理')),
         );
+        setState(() {}); // 刷新缓存大小显示
       }
     } catch (e) {
       if (mounted) {
         _snackBarController = messenger.showSnackBar(
-          SnackBar(content: Text('清理失败：$e')),
+          SnackBar(content: Text('清理失败: ${e.toString()}')),
         );
       }
     }
@@ -265,46 +269,10 @@ class _AboutPageState extends State<AboutPage> {
   // 新增方法：获取缓存大小
   Future<String> _getCacheSize() async {
     try {
-      final dir = await getTemporaryDirectory();
-      if (!await dir.exists()) return '0B';
-
-      int size = 0;
-      final files = dir.listSync(recursive: true);
-      for (var entity in files) {
-        if (entity is File) {
-          size += entity.lengthSync();
-        }
-      }
-
-      if (size < 1024) return '${size}B';
-      if (size < 1048576) return '${(size / 1024).toStringAsFixed(2)}KB';
-      return '${(size / 1048576).toStringAsFixed(2)}MB';
+      return await _cacheManager.getTotalCacheSize();
     } catch (e) {
-      return '未知';
+      return '无法获取缓存大小';
     }
   }
 
-  // 新增方法：清除缓存
-  Future<void> _clearCache() async {
-    final dir = await getTemporaryDirectory();
-    if (!await dir.exists()) return;
-
-    final files = dir.listSync(recursive: true);
-    for (var entity in files) {
-      try {
-        if (entity is File) {
-          await entity.delete();
-        } else if (entity is Directory) {
-          await entity.delete(recursive: true);
-        }
-      } catch (e) {
-        if (e is FileSystemException && Platform.isWindows) {
-          throw Exception('文件被其他程序占用，请关闭后重试');
-        }
-        rethrow;
-      }
-    }
-
-    await dir.create();
-  }
 }
