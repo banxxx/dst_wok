@@ -79,28 +79,28 @@ jobs:
           overwrite: true
           path: dstwok_ios_${{ github.ref_name }}.ipa
 
-  build-windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          flutter-version: 3.29.3
-
-      - name: Build Windows
-        run: |
-          flutter build windows --release
-          ls build/windows/runner/Release
-          cd build/windows/runner/Release
-          7z a dstwok_windows_${{ github.ref_name }}.zip ./*
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: windows-exe
-          path: build/windows/runner/Release/dstwok_windows_${{ github.ref_name }}.zip
+#  build-windows:
+#    runs-on: windows-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#
+#      - name: Setup Flutter
+#        uses: subosito/flutter-action@v2
+#        with:
+#          channel: stable
+#          flutter-version: 3.29.3
+#
+#      - name: Build Windows
+#        run: |
+#          flutter build windows --release
+#          ls build/windows/runner/Release
+#          cd build/windows/runner/Release
+#          7z a dstwok_windows_${{ github.ref_name }}.zip ./*
+#
+#      - uses: actions/upload-artifact@v4
+#        with:
+#          name: windows-exe
+#          path: build/windows/runner/Release/dstwok_windows_${{ github.ref_name }}.zip
 
   create-release:
     runs-on: ubuntu-latest
@@ -123,4 +123,4 @@ jobs:
           files: |
             artifacts/android-apk/dstwok_android_${{ github.ref_name }}.apk
             artifacts/ios-ipa/dstwok_ios_${{ github.ref_name }}.ipa
-            artifacts/windows-exe/dstwok_windows_${{ github.ref_name }}.zip
+#            artifacts/windows-exe/dstwok_windows_${{ github.ref_name }}.zip

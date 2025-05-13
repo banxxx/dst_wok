@@ -28,9 +28,13 @@ class RecipeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final media = MediaQuery.of(context);
+    final screenWidth = media.size.width;
+    final isTablet = _isTabletDevice(media);
+
     return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 1, // 每行显示2个卡片
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: _calculateCrossAxisCount(media, isTablet),
         childAspectRatio: 2.5, // 调整宽高比
         mainAxisSpacing: 8, // 垂直间距
         crossAxisSpacing: 8, // 水平间距
@@ -43,6 +47,20 @@ class RecipeSelector extends StatelessWidget {
         onSelect: onSelect,
       ),
     );
+  }
+
+  /// 判断是否为平板设备
+  bool _isTabletDevice(MediaQueryData media) {
+    final shortSide = media.size.shortestSide;
+    return shortSide > 600; // 平板设备短边阈值
+  }
+
+  /// 动态计算列数
+  int _calculateCrossAxisCount(MediaQueryData media, bool isTablet) {
+    if (!isTablet) return 1; // 手机设备固定1列
+
+    // 平板设备根据方向调整
+    return media.orientation == Orientation.landscape ? 3 : 2;
   }
 }
 
