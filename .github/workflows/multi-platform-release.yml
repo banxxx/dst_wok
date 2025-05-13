@@ -104,7 +104,7 @@ jobs:
 
   create-release:
     runs-on: ubuntu-latest
-    needs: [build-android, build-ios, build-windows]
+    needs: [build-android, build-ios,]
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -119,7 +119,7 @@ jobs:
             ### Multi-Platform Release
             - Android: dstwok_android_${{ github.ref_name }}.apk
             - iOS (Unsigned): dstwok_ios_${{ github.ref_name }}.ipa
-            - Windows: dstwok_windows_${{ github.ref_name }}.zip
+#            - Windows: dstwok_windows_${{ github.ref_name }}.zip
           files: |
             artifacts/android-apk/dstwok_android_${{ github.ref_name }}.apk
             artifacts/ios-ipa/dstwok_ios_${{ github.ref_name }}.ipa
