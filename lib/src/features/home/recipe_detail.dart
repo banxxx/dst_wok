@@ -1,8 +1,6 @@
 import 'package:dst_wok/src/common/constants/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:ninepatch_image/ninepatch_image.dart';
 
-import '../../common/enums/cooking_method.dart';
 import '../../common/widgets/custom_appBar.dart';
 import '../../common/widgets/recipe_recommendation.dart';
 import '../../common/widgets/richLabel_content.dart';

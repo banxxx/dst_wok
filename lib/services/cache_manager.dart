@@ -59,7 +59,7 @@ class CacheManager {
     }
   }
 
-  /// 获取缓存总大小
+  /// 获取缓存总大小(格式化)
   Future<String> getTotalCacheSize() async {
     int totalSize = 0;
 
@@ -71,6 +71,18 @@ class CacheManager {
     }
 
     return _formatSize(totalSize);
+  }
+
+  /// 获取缓存总大小(int)
+  Future<int> getTotalCacheBytes() async {
+    int totalSize = 0;
+    for (final type in CacheType.values) {
+      final dir = await getCacheDir(type);
+      if (await dir.exists()) {
+        totalSize += await _calculateDirSize(dir);
+      }
+    }
+    return totalSize;
   }
 
   /// 创建目录（如果不存在）

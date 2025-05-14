@@ -26,8 +26,8 @@ dependencies:
   package_info_plus: ^5.0.0
   # 文件路径获取工具，支持访问设备文档/缓存等系统目录
   path_provider: ^2.1.1
-  # .9类型图片处理工具
-  ninepatch_image: ^0.0.4
+  # 自定义桌面应用程序窗口
+  bitsdojo_window: ^0.1.6
 
 dev_dependencies:
   flutter_test:

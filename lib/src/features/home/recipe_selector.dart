@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import '../../common/constants/app_colors.dart';
@@ -29,15 +32,14 @@ class RecipeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
-    final screenWidth = media.size.width;
     final isTablet = _isTabletDevice(media);
 
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: _calculateCrossAxisCount(media, isTablet),
-        childAspectRatio: 2.5, // 调整宽高比
-        mainAxisSpacing: 8, // 垂直间距
-        crossAxisSpacing: 8, // 水平间距
+        childAspectRatio: _getAspectRatio(context),
+        mainAxisSpacing: Platform.isWindows ? 12 : 8,
+        crossAxisSpacing: Platform.isWindows ? 12 : 8,
       ),
       padding: const EdgeInsets.all(8),
       itemCount: recipes.length,
@@ -51,16 +53,60 @@ class RecipeSelector extends StatelessWidget {
 
   /// 判断是否为平板设备
   bool _isTabletDevice(MediaQueryData media) {
-    final shortSide = media.size.shortestSide;
-    return shortSide > 600; // 平板设备短边阈值
+    // 方法一：物理尺寸检测
+    final physicalSize = media.size * media.devicePixelRatio;
+    final diagonalInches = sqrt(
+        pow(physicalSize.width, 2) +
+            pow(physicalSize.height, 2)
+    ) / 160;
+
+    return diagonalInches >= 7;
   }
 
   /// 动态计算列数
   int _calculateCrossAxisCount(MediaQueryData media, bool isTablet) {
-    if (!isTablet) return 1; // 手机设备固定1列
+    final screenWidth = media.size.width;
 
-    // 平板设备根据方向调整
-    return media.orientation == Orientation.landscape ? 3 : 2;
+    // Windows平台特殊处理
+    if (Platform.isWindows) {
+      // 当窗口宽度<=手机宽度时强制单列显示
+      return screenWidth <= 420 ? 1 : _calculateDesktopColumns(screenWidth);
+    }
+
+    // 平板逻辑
+    return !isTablet ? 1 : _calculateTabletColumns(screenWidth);
+  }
+
+  /// 桌面端列数计算
+  int _calculateDesktopColumns(double screenWidth) {
+    if (screenWidth > 1200) return 3;
+    if (screenWidth > 800) return 2;
+    return 1;
+  }
+
+  /// 平板列数计算
+  int _calculateTabletColumns(double screenWidth) {
+    if (screenWidth > 1200) return 3;
+    if (screenWidth > 800) return 2;
+    return 2;
+  }
+
+  /// 动态宽高比计算
+  double _getAspectRatio(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    // 桌面小尺寸模式
+    if (Platform.isWindows && width <= 375) {
+      return 1.6; // 手机竖屏比例
+    }
+
+    // 正常桌面模式
+    if (Platform.isWindows) {
+      return 2.2;
+    }
+
+    // 移动端模式
+    return 2.5;
   }
 }
 
@@ -189,8 +235,8 @@ class _OptimizedImage extends StatelessWidget {
         child: Image.asset(
           imageUrl,
           fit: BoxFit.contain, // 关键属性：保持比例缩放
-          cacheWidth: 160, // 指定缓存分辨率
-          cacheHeight: 160,
+          cacheWidth: 80 * MediaQuery.of(context).devicePixelRatio ~/ 1,
+          cacheHeight: 80 * MediaQuery.of(context).devicePixelRatio ~/ 1,
           filterQuality: FilterQuality.low,
         ),
       ),
@@ -351,18 +397,17 @@ class _VerticalLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 8),
+      padding: const EdgeInsets.only(right: 0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
-        children: _buildVerticalText(),
+        children: _verticalLabels,
       ),
     );
   }
 
-  List<Widget> _buildVerticalText() {
-    return '掉落自'.split('').map((char) {
-      return Padding(
+  static final _verticalLabels = '掉落自'.split('').map((char) =>
+      Padding(
         padding: const EdgeInsets.symmetric(vertical: 3),
         child: Text(
           char,
@@ -373,9 +418,9 @@ class _VerticalLabel extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
-      );
-    }).toList();
-  }
+      )
+  ).toList();
+
 }
 
 /// ---------------------- 烹饪锅食材组件 ----------------------

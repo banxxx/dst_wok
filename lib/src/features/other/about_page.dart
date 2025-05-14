@@ -191,13 +191,18 @@ class _AboutPageState extends State<AboutPage> {
     final messenger = ScaffoldMessenger.of(context);
 
     try {
-      await _cacheManager.clearAllCache();
-      if (mounted) {
-        _snackBarController = messenger.showSnackBar(
-          const SnackBar(content: Text('所有缓存已成功清理')),
-        );
-        setState(() {}); // 刷新缓存大小显示
+      final bytes = await _cacheManager.getTotalCacheBytes();
+
+      if(bytes != 0) {
+        await _cacheManager.clearAllCache();
+        if (mounted) {
+          _snackBarController = messenger.showSnackBar(
+            const SnackBar(content: Text('所有缓存已成功清理')),
+          );
+          setState(() {}); // 刷新缓存大小显示
+        }
       }
+      return;
     } catch (e) {
       if (mounted) {
         _snackBarController = messenger.showSnackBar(
