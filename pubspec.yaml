@@ -28,6 +28,8 @@ dependencies:
   path_provider: ^2.1.1
   # 自定义桌面应用程序窗口
   bitsdojo_window: ^0.1.6
+  # 启动页背景图
+  flutter_native_splash: ^2.4.6
 
 dev_dependencies:
   flutter_test:
@@ -55,3 +57,16 @@ flutter:
       fonts:
         - asset: assets/fonts/LoveLight-Regular.ttf
           weight: 100  # 字重（100-900）
+
+flutter_native_splash:
+  color: "#815838"              # 背景色
+  image: "assets/setting/background.png"    # 启动页图片路径
+  android_12:
+    color: "#815838"
+    image: "assets/setting/background.png"
+  android: true
+  ios: true
+#  web: true
+  # 可选：设置图片填充模式
+  android_gravity: "center"      # center | fill | fit
+  ios_content_mode: "center"     # center | scaleAspectFill

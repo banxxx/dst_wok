@@ -10,7 +10,7 @@ class WindowControlButtons extends StatefulWidget {
 
 class _WindowControlButtonsState extends State<WindowControlButtons> {
   // 手动管理状态
-  bool _isMaximized = false;
+  bool _isMaximized = true;
 
   @override
   void initState() {

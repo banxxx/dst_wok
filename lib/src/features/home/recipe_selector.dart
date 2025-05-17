@@ -41,7 +41,7 @@ class RecipeSelector extends StatelessWidget {
         mainAxisSpacing: Platform.isWindows ? 12 : 8,
         crossAxisSpacing: Platform.isWindows ? 12 : 8,
       ),
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
       itemCount: recipes.length,
       itemBuilder: (context, index) => _RecipeCard( // 优化点1：独立卡片组件
         recipe: recipes[index],
@@ -87,8 +87,8 @@ class RecipeSelector extends StatelessWidget {
   /// 平板列数计算
   int _calculateTabletColumns(double screenWidth) {
     if (screenWidth > 1200) return 3;
-    if (screenWidth > 800) return 2;
-    return 2;
+    if (screenWidth > 700) return 2;
+    return 1;
   }
 
   /// 动态宽高比计算
@@ -298,6 +298,8 @@ class _NameText extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: AppColors.recipeTitle, // 根据背景色调整文字颜色
           ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center, // 文字居中
         ),
       ),
