@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../common/widgets/custom_appBar.dart';
+
 class LicenseDetailPage extends StatelessWidget {
   const LicenseDetailPage({super.key});
 
@@ -11,9 +13,8 @@ class LicenseDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
         title: const Text('GPL-3.0 协议'),
-        centerTitle: true, // 全局居中
       ),
       body: FutureBuilder<String>(
         future: _loadLicense(),

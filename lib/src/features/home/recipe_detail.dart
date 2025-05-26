@@ -26,7 +26,7 @@ class RecipeDetails extends StatelessWidget {
             children: [
               _buildRecipeImage(),
               if (recipe.favorites.isNotEmpty || recipe.desc.isNotEmpty)
-                _buildRecipeDocs(),
+              _buildRecipeDocs(),
               _buildRecipeInfo(),
               _buildRecipeDesc(),
               _buildRecipeRecommend(),

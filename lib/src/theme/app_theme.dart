@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../common/constants/app_colors.dart';
+
 /// 主题配置文件
 class AppTheme {
   // 白天主题
@@ -15,6 +17,7 @@ class AppTheme {
       textTheme: _buildTextTheme(),
       appBarTheme: const AppBarTheme(
         centerTitle: true,
+        backgroundColor: AppColors.homeBg,
         elevation: 2,
           actionsIconTheme: IconThemeData.fallback(
 

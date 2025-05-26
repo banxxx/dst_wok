@@ -6,6 +6,7 @@ class AppColors {
   static const Color primary = Color(0xFF209888);
   static const Color secondary = Color(0xFF1B3F66);
   static const Color accent = Color(0xFFA94049);
+  static const Color homeBg = Color(0xFFFEF7FF);
 
   // 食谱文本颜色
   static const Color recipeTitle = Color(0xFF603C27);  // 文本标题

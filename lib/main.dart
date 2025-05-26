@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:dst_wok/routes/app_router.dart';
 import 'package:dst_wok/services/cache_manager.dart';
+import 'package:dst_wok/src/common/constants/app_colors.dart';
 import 'package:dst_wok/src/common/widgets/window_control_buttons.dart';
 import 'package:dst_wok/src/theme/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:window_manager/window_manager.dart';
 
 /// 应用入口函数
 void main() async {
@@ -36,14 +38,35 @@ Future<void> _initPlatformEssentials() async {
 
 /// 桌面端窗口配置
 Future<void> _initDesktopWindow() async {
+  // 初始化 window_manager
+  await windowManager.ensureInitialized();
+
+  // 定义最小尺寸常量
+  const Size minSize = Size(420, 800);
+
+  // 设置窗口选项
+  WindowOptions windowOptions = const WindowOptions(
+    backgroundColor: Colors.transparent,
+    skipTaskbar: false,
+    titleBarStyle: TitleBarStyle.hidden, // 隐藏默认标题栏
+    minimumSize: minSize,
+    maximumSize: Size.infinite,
+    windowButtonVisibility: false, // 隐藏系统按钮
+  );
+
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.setAsFrameless();
+    await windowManager.setSize(minSize);
+    await windowManager.show();
+    await windowManager.focus();
+  });
+
   doWhenWindowReady(() {
     appWindow
-      ..minSize = const Size(420, 760) // 设置窗口最小尺寸（iPhone 13 mini 的竖屏尺寸）
-      ..title =
-          "饥锅" // 设置窗口标题（可选）
-      ..alignment =
-          Alignment
-              .center // 设置窗口初始位置居中
+      ..minSize = minSize // 设置窗口最小尺寸
+      ..size = minSize
+      ..alignment = Alignment.center // 设置窗口初始位置居中
+      ..isMaximized
       ..show(); // 显示窗口
   });
 }
@@ -74,25 +97,27 @@ class MyApp extends StatelessWidget {
           return MaterialApp.router(
             title: '饥锅',
             theme: ThemeData(
-              primarySwatch: Colors.blue, // 设置主题颜色
+              primarySwatch: Colors.brown, // 设置主题颜色
               useMaterial3: true, // 启用Material 3设计
             ),
             // windows窗口装饰和拖拽区域
             builder: (context, child) {
               if (Platform.isWindows || Platform.isMacOS) {
                 return WindowBorder(
-                  color: Colors.grey[300]!, // 窗口边框颜色
+                  color: Colors.transparent, // 隐藏边框颜色
                   width: 0, // 边框宽度
                   child: Column(
                     // 启用拖拽的核心组件
                     children: [
                       // 标题栏容器（关键修正）
                       Container(
-                        height: 32,
-                        color: Colors.white, // 必须设置背景色
+                        height: 30,
+                        color: AppColors.homeBg,
                         child: Row(
                           children: [
-                            Expanded(child: MoveWindow()),
+                            Expanded(
+                                child: MoveWindow(),
+                            ),
                             // 添加按钮间距
                             WindowControlButtons(),
                           ],
@@ -100,7 +125,6 @@ class MyApp extends StatelessWidget {
                       ),
                       Expanded(
                         child: Container(
-                          padding: EdgeInsets.only(top: 8),
                           child: child!,
                         ),
                       ),
