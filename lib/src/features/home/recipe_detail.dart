@@ -26,7 +26,7 @@ class RecipeDetails extends StatelessWidget {
             children: [
               _buildRecipeImage(),
               if (recipe.favorites.isNotEmpty || recipe.desc.isNotEmpty)
-              _buildRecipeDocs(),
+                _buildRecipeDocs(),
               _buildRecipeInfo(),
               _buildRecipeDesc(),
               _buildRecipeRecommend(),
@@ -134,7 +134,10 @@ class RecipeDetails extends StatelessWidget {
                     const SizedBox(width: 8),
                     Text(
                       "喜欢的食物",
-                      style: TextStyle(fontSize: 16, color: AppColors.recipeSelectorBorderOut),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: AppColors.recipeSelectorBorderOut,
+                      ),
                     ),
                   ],
                 ),
@@ -158,37 +161,47 @@ class RecipeDetails extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildStatusItem(
-                'assets/setting/status_health_64.png',
-                '健康值',
-                recipe.health.toString(),
-                Colors.redAccent,
+              Expanded(
+                child: _buildStatusItem(
+                  'assets/setting/status_health_64.png',
+                  '健康值',
+                  recipe.health.toString(),
+                  Colors.redAccent,
+                ),
               ),
-              _buildStatusItem(
-                'assets/setting/status_hunger_64.png',
-                '饥饿值',
-                recipe.hunger.toString(),
-                Colors.orangeAccent,
+              Expanded(
+                child: _buildStatusItem(
+                  'assets/setting/status_hunger_64.png',
+                  '饥饿值',
+                  recipe.hunger.toString(),
+                  Colors.orangeAccent,
+                ),
               ),
-              _buildStatusItem(
-                'assets/setting/status_sanity_64.png',
-                '理智值',
-                recipe.sanity.toString(),
-                Colors.deepOrange,
+              Expanded(
+                child: _buildStatusItem(
+                  'assets/setting/status_sanity_64.png',
+                  '理智值',
+                  recipe.sanity.toString(),
+                  Colors.deepOrange,
+                ),
               ),
-              _buildStatusItem(
-                'assets/setting/status_spoil_64.png',
-                '保质期',
-                '${recipe.freshness} 天',
-                Colors.black26,
+              Expanded(
+                child: _buildStatusItem(
+                  'assets/setting/status_spoil_64.png',
+                  '保质期',
+                  '${recipe.freshness} 天',
+                  Colors.black26,
+                ),
               ),
-              _buildStatusItem(
-                'assets/setting/status_food_64.png',
-                '烹饪时间',
-                '${recipe.cookTime} 秒',
-                Colors.green,
+              Expanded(
+                child: _buildStatusItem(
+                  'assets/setting/status_food_64.png',
+                  '烹饪时间',
+                  '${recipe.cookTime} 秒',
+                  Colors.green,
+                ),
               ),
             ],
           ),
@@ -223,7 +236,7 @@ class RecipeDetails extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            fontSize: 15,
+            fontSize: 12,
             color: Colors.grey[600],
             // fontWeight: FontWeight.bold,
           ),
@@ -283,7 +296,6 @@ class RecipeDetails extends StatelessWidget {
           label: "不能包含",
           content: recipe.notContain,
           labelStyle: TextStyle(color: Color(0xFFA94049)),
-          // contentStyle: TextStyle(fontSize: 24), // 自定义内容字号
           imageConfig: ImageParserConfig(size: 24),
         ),
       ],
@@ -295,7 +307,10 @@ class RecipeDetails extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 18),
-        Text("推荐食谱:", style: TextStyle(fontSize: 16, color: AppColors.recipePrimary)),
+        Text(
+          "推荐食谱:",
+          style: TextStyle(fontSize: 16, color: AppColors.recipePrimary),
+        ),
         // 遍历所有需要的推荐组
         for (final cookbook in recipe.cookbook)
           RecipeRecommendation(slots: cookbook.slots),
