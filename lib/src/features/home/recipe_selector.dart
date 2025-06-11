@@ -3,13 +3,10 @@ import 'dart:math';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+
 import '../../common/constants/app_colors.dart';
-import '../../common/widgets/ingredient_utils.dart';
-import '../../models/base_recipe.dart';
 import '../../common/enums/cooking_method.dart';
-import '../../models/campfire_recipe.dart';
-import '../../models/recipe_example.dart';
-import '../../repositories/constants/game_assets.dart';
+import '../../models/base_recipe.dart';
 
 /// 配方展示网格组件
 class RecipeSelector extends StatelessWidget {
@@ -35,6 +32,7 @@ class RecipeSelector extends StatelessWidget {
     final isTablet = _isTabletDevice(media);
 
     return GridView.builder(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: _calculateCrossAxisCount(media, isTablet),
         childAspectRatio: _getAspectRatio(context),
@@ -43,11 +41,13 @@ class RecipeSelector extends StatelessWidget {
       ),
       padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
       itemCount: recipes.length,
-      itemBuilder: (context, index) => _RecipeCard( // 优化点1：独立卡片组件
-        recipe: recipes[index],
-        selectedMethod: selectedMethod,
-        onSelect: onSelect,
-      ),
+      itemBuilder:
+          (context, index) => _RecipeCard(
+            // 优化点1：独立卡片组件
+            recipe: recipes[index],
+            selectedMethod: selectedMethod,
+            onSelect: onSelect,
+          ),
     );
   }
 
@@ -55,10 +55,8 @@ class RecipeSelector extends StatelessWidget {
   bool _isTabletDevice(MediaQueryData media) {
     // 方法一：物理尺寸检测
     final physicalSize = media.size * media.devicePixelRatio;
-    final diagonalInches = sqrt(
-        pow(physicalSize.width, 2) +
-            pow(physicalSize.height, 2)
-    ) / 160;
+    final diagonalInches =
+        sqrt(pow(physicalSize.width, 2) + pow(physicalSize.height, 2)) / 160;
 
     return diagonalInches >= 7;
   }
@@ -124,28 +122,55 @@ class _RecipeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 计算内边距，等于 Border 宽度加上 Border 距离卡片边缘的距离
+    // 内圈 Border 宽度为 2，我们希望它距离卡片边缘有 6 像素的距离
+    // 所以 Padding 需要为 6 + 2 = 8 像素
+    const double innerBorderMargin = 6.0; // 内圈 Border 距离卡片边缘的距离
+    const double innerBorderWidth = 2.0; // 内圈 Border 的宽度
+    const double contentPadding =
+        innerBorderMargin + innerBorderWidth; // 内容区域的 Padding
+
     return Card(
       color: _CardStyle.cardColor,
       elevation: _CardStyle.elevation,
       shape: _CardStyle.cardShape,
+      clipBehavior: Clip.antiAlias,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          _buildInteractiveArea(),
-          const _CardDecorationLayer(), // 独立装饰层
+          Positioned.fill(
+            // 内容区域填充，并添加 Padding
+            child: Padding(
+              padding: const EdgeInsets.all(contentPadding), // 应用计算出的 Padding
+              child: _buildInteractiveArea(),
+            ),
+          ),
+          // 将装饰层放在顶部（覆盖在内容上方）并填充整个空间
+          // IgnorePointer 确保它不干扰手势
+          const Positioned.fill(
+            child: IgnorePointer(
+              child: _CardDecorationLayer(
+                // 将 innerBorderMargin 传递给装饰层
+                margin: innerBorderMargin,
+                borderWidth: innerBorderWidth,
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 
   Widget _buildInteractiveArea() {
-    return GestureDetector( // 替换InkWell减少重绘
+    return GestureDetector(
+      // 替换InkWell减少重绘
       onTap: () => onSelect(recipe),
       behavior: HitTestBehavior.opaque,
       child: Row(
         children: [
           _LeftSection(recipe: recipe), // 独立左侧区域
-          _RightSection( // 独立右侧区域
+          _RightSection(
+            // 独立右侧区域
             recipe: recipe,
             selectedMethod: selectedMethod,
           ),
@@ -191,9 +216,10 @@ class _LeftSection extends StatelessWidget {
   }
 
   /// 虚线路径生成（保留原注释）
-  static Path _dashPath(Size size) => Path()
-    ..moveTo(size.width, 16) // 起点（右上角向下8px）
-    ..lineTo(size.width, size.height - 16); // 终点（右下角向上8px）
+  static Path _dashPath(Size size) =>
+      Path()
+        ..moveTo(size.width, 1) // 起点（右上角向下8px）
+        ..lineTo(size.width, size.height - 1); // 终点（右下角向上8px）
 }
 
 /// ---------------------- 左侧内容区域 ----------------------
@@ -208,10 +234,23 @@ class _RecipeContent extends StatelessWidget {
       width: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _OptimizedImage(imageUrl: recipe.imageUrl), // 优化图片加载
-          const SizedBox(height: 8),
-          _RecipeName(name: recipe.name),
+          Expanded(
+            flex: 3,
+            child: Center(
+              // Center 来居中图片
+              child: _OptimizedImage(imageUrl: recipe.imageUrl),
+            ),
+          ),
+          const SizedBox(height: 8), // 间隔仍然是固定高度
+          // 将 _RecipeName 包裹在 Expanded 中，并设置 flex 为 1
+          Expanded(
+            flex: 1,
+            child: _RecipeName(
+              name: recipe.name,
+            ), // 它的高度现在由 Expanded(flex: 1) 决定
+          ),
         ],
       ),
     );
@@ -228,17 +267,15 @@ class _OptimizedImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints(
-        maxWidth: 80, // 最大宽度限制
-        maxHeight: 80, // 最大高度限制
+        maxWidth: 70, // 最大宽度限制
+        maxHeight: 70, // 最大高度限制
       ),
-      child: Center(
-        child: Image.asset(
-          imageUrl,
-          fit: BoxFit.contain, // 关键属性：保持比例缩放
-          cacheWidth: 80 * MediaQuery.of(context).devicePixelRatio ~/ 1,
-          cacheHeight: 80 * MediaQuery.of(context).devicePixelRatio ~/ 1,
-          filterQuality: FilterQuality.low,
-        ),
+      child: Image.asset(
+        imageUrl,
+        fit: BoxFit.contain, // 关键属性：保持比例缩放
+        cacheWidth: 80 * MediaQuery.of(context).devicePixelRatio ~/ 1,
+        cacheHeight: 80 * MediaQuery.of(context).devicePixelRatio ~/ 1,
+        filterQuality: FilterQuality.low,
       ),
     );
   }
@@ -252,15 +289,60 @@ class _RecipeName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 100, // 保持与图片相同的宽度约束
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          const _BackgroundImage(),
-          _NameText(name: name),
-        ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Stack 的最大宽度就是 LayoutBuilder 的约束宽度
+        final double stackWidth = constraints.maxWidth;
+        // 背景图的有效宽度是 Stack 宽度的 80% (根据 FractionallySizedBox 的设置)
+        final double backgroundImageEffectiveWidth = stackWidth * 0.8;
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            // _BackgroundImage 仍然按照之前的逻辑布局
+            Positioned.fill(
+              child: Align(
+                child: FractionallySizedBox(
+                  widthFactor: 0.8, // 宽度是父容器 (Stack) 宽度的 80%
+                  child: _BackgroundImage(),
+                ),
+              ),
+            ),
+            // 将文字包裹在 TextSizer 中，并限制其最大宽度
+            // 同时传入计算出的目标宽度
+            Positioned.fill( // Positioned.fill 确保文字区域也填充 Stack 空间
+              child: Align(
+                  child: _buildTextLabel()
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildTextLabel() {
+    return FittedBox(
+      fit: BoxFit.scaleDown, // 缩小文本以适应空间
+      alignment: Alignment.center, // 文本居中
+      child: Text(
+        name,
+        style: _defaultTextStyle(),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.center,
+        textScaleFactor: 1.0, // 禁止系统缩放
       ),
+    );
+  }
+
+  // 默认文字样式（私有方法）
+  static TextStyle _defaultTextStyle() {
+    return const TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w700, // 稳定字体渲染
+      color: AppColors.recipeTitle,
+    ).copyWith(
+      fontFeatures: const [FontFeature.tabularFigures()], // 优化文本渲染性能
     );
   }
 }
@@ -273,36 +355,7 @@ class _BackgroundImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image.asset(
       'assets/setting/bg.png',
-      width: 100,
-      cacheWidth: 200, // 预缓存背景图
-      cacheHeight: 200,
-    );
-  }
-}
-
-/// ---------------------- 名称文字组件 ----------------------
-class _NameText extends StatelessWidget {
-  final String name;
-
-  const _NameText({required this.name});
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned.fill(
-      child: Align(
-        alignment: Alignment.center,
-        child: Text(
-          name,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: AppColors.recipeTitle, // 根据背景色调整文字颜色
-          ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center, // 文字居中
-        ),
-      ),
+      fit: BoxFit.fill, // 填充父容器提供的空间
     );
   }
 }
@@ -312,156 +365,31 @@ class _RightSection extends StatelessWidget {
   final BaseRecipe recipe;
   final CookingMethod selectedMethod;
 
-  const _RightSection({
-    required this.recipe,
-    required this.selectedMethod,
-  });
+  const _RightSection({required this.recipe, required this.selectedMethod});
 
   @override
   Widget build(BuildContext context) {
+    // 根据烹饪方式和食谱的实际类型来决定显示哪个部分
+    final Widget ingredientsWidget = recipe.buildIngredientsWidget();
+
     return Expanded(
       flex: 2, // 占横向2/3比例
       child: Column(
         children: [
-          if (selectedMethod == CookingMethod.campfire)
-            _BiologyIngredients(tips: (recipe as CampfireRecipe).tips)
-          else
-            _CookpotIngredients(slots: recipe.cookbook.first.slots),
-          _StatusIndicators(
-            health: recipe.health,
-            hunger: recipe.hunger,
-            sanity: recipe.sanity,
+          Expanded( // 将 ingredientsWidget 包裹在 Expanded 中以占用剩余空间
+            flex: 50, // 与原来的比例一致
+            child: ingredientsWidget,
+          ),
+          Expanded( // 将状态指示器也包裹在 Expanded 中
+            flex: 40, // 与原来的比例一致
+            child: _StatusIndicators(
+              health: recipe.health,
+              hunger: recipe.hunger,
+              sanity: recipe.sanity,
+            ),
           ),
         ],
       ),
-    );
-  }
-}
-
-/// ---------------------- 生物掉落组件 ----------------------
-class _BiologyIngredients extends StatelessWidget {
-
-  final List<Ingredient> tips;
-
-  const _BiologyIngredients({required this.tips});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 52,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 12),
-        child: _buildStaticContent(), // 使用静态布局方法
-      ),
-    );
-  }
-
-  /// 构建单个生物食材项
-  Widget _buildStaticContent() {
-    return Row(
-      children: [
-        const SizedBox(width: 8),
-        // 竖排标签
-        _VerticalLabel(),
-        // 标签与第一个图片的间距
-        const SizedBox(width: 4),
-        // 动态生成图片列表
-        ..._buildImageList(),
-      ],
-    );
-  }
-
-  /// 构建图片列表
-  List<Widget> _buildImageList() {
-    return List.generate(tips.length, (index) {
-      return Padding(
-        // 图片之间的间距（首图已处理）
-        padding: EdgeInsets.only(left: index == 0 ? 0 : 8),
-        child: _buildDynamicImage(tips[index]),
-      );
-    });
-  }
-
-  /// 单个图片组件（保持原实现）
-  Widget _buildDynamicImage(Ingredient ingredient) {
-    return Image.asset(
-      ingredient.imageAsset,
-      width: 48,
-      height: 48,
-      cacheWidth: 96,
-      filterQuality: FilterQuality.low,
-    );
-  }
-}
-
-/// 竖排标签组件
-class _VerticalLabel extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: _verticalLabels,
-      ),
-    );
-  }
-
-  static final _verticalLabels = '掉落自'.split('').map((char) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 3),
-        child: Text(
-          char,
-          style: const TextStyle(
-            fontSize: 13,
-            color: AppColors.recipeTitle,
-            height: 0.75,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      )
-  ).toList();
-
-}
-
-/// ---------------------- 烹饪锅食材组件 ----------------------
-class _CookpotIngredients extends StatelessWidget {
-  final List<PositionalIngredient> slots;
-
-  const _CookpotIngredients({required this.slots});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 52,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 12),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List<Widget>.generate( // 避免动态扩展操作符
-            slots.length * 2 - 1,
-                (index) => index.isEven
-                ? _buildIngredient(slots[index ~/ 2])
-                : _buildPlusIcon(),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildIngredient(PositionalIngredient slot) {
-    return IngredientUtils.buildIngredientWidget(
-      ingredient: slot.ingredient,
-      imageSize: 32,
-      containerSize: 42,
-    );
-  }
-
-  Widget _buildPlusIcon() {
-    return IngredientUtils.buildAddIcon(
-      containerSize: 42, // 与图片容器高度一致
-      horizontalPadding: 2,
     );
   }
 }
@@ -481,10 +409,8 @@ class _StatusIndicators extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 38,
-      child: Container(
-        padding: const EdgeInsets.only(bottom: 8),
+    return Container(
+        padding: const EdgeInsets.only(bottom: 6),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -493,8 +419,7 @@ class _StatusIndicators extends StatelessWidget {
             _StatusIndicator(imagePath: 'status_sanity_64', value: sanity),
           ],
         ),
-      ),
-    );
+      );
   }
 }
 
@@ -503,16 +428,11 @@ class _StatusIndicator extends StatelessWidget {
   final String imagePath;
   final double value;
 
-  const _StatusIndicator({
-    required this.imagePath,
-    required this.value,
-  });
+  const _StatusIndicator({required this.imagePath, required this.value});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 64,
-      height: 96,
+    return Expanded(
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -532,14 +452,20 @@ class _StatusIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 0,
-      child: Image.asset(
-        'assets/setting/$imagePath.png',
-        width: 38,
-        height: 38,
-        cacheWidth: 76, // 2倍图预缩放
-        cacheHeight: 76,
+    return Align(
+      child: FractionallySizedBox(
+        widthFactor: 0.5,
+        child: Image.asset(
+          'assets/setting/$imagePath.png',
+          fit: BoxFit.contain, // 根据可用空间缩放
+          // cacheWidth 和 cacheHeight 仍然可以保留进行优化
+          cacheWidth:
+              (64 * 0.6 * MediaQuery.of(context).devicePixelRatio)
+                  .round(), // 根据示例计算缓存尺寸
+          cacheHeight:
+              (96 * MediaQuery.of(context).devicePixelRatio)
+                  .round(), // 根据示例计算缓存尺寸
+        ),
       ),
     );
   }
@@ -553,11 +479,11 @@ class _ValueIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 30,
-      child: SizedBox(
-        width: 54,
-        height: 22,
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: FractionallySizedBox(
+        widthFactor: 0.6, // 示例：数值背景宽度占父容器的 80%
+        heightFactor: 0.4, // 示例：数值背景高度占父容器的 30%
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -571,7 +497,7 @@ class _ValueIndicator extends StatelessWidget {
               child: Text(
                 '$value',
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   color: AppColors.recipeTitle,
                   fontWeight: FontWeight.w500, // 稳定字体渲染
                 ),
@@ -586,21 +512,27 @@ class _ValueIndicator extends StatelessWidget {
 
 /// ---------------------- 卡片装饰层 ----------------------
 class _CardDecorationLayer extends StatelessWidget {
-  const _CardDecorationLayer();
+  // 接收 Border 的 margin 和 width 参数
+  final double margin;
+  final double borderWidth;
+
+  const _CardDecorationLayer({
+    this.margin = 6.0, // 默认值
+    this.borderWidth = 2.0, // 默认值
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Positioned.fill(
-      child: RepaintBoundary(
-        child: IgnorePointer(
-          child: Container(
-            margin: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6),
-              border: const Border.fromBorderSide(
-                BorderSide(color: AppColors.recipeSelectorBorderIn, width: 2),
-              ),
-            ),
+    return RepaintBoundary(
+      child: Container(
+        margin: EdgeInsets.all(margin), // 应用 margin
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          border: Border.fromBorderSide(
+            BorderSide(
+              color: AppColors.recipeSelectorBorderIn,
+              width: borderWidth,
+            ), // 应用 Border 宽度
           ),
         ),
       ),

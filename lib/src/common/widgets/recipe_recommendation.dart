@@ -22,8 +22,8 @@ class RecipeRecommendation extends StatelessWidget {
               for (int i = 0; i < slots.length; i++) ...[
                 IngredientUtils.buildIngredientWidget(
                   ingredient: slots[i].ingredient,
-                    imageSize: 38,
-                    containerSize:52
+                    // imageSize: 38,
+                    // containerSize:52
                 ),
                 if (i != slots.length - 1)
                   Padding(

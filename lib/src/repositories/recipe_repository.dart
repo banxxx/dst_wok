@@ -21,4 +21,24 @@ class RecipeRepository {
         .toList()
       ..sort((a, b) => b.priority.compareTo(a.priority));
   }
+
+  // 根据烹饪方式和关键词获取过滤后的食谱列表
+  List<BaseRecipe> searchRecipes(CookingMethod method, String keyword) {
+    if (keyword.isEmpty) {
+      // 如果关键词为空，返回该方法下的所有食谱
+      return getByMethod(method);
+    } else {
+      final lowerCaseKeyword = keyword.toLowerCase();
+      return _allRecipes
+          .where((recipe) =>
+      recipe.method == method &&
+          recipe.name.toLowerCase().contains(lowerCaseKeyword))
+          .toList()
+        ..sort((a, b) => b.priority.compareTo(a.priority));
+    }
+  }
+  // 新增方法：获取所有食谱列表 (如果其他地方需要)
+  List<BaseRecipe> getAllRecipes() {
+    return _allRecipes;
+  }
 }

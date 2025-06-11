@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
+
 import '../common/enums/cooking_method.dart';
+import '../common/widgets/biology_ingredients.dart';
 import '../repositories/constants/game_assets.dart';
 import 'base_recipe.dart';
 
@@ -39,5 +42,10 @@ class CampfireRecipe extends BaseRecipe {
   bool matches(List<String> ingredientIds) {
     return ingredientIds.length == 1 &&
         cookableItemIds.contains(ingredientIds.first);
+  }
+
+  @override
+  Widget buildIngredientsWidget() {
+    return BiologyIngredients(tips: tips);
   }
 }

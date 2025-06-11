@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
+
 import '../common/enums/cooking_method.dart';
 import '../common/enums/ingredient_tag.dart';
+import '../common/widgets/cookpot_ingredients.dart';
 import 'base_recipe.dart';
 
 /// 便携烹饪锅配方实现
@@ -41,5 +44,15 @@ class PortableCookerRecipe extends BaseRecipe {
     // 实现需要更复杂的食材标签计算
     // 这里暂时返回true保持示例简单
     return true;
+  }
+
+  @override
+  Widget buildIngredientsWidget() {
+    if (cookbook.isNotEmpty) {
+      return CookpotIngredients(slots: cookbook.first.slots);
+    } else {
+      // 如果 cookbook 为空，显示一个空组件或错误提示
+      return const SizedBox();
+    }
   }
 }

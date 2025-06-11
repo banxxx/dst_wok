@@ -1,4 +1,5 @@
 import 'package:dst_wok/src/models/recipe_example.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../common/enums/character.dart';
 import '../common/enums/cooking_method.dart';
@@ -77,4 +78,7 @@ abstract class BaseRecipe {
   /// 抽象方法：验证食材是否符合条件
   /// 参数：ingredients - 用户选择的食材列表
   bool matches(List<String> ingredientIds);
+
+  // 添加抽象方法，让子类实现构建食材组件的逻辑
+  Widget buildIngredientsWidget();
 }
