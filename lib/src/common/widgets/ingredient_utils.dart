@@ -69,26 +69,54 @@ class _IngredientContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // if (ingredient == null) return const SizedBox.shrink();
     return LayoutBuilder(
       builder: (context, constraints) {
-        // 计算图片区域的最大高度（为文本区域预留1/3空间）
-        final maxImageHeight = constraints.maxHeight * 0.7;
-        // 计算图片的实际高度（保持正方形但不超过最大高度）
-        final imageHeight =
-            constraints.maxWidth < maxImageHeight
-                ? constraints.maxWidth
-                : maxImageHeight;
+        // 动态计算组件高度
+        final containerHeight = constraints.maxHeight;
+        final imageSize = containerHeight * 0.7; // 图片占70%高度
+        final textHeight = containerHeight * 0.3; // 文本占30%高度
+
         return Column(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start, // 使内容在 Column 中居中
-          crossAxisAlignment: CrossAxisAlignment.stretch, // 使子组件横向拉伸
           children: [
-            // 动态计算图片容器高度
-            SizedBox(height: imageHeight, child: _buildImageContainer()),
-            const SizedBox(height: 4),
-            // 文本区域使用剩余空间
-            Flexible(child: _buildTextLabel()),
+            // 图片区域
+            SizedBox(
+              height: imageSize,
+              child: AspectRatio(
+                aspectRatio: 1, // 保持正方形
+                child: Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/setting/inv_item_background.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: FractionallySizedBox(
+                    widthFactor: 0.7, // 宽度占容器70%
+                    heightFactor: 0.7, // 高度占容器70%
+                    child: Image.asset(
+                      ingredient!.imageAsset,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            // 文本区域
+            SizedBox(
+              height: textHeight,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  ingredient!.displayName,
+                  style: textStyle ?? const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.recipeTitle,
+                  ),
+                ),
+              ),
+            ),
           ],
         );
       },
