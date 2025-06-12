@@ -3,7 +3,7 @@ description: "A Don't Starve Together recipe search project."
 
 publish_to: 'none'
 
-version: 1.0.1
+version: 1.0.0
 
 environment:
   sdk: ">=3.7.2 <4.0.0"
