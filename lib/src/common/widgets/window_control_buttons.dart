@@ -1,5 +1,7 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:dst_wok/src/common/constants/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:window_manager/window_manager.dart';
 
 class WindowControlButtons extends StatefulWidget {
@@ -72,8 +74,8 @@ class _WindowControlButtonsState extends State<WindowControlButtons> {
       iconNormal: colorScheme.onSurface.withOpacity(0.7),
       iconMouseOver: colorScheme.onPrimary,
       iconMouseDown: colorScheme.onPrimary,
-      mouseOver: colorScheme.primary.withOpacity(0.2),
-      mouseDown: colorScheme.primary.withOpacity(0.4),
+      mouseOver: Colors.black12,
+      mouseDown: Colors.black26,
       normal: Colors.transparent,
     );
   }
@@ -86,48 +88,41 @@ class _WindowControlButtonsState extends State<WindowControlButtons> {
           height: 30,
           // 置顶按钮
           child: WindowButton(
+            padding: const EdgeInsets.all(5.0),
             colors: _buttonColors(context),
             onPressed: _toggleAlwaysOnTop,
-            iconBuilder:
-                (context) => Icon(
-                  _isAlwaysOnTop ? Icons.push_pin : Icons.push_pin_outlined,
-                  size: 16,
-                  color: _isAlwaysOnTop ? Colors.grey : null,
-                ),
+            iconBuilder: (context) {
+              return SvgPicture.asset(
+                _isAlwaysOnTop
+                    ? 'assets/setting/pin-line.svg'    // 置顶状态
+                    : 'assets/setting/pin-mono.svg', // 非置顶状态,
+                width: 30,
+                height: 30,
+              );
+            },
           ),
         ),
         SizedBox(
           height: 30,
           // 最小化按钮
           child: WindowButton(
+            padding: const EdgeInsets.all(5.0),
             colors: _buttonColors(context),
             onPressed: appWindow.minimize,
-            iconBuilder: (context) => const Icon(Icons.remove, size: 16),
-          ),
-        ),
-        SizedBox(
-          height: 30,
-          // 最大化/还原按钮
-          child: WindowButton(
-            colors: _buttonColors(context),
-            onPressed: () {
-              appWindow.maximizeOrRestore();
-              // 手动更新状态
-              _updateMaximizeState();
+            iconBuilder: (context) {
+              return SvgPicture.asset(
+                'assets/setting/minus-line.svg',
+                width: 30,
+                height: 30,
+              );
             },
-            iconBuilder:
-                (context) => Icon(
-                  _isMaximized
-                      ? Icons.close_fullscreen
-                      : Icons.check_box_outline_blank_rounded,
-                  size: 16,
-                ),
           ),
         ),
         SizedBox(
           height: 30,
           // 关闭按钮
           child: WindowButton(
+            padding: const EdgeInsets.all(5.0),
             colors: WindowButtonColors(
               normal: Colors.transparent,
               mouseOver: Colors.red[600],
@@ -137,7 +132,13 @@ class _WindowControlButtonsState extends State<WindowControlButtons> {
               iconMouseDown: Colors.redAccent,
             ),
             onPressed: appWindow.close,
-            iconBuilder: (context) => const Icon(Icons.close, size: 18),
+            iconBuilder: (context) {
+              return SvgPicture.asset(
+                'assets/setting/cancel-line.svg',
+                width: 30,
+                height: 30,
+              );
+            },
           ),
         ),
       ],

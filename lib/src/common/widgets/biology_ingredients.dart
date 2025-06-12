@@ -16,7 +16,7 @@ class BiologyIngredients extends StatelessWidget {
         children: [
           const SizedBox(width: 8), // 竖排标签左侧间距
           VerticalLabel(), // 竖排标签
-          const SizedBox(width: 4), // 标签与 Wrap 的间距
+          const SizedBox(width: 8), // 标签与 Wrap 的间距
           // 使用 Expanded 包裹 Wrap，让 Wrap 占据 Row 中剩余的空间
           Expanded(
             child: Align( // Align 将 Wrap 居中对齐 (如果Wrap没有填满Expanded空间)

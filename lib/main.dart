@@ -42,31 +42,36 @@ Future<void> _initDesktopWindow() async {
   await windowManager.ensureInitialized();
 
   // 定义最小尺寸常量
-  const Size minSize = Size(420, 800);
+  const Size fixedSize = Size(375, 800);
 
   // 设置窗口选项
   WindowOptions windowOptions = const WindowOptions(
     backgroundColor: Colors.transparent,
     skipTaskbar: false,
     titleBarStyle: TitleBarStyle.hidden, // 隐藏默认标题栏
-    minimumSize: minSize,
-    maximumSize: Size.infinite,
+    size: fixedSize, // 固定尺寸
+    minimumSize: fixedSize, // 最小尺寸设为固定尺寸
+    maximumSize: fixedSize, // 最大尺寸设为固定尺寸
     windowButtonVisibility: false, // 隐藏系统按钮
+    alwaysOnTop: false,
   );
 
   windowManager.waitUntilReadyToShow(windowOptions, () async {
     await windowManager.setAsFrameless();
-    await windowManager.setSize(minSize);
     await windowManager.show();
     await windowManager.focus();
   });
 
   doWhenWindowReady(() {
     appWindow
-      ..minSize = minSize // 设置窗口最小尺寸
-      ..size = minSize
-      ..alignment = Alignment.center // 设置窗口初始位置居中
-      ..isMaximized
+      ..size = fixedSize
+      ..minSize =
+          fixedSize // 最小尺寸
+      ..maxSize =
+          fixedSize // 最大尺寸
+      ..alignment =
+          Alignment
+              .center // 设置窗口初始位置居中
       ..show(); // 显示窗口
   });
 }
@@ -103,32 +108,30 @@ class MyApp extends StatelessWidget {
             // windows窗口装饰和拖拽区域
             builder: (context, child) {
               if (Platform.isWindows || Platform.isMacOS) {
-                return WindowBorder(
-                  color: Colors.transparent, // 隐藏边框颜色
-                  width: 0, // 边框宽度
-                  child: Column(
-                    // 启用拖拽的核心组件
-                    children: [
-                      // 标题栏容器（关键修正）
-                      Container(
-                        height: 30,
-                        color: AppColors.homeBg,
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child: MoveWindow(),
-                            ),
-                            // 添加按钮间距
-                            WindowControlButtons(),
-                          ],
+                return ClipRRect(
+                  // 关键：添加圆角裁剪
+                  borderRadius: BorderRadius.circular(8), // 圆角半径
+                  child: WindowBorder(
+                    color: Colors.transparent, // 隐藏边框颜色
+                    width: 0, // 边框宽度
+                    child: Column(
+                      // 启用拖拽的核心组件
+                      children: [
+                        // 标题栏容器（关键修正）
+                        Container(
+                          height: 30,
+                          color: AppColors.homeBg,
+                          child: Row(
+                            children: [
+                              Expanded(child: MoveWindow()),
+                              // 添加按钮间距
+                              WindowControlButtons(),
+                            ],
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          child: child!,
-                        ),
-                      ),
-                    ],
+                        Expanded(child: Container(child: child!)),
+                      ],
+                    ),
                   ),
                 );
               }

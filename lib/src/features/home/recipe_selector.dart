@@ -91,19 +91,6 @@ class RecipeSelector extends StatelessWidget {
 
   /// 动态宽高比计算
   double _getAspectRatio(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-
-    // 桌面小尺寸模式
-    if (Platform.isWindows && width <= 375) {
-      return 1.6; // 手机竖屏比例
-    }
-
-    // 正常桌面模式
-    if (Platform.isWindows) {
-      return 2.2;
-    }
-
-    // 移动端模式
     return 2.5;
   }
 }
@@ -309,10 +296,9 @@ class _RecipeName extends StatelessWidget {
             ),
             // 将文字包裹在 TextSizer 中，并限制其最大宽度
             // 同时传入计算出的目标宽度
-            Positioned.fill( // Positioned.fill 确保文字区域也填充 Stack 空间
-              child: Align(
-                  child: _buildTextLabel()
-              ),
+            Positioned.fill(
+              // Positioned.fill 确保文字区域也填充 Stack 空间
+              child: Align(child: _buildTextLabel()),
             ),
           ],
         );
@@ -338,7 +324,7 @@ class _RecipeName extends StatelessWidget {
   // 默认文字样式（私有方法）
   static TextStyle _defaultTextStyle() {
     return const TextStyle(
-      fontSize: 12,
+      fontSize: 14,
       fontWeight: FontWeight.w700, // 稳定字体渲染
       color: AppColors.recipeTitle,
     ).copyWith(
@@ -376,11 +362,13 @@ class _RightSection extends StatelessWidget {
       flex: 2, // 占横向2/3比例
       child: Column(
         children: [
-          Expanded( // 将 ingredientsWidget 包裹在 Expanded 中以占用剩余空间
+          Expanded(
+            // 将 ingredientsWidget 包裹在 Expanded 中以占用剩余空间
             flex: 50, // 与原来的比例一致
             child: ingredientsWidget,
           ),
-          Expanded( // 将状态指示器也包裹在 Expanded 中
+          Expanded(
+            // 将状态指示器也包裹在 Expanded 中
             flex: 40, // 与原来的比例一致
             child: _StatusIndicators(
               health: recipe.health,
@@ -393,7 +381,6 @@ class _RightSection extends StatelessWidget {
     );
   }
 }
-
 
 /// ---------------------- 状态指示器行 ----------------------
 class _StatusIndicators extends StatelessWidget {
@@ -410,16 +397,16 @@ class _StatusIndicators extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.only(bottom: 6),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _StatusIndicator(imagePath: 'status_health_64', value: health),
-            _StatusIndicator(imagePath: 'status_hunger_64', value: hunger),
-            _StatusIndicator(imagePath: 'status_sanity_64', value: sanity),
-          ],
-        ),
-      );
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _StatusIndicator(imagePath: 'status_health_64', value: health),
+          _StatusIndicator(imagePath: 'status_hunger_64', value: hunger),
+          _StatusIndicator(imagePath: 'status_sanity_64', value: sanity),
+        ],
+      ),
+    );
   }
 }
 

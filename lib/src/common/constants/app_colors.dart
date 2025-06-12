@@ -35,7 +35,11 @@ class AppColors {
   static const Color danger = Color(0xFFDC3545);
 
   // 中性色
-  static const Color gray100 = Color(0xFFF8F9FA);
+  static const Color gray100 = Color(0xFFF5F5F5);
+  static const Color gray200 = Color(0xFFEEEEEE);
+  static const Color gray300 = Color(0xFFE0E0E0);
+  static const Color gray400 = Color(0xFFBDBDBD);
+  static const Color gray500 = Color(0xFF9E9E9E);
   static const Color gray600 = Color(0xFF6C757D);
   static const Color gray900 = Color(0xFF212529);
 }

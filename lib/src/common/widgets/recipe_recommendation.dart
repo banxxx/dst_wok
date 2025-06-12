@@ -18,8 +18,8 @@ class RecipeRecommendation extends StatelessWidget {
         builder: (context, constraints) {
           return ConstrainedBox( // 使用 ConstrainedBox 来限制最大高度
             constraints: const BoxConstraints(
-              maxHeight: 80, // 设置你希望的最大高度值
-              maxWidth: 350
+              maxHeight: 60, // 设置你希望的最大高度值
+              maxWidth: 300
             ),
             child: Row(
               // mainAxisSize: MainAxisSize.min,

@@ -129,8 +129,9 @@ class _CraftingScreenState extends State<CraftingScreen> {
                 (context) => IconButton(
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(), // 可选：移除默认的最小点击区域约束
-                  icon: Padding( // 在图标外部添加 padding
-                    padding: const EdgeInsets.only(right: 16.0),
+                  icon: Padding(
+                    // 在图标外部添加 padding
+                    padding: const EdgeInsets.only(right: 12.0),
                     child: SvgPicture.asset(
                       'assets/setting/list-ui-mono.svg', // 使用 SVG 图标
                       width: 38,
@@ -141,6 +142,9 @@ class _CraftingScreenState extends State<CraftingScreen> {
                     FocusScope.of(context).unfocus(); // 点击抽屉按钮也收起键盘
                     Scaffold.of(context).openEndDrawer();
                   },
+                  hoverColor: Colors.transparent, // 移除悬停背景色
+                  highlightColor: Colors.transparent, // 移除按压高亮色
+                  splashColor: Colors.transparent, // 移除水波纹效果
                 ),
           ),
         ],
@@ -201,6 +205,7 @@ class _CraftingScreenState extends State<CraftingScreen> {
                       _showSortOptions(context); // 显示排序选项底部弹窗
                     },
                     // 根据需要调整按钮的视觉样式
+                    splashColor: Colors.transparent, // 移除水波纹效果
                     padding: EdgeInsets.zero, // 移除默认内边距
                     tooltip: '筛选食谱', // 长按提示
                   ),
@@ -280,39 +285,26 @@ class _CraftingScreenState extends State<CraftingScreen> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext bc) {
-        return SafeArea( // 确保内容不会被系统 UI 遮挡
-          child: Wrap( // Wrap 会根据内容自动调整高度
+        return SafeArea(
+          // 确保内容不会被系统 UI 遮挡
+          child: Wrap(
+            // Wrap 会根据内容自动调整高度
             children: <Widget>[
               // 标题
               ListTile(
                 title: Text(
                   '排序方式',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
               // const Divider(), // 分隔线
               // 按生命值排序选项
-              _buildSortOptionTile(
-                context,
-                SortField.health,
-                '生命值',
-              ),
+              _buildSortOptionTile(context, SortField.health, '生命值'),
               // 按饱食度排序选项
-              _buildSortOptionTile(
-                context,
-                SortField.hunger,
-                '饱食度',
-              ),
+              _buildSortOptionTile(context, SortField.hunger, '饱食度'),
               // 按 San 值排序选项
-              _buildSortOptionTile(
-                context,
-                SortField.sanity,
-                'San值',
-              ),
+              _buildSortOptionTile(context, SortField.sanity, 'San值'),
             ],
           ),
         );
@@ -321,14 +313,21 @@ class _CraftingScreenState extends State<CraftingScreen> {
   }
 
   // 构建单个排序选项的 ListTile
-  Widget _buildSortOptionTile(BuildContext context, SortField field, String title) {
+  Widget _buildSortOptionTile(
+    BuildContext context,
+    SortField field,
+    String title,
+  ) {
     // 判断当前是否选中该字段
     bool isSelectedField = _currentSortField == field;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 0.0), // 减小垂直内边距
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 25.0,
+            vertical: 0.0,
+          ), // 减小垂直内边距
           title: Text(
             title,
             style: TextStyle(
@@ -337,18 +336,20 @@ class _CraftingScreenState extends State<CraftingScreen> {
               color: isSelectedField ? Theme.of(context).primaryColor : null,
             ),
           ),
-          trailing: isSelectedField
-              ? (_currentSortOrder == SortOrder.ascending
-              ? const Icon(Icons.arrow_upward)
-              : const Icon(Icons.arrow_downward))
-              : null, // 未选中时不显示图标
+          trailing:
+              isSelectedField
+                  ? (_currentSortOrder == SortOrder.ascending
+                      ? const Icon(Icons.arrow_upward)
+                      : const Icon(Icons.arrow_downward))
+                  : null, // 未选中时不显示图标
           onTap: () {
             // 如果点击的是当前已选字段，则切换排序顺序
             if (isSelectedField) {
               setState(() {
-                _currentSortOrder = _currentSortOrder == SortOrder.ascending
-                    ? SortOrder.descending
-                    : SortOrder.ascending;
+                _currentSortOrder =
+                    _currentSortOrder == SortOrder.ascending
+                        ? SortOrder.descending
+                        : SortOrder.ascending;
               });
             } else {
               // 如果点击的是新的字段，则切换字段并重置排序顺序为降序 (或你希望的默认顺序)

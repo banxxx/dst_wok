@@ -34,4 +34,6 @@ class VerticalLabel extends StatelessWidget {
     ),
   )
       .toList();
+
+  const VerticalLabel({super.key});
 }

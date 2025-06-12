@@ -7,23 +7,34 @@ on:
       - 'v*.*.*'  # 触发条件：推送 v 开头的标签 (如 v1.0.0)
 
 jobs:
+  # 提取版本号（所有平台共用）
+  extract-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+    steps:
+      - name: Extract version from tag
+        id: get-version
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            VERSION="${{ github.ref_name }}"
+          else
+            VERSION="dev-$(date +%Y%m%d-%H%M%S)"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Extracted version: $VERSION"
+
   build-android:
     runs-on: ubuntu-latest
+    needs: extract-version
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
-          accept-licenses: true
-          components: |
-            ndk;29.0.13113456
-            cmake;3.22.1
-
-      - name: Accept NDK Licenses (强制措施)
-        run: |
-          yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses
-          ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "ndk;29.0.13113456"
+          distribution: 'zulu'
+          java-version: '17'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -31,67 +42,280 @@ jobs:
           channel: stable
           flutter-version: 3.29.3
 
-      - name: Build Android APK
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept NDK Licenses
         run: |
-          flutter build apk --release
-          # 重命名 APK 文件
-          mv build/app/outputs/apk/release/app-release.apk dstwok_android_${{ steps.extract-version.outputs.version }}.apk
+          yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses
+          ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "ndk;29.0.13113456"
+
+      - name: Flutter Dependencies
+        run: flutter pub get
+
+      - name: Build Android APK
+        run: flutter build apk --release
+
+      - name: Rename APK
+        run: |
+          mv build/app/outputs/apk/release/app-release.apk dstwok_android_${{ needs.extract-version.outputs.version }}.apk
 
       - uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: dstwok_android_${{ steps.extract-version.outputs.version }}.apk
+          path: dstwok_android_${{ needs.extract-version.outputs.version }}.apk
 
   build-ios:
     runs-on: macos-latest
+    needs: extract-version
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
+          channel: stable
+          flutter-version: 3.29.3
           architecture: x64
-      - run: flutter pub get
 
-      - run: pod repo update
+      - name: Flutter Dependencies
+        run: flutter pub get
+
+      - name: Update CocoaPods
+        run: pod repo update
         working-directory: ios
 
-      - run: flutter build ios --release --no-codesign
-          
-      - run: mkdir Payload
-        working-directory: build/ios/iphoneos
+      - name: Build iOS
+        run: flutter build ios --release --no-codesign
 
-      - run: mv Runner.app/ Payload
-        working-directory: build/ios/iphoneos
-
-      - name: Zip output
+      - name: Create IPA
         run: |
           cd build/ios/iphoneos
-          zip -qq -r -9 dstwok_ios_${{ steps.extract-version.outputs.version }}.ipa Payload
+          mkdir Payload
+          mv Runner.app/ Payload
+          zip -qq -r -9 dstwok_ios_${{ needs.extract-version.outputs.version }}.ipa Payload
 
       - uses: actions/upload-artifact@v4
         with:
           name: ios-ipa
-          path: build/ios/iphoneos/dstwok_ios_${{ steps.extract-version.outputs.version }}.ipa
+          path: build/ios/iphoneos/dstwok_ios_${{ needs.extract-version.outputs.version }}.ipa
+
+  build-windows:
+    runs-on: windows-latest
+    needs: extract-version
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.29.3
+
+      - name: Enable Windows Desktop
+        run: flutter config --enable-windows-desktop
+
+      - name: Flutter Dependencies
+        run: flutter pub get
+
+      - name: Build Windows
+        run: flutter build windows --release
+
+      - name: Create Windows Archive
+        run: |
+          cd build/windows/x64/runner/Release
+          7z a -tzip dstwok_windows_${{ needs.extract-version.outputs.version }}.zip .
+          move dstwok_windows_${{ needs.extract-version.outputs.version }}.zip ../../../../../
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-zip
+          path: dstwok_windows_${{ needs.extract-version.outputs.version }}.zip
+
+  build-windows-installer:
+    runs-on: windows-latest
+    needs: extract-version
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.29.3
+
+      - name: Enable Windows Desktop
+        run: flutter config --enable-windows-desktop
+
+      - name: Flutter Dependencies
+        run: flutter pub get
+
+      - name: Build Windows
+        run: flutter build windows --release
+
+      - name: Install NSIS (Nullsoft Scriptable Install System)
+        run: |
+          choco install nsis -y
+          refreshenv
+
+      - name: Create NSIS Script
+        run: |
+          $nsisScript = @"
+          !define APP_NAME "DST Wok"
+          !define VERSION "${{ needs.extract-version.outputs.version }}"
+          !define PUBLISHER "Your Company"
+          !define WEB_SITE "https://github.com/${{ github.repository }}"
+          !define APP_EXE "dstwok.exe"
+          !define INSTALL_DIR "`$PROGRAMFILES64\`${APP_NAME}"
+          
+          VIProductVersion "`${VERSION}.0"
+          VIAddVersionKey ProductName "`${APP_NAME}"
+          VIAddVersionKey Comments "A Flutter Windows application"
+          VIAddVersionKey CompanyName "`${PUBLISHER}"
+          VIAddVersionKey FileDescription "`${APP_NAME}"
+          VIAddVersionKey FileVersion "`${VERSION}"
+          VIAddVersionKey ProductVersion "`${VERSION}"
+          VIAddVersionKey InternalName "`${APP_NAME}"
+          VIAddVersionKey LegalCopyright "`${PUBLISHER}"
+          VIAddVersionKey OriginalFilename "`${APP_EXE}"
+          
+          SetCompressor lzma
+          
+          Name "`${APP_NAME}"
+          Caption "`${APP_NAME}"
+          OutFile "dstwok_windows_installer_`${VERSION}.exe"
+          InstallDir "`${INSTALL_DIR}"
+          InstallDirRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\`${APP_NAME}" "InstallLocation"
+          
+          !include "MUI2.nsh"
+          
+          !define MUI_ABORTWARNING
+          !define MUI_ICON "`${NSISDIR}\Contrib\Graphics\Icons\modern-install.ico"
+          
+          !insertmacro MUI_PAGE_WELCOME
+          !insertmacro MUI_PAGE_LICENSE "LICENSE"
+          !insertmacro MUI_PAGE_DIRECTORY
+          !insertmacro MUI_PAGE_INSTFILES
+          
+          !define MUI_FINISHPAGE_RUN "`$INSTDIR\`${APP_EXE}"
+          !insertmacro MUI_PAGE_FINISH
+          
+          !insertmacro MUI_UNPAGE_WELCOME
+          !insertmacro MUI_UNPAGE_CONFIRM
+          !insertmacro MUI_UNPAGE_INSTFILES
+          !insertmacro MUI_UNPAGE_FINISH
+          
+          !insertmacro MUI_LANGUAGE "English"
+          
+          Section "MainSection" SEC01
+            SetOutPath "`$INSTDIR"
+            SetOverwrite ifnewer
+            File /r "build\windows\x64\runner\Release\*"
+            CreateDirectory "`$SMPROGRAMS\`${APP_NAME}"
+            CreateShortCut "`$SMPROGRAMS\`${APP_NAME}\`${APP_NAME}.lnk" "`$INSTDIR\`${APP_EXE}"
+            CreateShortCut "`$DESKTOP\`${APP_NAME}.lnk" "`$INSTDIR\`${APP_EXE}"
+          SectionEnd
+          
+          Section -AdditionalIcons
+            WriteIniStr "`$INSTDIR\`${APP_NAME}.url" "InternetShortcut" "URL" "`${WEB_SITE}"
+            CreateShortCut "`$SMPROGRAMS\`${APP_NAME}\Website.lnk" "`$INSTDIR\`${APP_NAME}.url"
+            CreateShortCut "`$SMPROGRAMS\`${APP_NAME}\Uninstall.lnk" "`$INSTDIR\uninst.exe"
+          SectionEnd
+          
+          Section -Post
+            WriteUninstaller "`$INSTDIR\uninst.exe"
+            WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\`${APP_NAME}" "DisplayName" "`$(^Name)"
+            WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\`${APP_NAME}" "UninstallString" "`$INSTDIR\uninst.exe"
+            WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\`${APP_NAME}" "DisplayIcon" "`$INSTDIR\`${APP_EXE}"
+            WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\`${APP_NAME}" "DisplayVersion" "`${VERSION}"
+            WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\`${APP_NAME}" "URLInfoAbout" "`${WEB_SITE}"
+            WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\`${APP_NAME}" "Publisher" "`${PUBLISHER}"
+          SectionEnd
+          
+          Function un.onUninstSuccess
+            HideWindow
+            MessageBox MB_ICONINFORMATION|MB_OK "Application was successfully removed from your computer."
+          FunctionEnd
+          
+          Function un.onInit
+            MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Are you sure you want to completely remove `$(^Name) and all of its components?" IDYES +2
+            Abort
+          FunctionEnd
+          
+          Section Uninstall
+            Delete "`$INSTDIR\`${APP_NAME}.url"
+            Delete "`$INSTDIR\uninst.exe"
+            Delete "`$INSTDIR\*.dll"
+            Delete "`$INSTDIR\*.exe"
+            Delete "`$INSTDIR\*"
+          
+            Delete "`$SMPROGRAMS\`${APP_NAME}\Uninstall.lnk"
+            Delete "`$SMPROGRAMS\`${APP_NAME}\Website.lnk"
+            Delete "`$DESKTOP\`${APP_NAME}.lnk"
+            Delete "`$SMPROGRAMS\`${APP_NAME}\`${APP_NAME}.lnk"
+          
+            RMDir "`$SMPROGRAMS\`${APP_NAME}"
+            RMDir "`$INSTDIR"
+          
+            DeleteRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\`${APP_NAME}"
+          SectionEnd
+          "@
+          
+          # 创建 LICENSE 文件（如果不存在）
+          if (!(Test-Path "LICENSE")) {
+            "MIT License" | Out-File -FilePath "LICENSE" -Encoding utf8
+          }
+          
+          # 保存 NSIS 脚本
+          $nsisScript | Out-File -FilePath "installer.nsi" -Encoding utf8
+
+      - name: Build Installer
+        run: |
+          $env:PATH += ";C:\Program Files (x86)\NSIS"
+          makensis installer.nsi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: dstwok_windows_installer_${{ needs.extract-version.outputs.version }}.exe
 
   create-release:
     runs-on: ubuntu-latest
-    needs: [build-android, build-ios]
+    needs: [extract-version, build-android, build-ios, build-windows, build-windows-installer]
     steps:
       - uses: actions/download-artifact@v4
         with:
           path: artifacts
 
+      - name: List artifacts
+        run: find artifacts -type f -name "*" | sort
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ steps.extract-version.outputs.version }}
-          name: dstwok ${{ steps.extract-version.outputs.version }}
+          tag_name: ${{ needs.extract-version.outputs.version }}
+          name: DST Wok ${{ needs.extract-version.outputs.version }}
           body: |
-            ### Multi-Platform Release
-            - Android: dstwok_android_${{ steps.extract-version.outputs.version }}.apk
-            - iOS (Unsigned): dstwok_ios_${{ steps.extract-version.outputs.version }}.ipa
+            ### 🚀 Multi-Platform Release
+            
+            **Downloads:**
+            - 📱 **Android**: `dstwok_android_${{ needs.extract-version.outputs.version }}.apk`
+            - 🍎 **iOS** (Unsigned): `dstwok_ios_${{ needs.extract-version.outputs.version }}.ipa`
+            - 💻 **Windows** (Portable): `dstwok_windows_${{ needs.extract-version.outputs.version }}.zip`
+            - 🔧 **Windows** (Installer): `dstwok_windows_installer_${{ needs.extract-version.outputs.version }}.exe`
+            
+            **Installation Instructions:**
+            - **Android**: Download APK and install (allow unknown sources)
+            - **iOS**: Requires signing with your own certificate
+            - **Windows (Portable)**: Extract ZIP and run `dstwok.exe`
+            - **Windows (Installer)**: Run installer for system-wide installation
+            
+            ---
+            Built with Flutter ${{ github.sha }}
           files: |
-            artifacts/android-apk/dstwok_android_${{ steps.extract-version.outputs.version }}.apk
-            artifacts/ios-ipa/dstwok_ios_${{ steps.extract-version.outputs.version }}.ipa
+            artifacts/android-apk/dstwok_android_${{ needs.extract-version.outputs.version }}.apk
+            artifacts/ios-ipa/dstwok_ios_${{ needs.extract-version.outputs.version }}.ipa
+            artifacts/windows-zip/dstwok_windows_${{ needs.extract-version.outputs.version }}.zip
+            artifacts/windows-installer/dstwok_windows_installer_${{ needs.extract-version.outputs.version }}.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

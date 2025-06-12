@@ -15,6 +15,42 @@ class RecipeDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 获取屏幕宽度
+    final screenWidth = MediaQuery.of(context).size.width;
+    double maxWidthRatio = 1; // 默认100%
+
+    // 多种设备判断
+    switch (screenWidth) {
+      case < 360: // 小屏手机
+        maxWidthRatio = 0.98;
+        break;
+      case < 480: // 普通手机
+        maxWidthRatio = 0.92;
+        break;
+      case < 600: // 大屏手机
+        maxWidthRatio = 0.86;
+        break;
+      case < 768: // 小屏平板
+        maxWidthRatio = 0.78;
+        break;
+      case < 992: // 普通平板
+        maxWidthRatio = 0.72;
+        break;
+      case < 1200: // 大屏平板
+        maxWidthRatio = 0.68;
+        break;
+      case < 1440: // 小屏电脑
+        maxWidthRatio = 0.64;
+        break;
+      case < 1920: // 普通电脑
+        maxWidthRatio = 0.62;
+        break;
+      default: // 超大屏幕
+        maxWidthRatio = 0.6;
+    }
+
+    final maxWidth = screenWidth * maxWidthRatio;
+
     return Scaffold(
       appBar: CustomAppBar(title: const Text('')),
       body: SafeArea(
@@ -26,9 +62,18 @@ class RecipeDetails extends StatelessWidget {
             children: [
               _buildRecipeImage(),
               if (recipe.favorites.isNotEmpty || recipe.desc.isNotEmpty)
-                _buildRecipeDocs(),
-              _buildRecipeInfo(),
-              _buildRecipeDesc(),
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: maxWidth),
+                  child: _buildRecipeDocs(),
+                ),
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: maxWidth),
+                child: _buildRecipeInfo(),
+              ),
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: maxWidth),
+                child: _buildRecipeDesc(),
+              ),
               _buildRecipeRecommend(),
               // _buildBottomImage(),
               // 可以继续添加更多内容
@@ -318,15 +363,4 @@ class RecipeDetails extends StatelessWidget {
     );
   }
 
-  // Widget _buildBottomImage() {
-  //   return Padding(
-  //     padding: const EdgeInsets.only(top: 40), // 顶部间距
-  //     child: Image.asset(
-  //       'assets/setting/bg.png', // 图片路径
-  //       width: double.infinity, // 全屏宽度
-  //       fit: BoxFit.cover, // 图片填充方式
-  //       height: 120, // 固定高度
-  //     ),
-  //   );
-  // }
 }
