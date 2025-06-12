@@ -312,7 +312,7 @@ jobs:
             Built with Flutter ${{ github.sha }}
           files: |
             artifacts/android-apk/dstwok_android_${{ needs.extract-version.outputs.version }}.apk
-            artifacts/ios-ipa/dstwok_ios_${{ needs.extract-version.outputs.version }}.ipa
+            artifacts/ios-ipa/dstwok_ios_no_sign_${{ needs.extract-version.outputs.version }}.ipa
             artifacts/windows-zip/dstwok_windows_${{ needs.extract-version.outputs.version }}.zip
             artifacts/windows-installer/dstwok_windows_installer_${{ needs.extract-version.outputs.version }}.exe
         env:
