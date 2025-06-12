@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
-        android:label="dst_wok"
+        android:label="饥锅"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

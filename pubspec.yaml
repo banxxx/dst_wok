@@ -34,7 +34,6 @@ dependencies:
   window_manager: ^0.4.2
   # svg支持
   flutter_svg: ^2.0.9
-  desktop_multi_window: ^0.2.0
 
 dev_dependencies:
   flutter_test:

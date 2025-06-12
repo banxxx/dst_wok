@@ -13,9 +13,7 @@
 migrate_working_dir/
 .metadata
 .packages
-pubspec.lock
 devtools_options.yaml
-analysis_options.yaml
 
 # IntelliJ related
 *.iml

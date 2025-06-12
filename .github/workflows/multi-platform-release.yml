@@ -194,8 +194,9 @@ jobs:
           !define VERSION "$originalVersion"
           !define PUBLISHER "Your Company"
           !define WEB_SITE "https://github.com/${{ github.repository }}"
-          !define APP_EXE "dstwok.exe"
+          !define APP_EXE "dst_wok.exe"
           !define INSTALL_DIR "`$PROGRAMFILES64\`${APP_NAME}"
+          !define MUI_ICON "static\icons\installer_icon.ico"
           
           VIProductVersion "$numericVersion"
           VIAddVersionKey ProductName "`${APP_NAME}"
@@ -219,7 +220,6 @@ jobs:
           !include "MUI2.nsh"
           
           !define MUI_ABORTWARNING
-          !define MUI_ICON "`${NSISDIR}\Contrib\Graphics\Icons\modern-install.ico"
           
           !insertmacro MUI_PAGE_WELCOME
           !insertmacro MUI_PAGE_LICENSE "LICENSE"
@@ -243,12 +243,6 @@ jobs:
             CreateDirectory "`$SMPROGRAMS\`${APP_NAME}"
             CreateShortCut "`$SMPROGRAMS\`${APP_NAME}\`${APP_NAME}.lnk" "`$INSTDIR\`${APP_EXE}"
             CreateShortCut "`$DESKTOP\`${APP_NAME}.lnk" "`$INSTDIR\`${APP_EXE}"
-          SectionEnd
-          
-          Section -AdditionalIcons
-            WriteIniStr "`$INSTDIR\`${APP_NAME}.url" "InternetShortcut" "URL" "`${WEB_SITE}"
-            CreateShortCut "`$SMPROGRAMS\`${APP_NAME}\Website.lnk" "`$INSTDIR\`${APP_NAME}.url"
-            CreateShortCut "`$SMPROGRAMS\`${APP_NAME}\Uninstall.lnk" "`$INSTDIR\uninst.exe"
           SectionEnd
           
           Section -Post
@@ -310,6 +304,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [extract-version, build-android, build-ios, build-windows, build-windows-installer]
     steps:
+      - uses: actions/checkout@v4
+
       - uses: actions/download-artifact@v4
         with:
           path: artifacts
@@ -317,31 +313,28 @@ jobs:
       - name: List artifacts
         run: find artifacts -type f -name "*" | sort
 
+      - name: Read Release Notes
+        id: read_notes
+        run: |
+          if [ -f "RELEASE_NOTES.md" ]; then # 检查文件是否存在
+            NOTES=$(cat RELEASE_NOTES.md) # 读取文件内容
+            echo "release_notes_body<<EOF" >> $GITHUB_OUTPUT # 使用多行字符串输出方式
+            echo "$NOTES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "release_notes_body=No release notes file (RELEASE_NOTES.md) found for this version." >> $GITHUB_OUTPUT # 如果文件不存在，提供默认信息
+          fi
+        shell: bash # 明确使用 bash shell，因为默认在 Ubuntu runner 上。
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ needs.extract-version.outputs.version }}
-          name: DST Wok ${{ needs.extract-version.outputs.version }}
-          body: |
-            ### 🚀 Multi-Platform Release
-            
-            **Downloads:**
-            - 📱 **Android**: `dstwok_android_${{ needs.extract-version.outputs.version }}.apk`
-            - 🍎 **iOS** (Unsigned): `dstwok_ios_${{ needs.extract-version.outputs.version }}.ipa`
-            - 💻 **Windows** (Portable): `dstwok_windows_${{ needs.extract-version.outputs.version }}.zip`
-            - 🔧 **Windows** (Installer): `dstwok_windows_installer_${{ needs.extract-version.outputs.version }}.exe`
-            
-            **Installation Instructions:**
-            - **Android**: Download APK and install (allow unknown sources)
-            - **iOS**: Requires signing with your own certificate
-            - **Windows (Portable)**: Extract ZIP and run `dstwok.exe`
-            - **Windows (Installer)**: Run installer for system-wide installation
-            
-            ---
-            Built with Flutter ${{ github.sha }}
+          name: ${{ needs.extract-version.outputs.version }}
+          body: ${{ steps.read_notes.outputs.release_notes_body }}
           files: |
             artifacts/android-apk/dstwok_android_${{ needs.extract-version.outputs.version }}.apk
-            artifacts/ios-ipa/dstwok_ios_no_sign_${{ needs.extract-version.outputs.version }}.ipa
+            artifacts/ios-ipa/dstwok_ios_${{ needs.extract-version.outputs.version }}.ipa
             artifacts/windows-zip/dstwok_windows_${{ needs.extract-version.outputs.version }}.zip
             artifacts/windows-installer/dstwok_windows_installer_${{ needs.extract-version.outputs.version }}.exe
         env:
