@@ -153,30 +153,57 @@ jobs:
       - name: Build Windows
         run: flutter build windows --release
 
-      # 移除了 NSIS 安装和创建脚本的步骤，因为脚本是在下面动态生成的
-      
       - name: Create NSIS Script and Build Installer
+        # 明确指定使用 powershell 作为脚本解释器
+        shell: powershell
+        # 'run:' 后面使用 '|' 符号，表示这是一个多行脚本。
+        # 注意：下面所有脚本行的缩进都必须比 'run:' 更深一级。
         run: |
-          # NSIS 预装在 'C:\Program Files (x86)\NSIS'，将其路径添加到环境变量中
-          # 使用 $GITHUB_PATH 是 GitHub Actions 的标准做法，能让后续所有 run 步骤都识别到
+          # 将 NSIS 的路径添加到环境变量，确保 makensis 命令能被找到
           echo "C:\Program Files (x86)\NSIS" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           
-          # --- 下面是你原来的 NSIS 脚本生成逻辑，保持不变 ---
+          # --- 为 NSIS 清理和生成一个纯数字的版本号 ---
+          $originalVersion = "${{ needs.extract-version.outputs.version }}"
+          $numericVersion = ""
+          
+          if ($originalVersion.StartsWith("dev-")) {
+              # 对于 dev 构建，我们使用 GitHub Actions 的运行编号来创建一个唯一的数字版本
+              $numericVersion = "0.0.1.${{ github.run_number }}"
+          } else {
+              # 对于 tag 构建 (例如 "v1.2.3")，我们将其转换为 "1.2.3.0"
+              $cleanVersion = $originalVersion.TrimStart("v")
+              $parts = $cleanVersion.Split('.')
+              while ($parts.Length -lt 4) {
+                  $cleanVersion += ".0"
+                  $parts = $cleanVersion.Split('.')
+              }
+              if ($parts.Length -gt 4) {
+                  $numericVersion = ($parts[0..3] -join '.')
+              } else {
+                  $numericVersion = $cleanVersion
+              }
+          }
+          
+          Write-Host "Original Version for display: $originalVersion"
+          Write-Host "Sanitized Numeric Version for NSIS: $numericVersion"
+          
+          # --- 生成 NSIS 脚本 ---
+          # 注意：VIProductVersion 和 FileVersion 现在使用了新的 $numericVersion 变量
           $nsisScript = @"
           !define APP_NAME "DST Wok"
-          !define VERSION "${{ needs.extract-version.outputs.version }}"
+          !define VERSION "$originalVersion"
           !define PUBLISHER "Your Company"
           !define WEB_SITE "https://github.com/${{ github.repository }}"
           !define APP_EXE "dstwok.exe"
           !define INSTALL_DIR "`$PROGRAMFILES64\`${APP_NAME}"
           
-          VIProductVersion "`${VERSION}.0"
+          VIProductVersion "$numericVersion"
           VIAddVersionKey ProductName "`${APP_NAME}"
           VIAddVersionKey Comments "A Flutter Windows application"
           VIAddVersionKey CompanyName "`${PUBLISHER}"
           VIAddVersionKey FileDescription "`${APP_NAME}"
-          VIAddVersionKey FileVersion "`${VERSION}"
-          VIAddVersionKey ProductVersion "`${VERSION}"
+          VIAddVersionKey FileVersion "$numericVersion"
+          VIAddVersionKey ProductVersion "$numericVersion"
           VIAddVersionKey InternalName "`${APP_NAME}"
           VIAddVersionKey LegalCopyright "`${PUBLISHER}"
           VIAddVersionKey OriginalFilename "`${APP_EXE}"
@@ -250,26 +277,28 @@ jobs:
             Delete "`$INSTDIR\*.dll"
             Delete "`$INSTDIR\*.exe"
             Delete "`$INSTDIR\*"
-            
+          
             Delete "`$SMPROGRAMS\`${APP_NAME}\Uninstall.lnk"
             Delete "`$SMPROGRAMS\`${APP_NAME}\Website.lnk"
             Delete "`$DESKTOP\`${APP_NAME}.lnk"
             Delete "`$SMPROGRAMS\`${APP_NAME}\`${APP_NAME}.lnk"
-            
+          
             RMDir "`$SMPROGRAMS\`${APP_NAME}"
             RMDir "`$INSTDIR"
-            
+          
             DeleteRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\`${APP_NAME}"
           SectionEnd
           "@
           
+          # 创建 LICENSE 文件（如果不存在）
           if (!(Test-Path "LICENSE")) {
             "MIT License" | Out-File -FilePath "LICENSE" -Encoding utf8
           }
           
+          # 将 PowerShell 变量中的脚本内容写入 .nsi 文件
           $nsisScript | Out-File -FilePath "installer.nsi" -Encoding utf8
-
-          # --- 直接运行构建命令 ---
+          
+          # --- 运行 NSIS 编译命令 ---
           makensis installer.nsi
 
       - uses: actions/upload-artifact@v4
