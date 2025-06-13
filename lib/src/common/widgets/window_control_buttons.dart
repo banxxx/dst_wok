@@ -1,5 +1,4 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:dst_wok/src/common/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:window_manager/window_manager.dart';
@@ -12,15 +11,11 @@ class WindowControlButtons extends StatefulWidget {
 }
 
 class _WindowControlButtonsState extends State<WindowControlButtons> {
-  // 手动管理状态
-  bool _isMaximized = false;
   bool _isAlwaysOnTop = false;
 
   @override
   void initState() {
     super.initState();
-    // 初始状态获取
-    _isMaximized = appWindow.isMaximized;
     _initAlwaysOnTopState();
   }
 
@@ -36,12 +31,6 @@ class _WindowControlButtonsState extends State<WindowControlButtons> {
     } catch (e) {
       debugPrint('获取置顶状态失败: $e');
     }
-  }
-
-  void _updateMaximizeState() {
-    setState(() {
-      _isMaximized = !appWindow.isMaximized;
-    });
   }
 
   // 切换置顶状态

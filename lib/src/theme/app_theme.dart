@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../common/constants/app_colors.dart';
+import '../common/constants/custom_colors.dart';
 
 /// 主题配置文件
 class AppTheme {
@@ -9,26 +10,21 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.blue,
+        seedColor: Colors.brown,
         brightness: Brightness.light,
-        primary: Colors.blue,
-        secondary: Colors.orange,
+        primary: Colors.brown,
+        secondary: Colors.brown,
       ),
       textTheme: _buildTextTheme(),
       appBarTheme: const AppBarTheme(
         centerTitle: true,
         backgroundColor: AppColors.homeBg,
-        elevation: 2,
-          actionsIconTheme: IconThemeData.fallback(
-
-          )
       ),
-      extensions: <ThemeExtension<dynamic>>{
-        CustomColors(
-          success: Colors.green,
-          warning: Colors.amber,
-        ),
-      },
+      iconTheme: const IconThemeData(
+        color: AppColors.gray800, // 设置图标颜色
+      ),
+      cardColor: AppColors.cardBg,
+      extensions: <ThemeExtension<dynamic>>{CustomColors.light()},
     );
   }
 
@@ -42,62 +38,24 @@ class AppTheme {
         primary: Colors.blueGrey,
         secondary: Colors.amber,
       ),
-      textTheme: _buildTextTheme().apply(
-        bodyColor: Colors.white,
-        displayColor: Colors.white,
+      textTheme: _buildTextTheme(),
+      appBarTheme: const AppBarTheme(
+        centerTitle: true,
+        backgroundColor: AppColors.homeBgDark,
       ),
-      extensions: <ThemeExtension<dynamic>>{
-        CustomColors(
-          success: Colors.lightGreen,
-          warning: Colors.yellow,
-        ),
-      },
+      iconTheme: const IconThemeData(
+        color: AppColors.searchIconDark, // 设置图标颜色
+      ),
+      cardColor: AppColors.cardBgDark,
+      extensions: <ThemeExtension<dynamic>>{CustomColors.dark()},
     );
   }
 
   // 文字样式统一配置
   static TextTheme _buildTextTheme() {
     return TextTheme(
-      titleLarge: TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w600,
-      ),
-      bodyLarge: TextStyle(
-        fontSize: 16,
-        height: 1.5,
-      ),
-    );
-  }
-}
-
-// 自定义扩展颜色
-class CustomColors extends ThemeExtension<CustomColors> {
-  final Color success;
-  final Color warning;
-
-  const CustomColors({
-    required this.success,
-    required this.warning,
-  });
-
-  @override
-  ThemeExtension<CustomColors> copyWith({
-    Color? success,
-    Color? warning,
-  }) {
-    return CustomColors(
-      success: success ?? this.success,
-      warning: warning ?? this.warning,
-    );
-  }
-
-  @override
-  ThemeExtension<CustomColors> lerp(
-      ThemeExtension<CustomColors>? other, double t) {
-    if (other is! CustomColors) return this;
-    return CustomColors(
-      success: Color.lerp(success, other.success, t)!,
-      warning: Color.lerp(warning, other.warning, t)!,
+      titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+      bodyLarge: TextStyle(fontSize: 16, height: 1.5),
     );
   }
 }

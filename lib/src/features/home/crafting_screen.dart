@@ -1,12 +1,14 @@
+import 'package:dst_wok/src/common/constants/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../routes/route_names.dart';
 import '../../common/enums/cooking_method.dart';
-import '../drawer/app_end_drawer.dart';
-import 'method_selector.dart';
 import '../../models/base_recipe.dart';
 import '../../repositories/recipe_repository.dart';
+import '../drawer/app_end_drawer.dart';
+import 'method_selector.dart';
 import 'recipe_selector.dart';
 
 /// 定义排序字段的枚举
@@ -108,6 +110,7 @@ class _CraftingScreenState extends State<CraftingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       appBar: AppBar(
         toolbarHeight: 80, // 高度
         // 烹饪方式选择区域
@@ -174,13 +177,16 @@ class _CraftingScreenState extends State<CraftingScreen> {
                       controller: _searchController,
                       decoration: InputDecoration(
                         // hintText: '搜索食谱名称',
-                        prefixIcon: Icon(Icons.search),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Theme.of(context).iconTheme.color,
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.0),
                           borderSide: BorderSide.none, // 可选，去除边框
                         ),
                         filled: true, // 可选，填充背景颜色
-                        fillColor: Colors.grey[200], // 可选，背景颜色
+                        fillColor: Theme.of(context).cardColor, // 可选，背景颜色
                         contentPadding: EdgeInsets.symmetric(
                           vertical: 8.0,
                           horizontal: 10.0,
@@ -295,7 +301,7 @@ class _CraftingScreenState extends State<CraftingScreen> {
                 title: Text(
                   '排序方式',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,),
                 ),
               ),
               // const Divider(), // 分隔线
@@ -320,6 +326,7 @@ class _CraftingScreenState extends State<CraftingScreen> {
   ) {
     // 判断当前是否选中该字段
     bool isSelectedField = _currentSortField == field;
+    final customColors = Theme.of(context).extension<CustomColors>();
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -333,7 +340,7 @@ class _CraftingScreenState extends State<CraftingScreen> {
             style: TextStyle(
               height: 1.0,
               fontWeight: isSelectedField ? FontWeight.bold : FontWeight.normal,
-              color: isSelectedField ? Theme.of(context).primaryColor : null,
+              color: isSelectedField ? customColors?.sortText : null,
             ),
           ),
           trailing:

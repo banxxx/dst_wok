@@ -12,6 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  http: ^1.4.0
   # 状态管理库，用于跨组件状态共享和业务逻辑解耦
   provider: ^6.1.2
   # iOS风格图标库，包含苹果官方设计规范的图标资源
@@ -23,7 +24,7 @@ dependencies:
   # URL启动器，支持调用浏览器/地图/电话等原生功能
   url_launcher: ^6.1.11
   # 应用信息获取工具，可读取版本号/包名等元数据
-  package_info_plus: ^5.0.0
+  package_info_plus: ^8.3.0
   # 文件路径获取工具，支持访问设备文档/缓存等系统目录
   path_provider: ^2.1.1
   # 自定义桌面应用程序窗口
@@ -34,6 +35,8 @@ dependencies:
   window_manager: ^0.4.2
   # svg支持
   flutter_svg: ^2.0.9
+  # 持久化存储依赖
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:

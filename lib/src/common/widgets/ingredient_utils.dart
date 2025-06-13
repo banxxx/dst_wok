@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../repositories/constants/game_assets.dart';
-import '../constants/app_colors.dart';
+import '../constants/custom_colors.dart';
 
 class IngredientUtils {
   /// 通用食材图片构建方法
@@ -28,13 +28,6 @@ class IngredientUtils {
           textStyle: textStyle,
         ),
       ),
-    );
-  }
-
-  // 默认文字样式（私有方法）
-  static TextStyle _defaultTextStyle() {
-    return const TextStyle(fontSize: 12, color: AppColors.recipeTitle).copyWith(
-      fontFeatures: const [FontFeature.tabularFigures()], // 优化文本渲染性能
     );
   }
 
@@ -110,9 +103,9 @@ class _IngredientContent extends StatelessWidget {
                 fit: BoxFit.scaleDown,
                 child: Text(
                   ingredient!.displayName,
-                  style: textStyle ?? const TextStyle(
+                  style: textStyle ?? TextStyle(
                     fontSize: 12,
-                    color: AppColors.recipeTitle,
+                    color: Theme.of(context).extension<CustomColors>()!.recipeTitle,
                   ),
                 ),
               ),
@@ -123,54 +116,6 @@ class _IngredientContent extends StatelessWidget {
     );
   }
 
-  /// 图片容器（添加缓存策略）
-  Widget _buildImageContainer() {
-    return Container(
-      decoration: BoxDecoration(
-        image: _BackgroundCache.getImage(), // 使用缓存装饰图
-      ),
-      child: RepaintBoundary(
-        // 避免连带重绘
-        child: Center(
-          child: FractionallySizedBox(
-            // 使用 FractionallySizedBox 设置图片占容器的比例
-            widthFactor: 0.8, // 示例：图片宽度占容器的 80%
-            heightFactor: 0.8, // 示例：图片高度占容器的 80%
-            child: Image.asset(
-              ingredient!.imageAsset,
-              fit: BoxFit.contain, // 根据可用空间缩放
-              // 缓存尺寸需要根据比例和容器大小动态计算，或者设置为一个合理的最大值
-              // 这里的示例仍然使用了之前的值，你可能需要根据实际情况调整
-              cacheWidth: (32 * 2).round(),
-              cacheHeight: (32 * 2).round(),
-              filterQuality: FilterQuality.low, // 降低过滤质量
-              isAntiAlias: false, // 关闭抗锯齿
-              excludeFromSemantics: true, // 跳过语义分析
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  /// 文本标签（添加布局约束）
-  Widget _buildTextLabel() {
-    return Container(
-      alignment: Alignment.topCenter, // 顶部对齐
-      child: FittedBox(
-        fit: BoxFit.scaleDown, // 缩小文本以适应空间
-        alignment: Alignment.center, // 文本居中
-        child: Text(
-          ingredient!.displayName,
-          style: textStyle ?? IngredientUtils._defaultTextStyle(),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
-          textScaleFactor: 1.0, // 禁止系统缩放
-        ),
-      ),
-    );
-  }
 }
 
 /// -------------------- 背景图缓存管理器 --------------------

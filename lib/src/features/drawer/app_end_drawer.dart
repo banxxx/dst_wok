@@ -18,8 +18,8 @@ class AppEndDrawer extends StatelessWidget {
   Widget _buildOptimizedContent(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        backgroundBlendMode: BlendMode.colorBurn, // 移除不必要的混合模式
+        color: Theme.of(context).appBarTheme.backgroundColor,
+        // backgroundBlendMode: BlendMode.colorBurn, // 移除不必要的混合模式
       ),
       child: SafeArea(
         child: _buildListView(),

@@ -1,11 +1,11 @@
-import 'package:dst_wok/src/common/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
+import '../../common/constants/custom_colors.dart';
+import '../../common/utils/TextParserUtil.dart';
 import '../../common/widgets/custom_appBar.dart';
 import '../../common/widgets/recipe_recommendation.dart';
 import '../../common/widgets/richLabel_content.dart';
 import '../../models/base_recipe.dart';
-import '../../common/utils/TextParserUtil.dart';
 
 /// 食谱详情页面
 class RecipeDetails extends StatelessWidget {
@@ -53,6 +53,7 @@ class RecipeDetails extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar(title: const Text('')),
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       body: SafeArea(
         bottom: true, // 启用底部安全区域
         child: SingleChildScrollView(
@@ -60,21 +61,21 @@ class RecipeDetails extends StatelessWidget {
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildRecipeImage(),
+              _buildRecipeImage(context),
               if (recipe.favorites.isNotEmpty || recipe.desc.isNotEmpty)
                 ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: maxWidth),
-                  child: _buildRecipeDocs(),
+                  child: _buildRecipeDocs(context),
                 ),
               ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: maxWidth),
-                child: _buildRecipeInfo(),
+                child: _buildRecipeInfo(context),
               ),
               ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: maxWidth),
                 child: _buildRecipeDesc(),
               ),
-              _buildRecipeRecommend(),
+              _buildRecipeRecommend(context),
               // _buildBottomImage(),
               // 可以继续添加更多内容
               // 添加底部安全区域间距（自动计算高度）
@@ -87,7 +88,7 @@ class RecipeDetails extends StatelessWidget {
   }
 
   // 食谱图片
-  Widget _buildRecipeImage() {
+  Widget _buildRecipeImage(BuildContext context) {
     return Center(
       child: Column(
         children: [
@@ -95,12 +96,18 @@ class RecipeDetails extends StatelessWidget {
           Image.asset('assets/setting/top.png', width: 150),
           Text(
             recipe.name,
-            style: TextStyle(fontSize: 38, color: AppColors.recipeTitle),
+            style: TextStyle(
+              fontSize: 38,
+              color: Theme.of(context).extension<CustomColors>()!.recipeTitle,
+            ),
           ),
           Image.asset('assets/setting/bottom.png', width: 150),
           Text(
             '代码: "${recipe.id}"',
-            style: TextStyle(fontSize: 16, color: AppColors.recipePrimary),
+            style: TextStyle(
+              fontSize: 16,
+              color: Theme.of(context).extension<CustomColors>()!.recipePrimary,
+            ),
           ),
         ],
       ),
@@ -108,13 +115,17 @@ class RecipeDetails extends StatelessWidget {
   }
 
   // 食谱补充说明
-  Widget _buildRecipeDocs() {
+  Widget _buildRecipeDocs(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColors.recipeDetailBorder, width: 2),
+          border: Border.all(
+            color:
+                Theme.of(context).extension<CustomColors>()!.recipeDetailBorder,
+            width: 2,
+          ),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -137,7 +148,10 @@ class RecipeDetails extends StatelessWidget {
                           style: TextStyle(
                             // 基础样式
                             fontSize: 16,
-                            color: AppColors.recipePrimary,
+                            color:
+                                Theme.of(
+                                  context,
+                                ).extension<CustomColors>()!.recipePrimary,
                           ),
                           children: [
                             // 使用工具类解析描述文本
@@ -147,7 +161,10 @@ class RecipeDetails extends StatelessWidget {
                               textStyle: TextStyle(
                                 // 保持原有文本样式
                                 fontSize: 16,
-                                color: AppColors.recipePrimary,
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).extension<CustomColors>()!.recipePrimary,
                               ),
                             ),
                           ],
@@ -181,7 +198,10 @@ class RecipeDetails extends StatelessWidget {
                       "喜欢的食物",
                       style: TextStyle(
                         fontSize: 16,
-                        color: AppColors.recipeSelectorBorderOut,
+                        color:
+                            Theme.of(context)
+                                .extension<CustomColors>()!
+                                .recipeSelectorBorderOut,
                       ),
                     ),
                   ],
@@ -194,14 +214,18 @@ class RecipeDetails extends StatelessWidget {
   }
 
   // 食物三维属性
-  Widget _buildRecipeInfo() {
+  Widget _buildRecipeInfo(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.recipeDetailBg,
+          color: Theme.of(context).extension<CustomColors>()?.recipeDetailBg,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.recipeDetailBorder, width: 2),
+          border: Border.all(
+            color:
+                Theme.of(context).extension<CustomColors>()!.recipeDetailBorder,
+            width: 2,
+          ),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -210,6 +234,7 @@ class RecipeDetails extends StatelessWidget {
             children: [
               Expanded(
                 child: _buildStatusItem(
+                  context,
                   'assets/setting/status_health_64.png',
                   '健康值',
                   recipe.health.toString(),
@@ -218,6 +243,7 @@ class RecipeDetails extends StatelessWidget {
               ),
               Expanded(
                 child: _buildStatusItem(
+                  context,
                   'assets/setting/status_hunger_64.png',
                   '饥饿值',
                   recipe.hunger.toString(),
@@ -226,6 +252,7 @@ class RecipeDetails extends StatelessWidget {
               ),
               Expanded(
                 child: _buildStatusItem(
+                  context,
                   'assets/setting/status_sanity_64.png',
                   '理智值',
                   recipe.sanity.toString(),
@@ -234,6 +261,7 @@ class RecipeDetails extends StatelessWidget {
               ),
               Expanded(
                 child: _buildStatusItem(
+                  context,
                   'assets/setting/status_spoil_64.png',
                   '保质期',
                   '${recipe.freshness} 天',
@@ -242,6 +270,7 @@ class RecipeDetails extends StatelessWidget {
               ),
               Expanded(
                 child: _buildStatusItem(
+                  context,
                   'assets/setting/status_food_64.png',
                   '烹饪时间',
                   '${recipe.cookTime} 秒',
@@ -257,6 +286,7 @@ class RecipeDetails extends StatelessWidget {
 
   // 三维组件统一的状态项构建方法
   Widget _buildStatusItem(
+    BuildContext context,
     String iconPath,
     String label,
     String value,
@@ -292,7 +322,7 @@ class RecipeDetails extends StatelessWidget {
             style: TextStyle(
               // 全局基础样式
               fontSize: 20,
-              color: AppColors.recipePrimary,
+              color: Theme.of(context).extension<CustomColors>()!.recipePrimary,
               fontWeight: FontWeight.bold,
               height: 1.2, // 统一行高
             ),
@@ -348,13 +378,16 @@ class RecipeDetails extends StatelessWidget {
   }
 
   // 推荐食谱
-  Widget _buildRecipeRecommend() {
+  Widget _buildRecipeRecommend(BuildContext context) {
     return Column(
       children: [
         const SizedBox(height: 18),
         Text(
           "推荐食谱:",
-          style: TextStyle(fontSize: 16, color: AppColors.recipePrimary),
+          style: TextStyle(
+            fontSize: 16,
+            color: Theme.of(context).extension<CustomColors>()!.recipePrimary,
+          ),
         ),
         // 遍历所有需要的推荐组
         for (final cookbook in recipe.cookbook)
@@ -362,5 +395,4 @@ class RecipeDetails extends StatelessWidget {
       ],
     );
   }
-
 }

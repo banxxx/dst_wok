@@ -1,7 +1,5 @@
 import 'dart:collection';
 
-import 'package:flutter/cupertino.dart';
-
 import '../../common/enums/character.dart';
 
 /// 食材常量池
@@ -2118,29 +2116,29 @@ abstract class GameAssets {
 
   ///其他
   static const beefaloOther = Ingredient(
-      id: 'beefalo_other',
-      imageAsset: '$_otherPath/beefalo_other.png',
-      displayName: '皮弗娄牛',
+    id: 'beefalo_other',
+    imageAsset: '$_otherPath/beefalo_other.png',
+    displayName: '皮弗娄牛',
   );
   static const moleOther = Ingredient(
-      id: 'mole_other',
-      imageAsset: '$_otherPath/mole_other.png',
-      displayName: '鼹鼠',
+    id: 'mole_other',
+    imageAsset: '$_otherPath/mole_other.png',
+    displayName: '鼹鼠',
   );
   static const dustmoth = Ingredient(
-      id: 'dustmoth',
-      imageAsset: '$_otherPath/dustmoth.png',
-      displayName: '尘蛾',
+    id: 'dustmoth',
+    imageAsset: '$_otherPath/dustmoth.png',
+    displayName: '尘蛾',
   );
   static const primeMate = Ingredient(
-      id: 'prime_mate',
-      imageAsset: '$_otherPath/prime_mate.png',
-      displayName: '大副',
+    id: 'prime_mate',
+    imageAsset: '$_otherPath/prime_mate.png',
+    displayName: '大副',
   );
   static const cookiecutter = Ingredient(
-      id: 'cookiecutter',
-      imageAsset: '$_otherPath/cookiecutter.png',
-      displayName: '饼干切割机',
+    id: 'cookiecutter',
+    imageAsset: '$_otherPath/cookiecutter.png',
+    displayName: '饼干切割机',
   );
 
   //========== 分块数据整合 ==========//
@@ -2397,7 +2395,7 @@ abstract class GameAssets {
 
   /// 便携锅64食材分块
   static const List<Ingredient> portableCooker64Ingredients = [
-    monstertartare64
+    monstertartare64,
   ];
 
   /// 生物分类分块
@@ -2596,7 +2594,7 @@ abstract class GameAssets {
     dustmoth,
     primeMate,
     beefaloOther,
-    cookiecutter
+    cookiecutter,
   ];
 
   //========== 映射表（按需添加） ==========//
@@ -2609,11 +2607,12 @@ abstract class GameAssets {
     ...portableCooker64Ingredients,
     ...biologyIngredients,
     ...defaultIngredients,
-    ...otherIngredients
+    ...otherIngredients,
   ];
 
   /// 预生成全局索引（包含所有数据）
-  static late final Map<String, Ingredient> _ingredientMap = _buildIngredientMap();
+  static late final Map<String, Ingredient> _ingredientMap =
+      _buildIngredientMap();
 
   /// 延迟加载的角色映射表（首次访问时初始化）
   static late final Map<String, Character> _characterMap = () {
@@ -2678,5 +2677,4 @@ abstract class GameAssets {
     // 3. 兜底逻辑
     return 'assets/other/$id.png';
   }
-
 }

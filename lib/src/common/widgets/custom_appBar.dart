@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dst_wok/src/common/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 /// 自定义返回按钮
@@ -17,9 +16,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return AppBar(
       // Windows 平台固定样式
-      backgroundColor: isWindows
-          ? AppColors.homeBg
-          : null, // 其他平台使用主题默认
+      // backgroundColor: isWindows
+      //     ? Colors.amber
+      //     : Colors.amber, // 其他平台使用主题默认
       surfaceTintColor: isWindows ? Colors.transparent : null,
       elevation: isWindows ? 0 : null,
       scrolledUnderElevation: isWindows ? 0 : null,

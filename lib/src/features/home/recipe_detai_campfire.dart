@@ -1,7 +1,7 @@
-import 'package:dst_wok/src/common/constants/app_colors.dart';
 import 'package:dst_wok/src/models/campfire_recipe.dart';
 import 'package:flutter/material.dart';
 
+import '../../common/constants/custom_colors.dart';
 import '../../common/utils/TextParserUtil.dart';
 import '../../common/widgets/custom_appBar.dart';
 
@@ -51,20 +51,21 @@ class RecipeDetailsCampfire extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar(title: const Text('')),
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       body: SafeArea(
         bottom: true, // 启用底部安全区域
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              _buildRecipeImage(),
+              _buildRecipeImage(context),
               ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: maxWidth),
-                child: _buildRecipeInfo(),
+                child: _buildRecipeInfo(context),
               ),
               ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: maxWidth),
-                child: _buildRecipeDocs(),
+                child: _buildRecipeDocs(context),
               ),
               // 可以继续添加更多内容
               // 添加底部安全区域间距（自动计算高度）
@@ -77,7 +78,7 @@ class RecipeDetailsCampfire extends StatelessWidget {
   }
 
   // 食谱图片
-  Widget _buildRecipeImage() {
+  Widget _buildRecipeImage(BuildContext context) {
     return Center(
       child: Column(
         children: [
@@ -85,12 +86,18 @@ class RecipeDetailsCampfire extends StatelessWidget {
           Image.asset('assets/setting/top.png', width: 150),
           Text(
             recipe.name,
-            style: TextStyle(fontSize: 38, color: AppColors.recipeTitle),
+            style: TextStyle(
+              fontSize: 38,
+              color: Theme.of(context).extension<CustomColors>()!.recipeTitle,
+            ),
           ),
           Image.asset('assets/setting/bottom.png', width: 150),
           Text(
             '代码: "${recipe.id}"',
-            style: TextStyle(fontSize: 16, color: AppColors.recipePrimary),
+            style: TextStyle(
+              fontSize: 16,
+              color: Theme.of(context).extension<CustomColors>()!.recipePrimary,
+            ),
           ),
         ],
       ),
@@ -98,13 +105,17 @@ class RecipeDetailsCampfire extends StatelessWidget {
   }
 
   // 食谱补充说明
-  Widget _buildRecipeDocs() {
+  Widget _buildRecipeDocs(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColors.recipeDetailBorder, width: 2),
+          border: Border.all(
+            color:
+                Theme.of(context).extension<CustomColors>()!.recipeDetailBorder,
+            width: 2,
+          ),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -127,7 +138,10 @@ class RecipeDetailsCampfire extends StatelessWidget {
                           style: TextStyle(
                             // 基础样式
                             fontSize: 16,
-                            color: AppColors.recipePrimary,
+                            color:
+                                Theme.of(
+                                  context,
+                                ).extension<CustomColors>()!.recipePrimary,
                           ),
                           children: [
                             // 使用工具类解析描述文本
@@ -137,7 +151,10 @@ class RecipeDetailsCampfire extends StatelessWidget {
                               textStyle: TextStyle(
                                 // 保持原有文本样式
                                 fontSize: 16,
-                                color: AppColors.recipePrimary,
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).extension<CustomColors>()!.recipePrimary,
                               ),
                             ),
                           ],
@@ -171,7 +188,10 @@ class RecipeDetailsCampfire extends StatelessWidget {
                       "喜欢的食物",
                       style: TextStyle(
                         fontSize: 16,
-                        color: AppColors.recipeSelectorBorderOut,
+                        color:
+                            Theme.of(context)
+                                .extension<CustomColors>()!
+                                .recipeSelectorBorderOut,
                       ),
                     ),
                   ],
@@ -184,14 +204,18 @@ class RecipeDetailsCampfire extends StatelessWidget {
   }
 
   // 食物三维属性
-  Widget _buildRecipeInfo() {
+  Widget _buildRecipeInfo(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.9),
+          color: Theme.of(context).extension<CustomColors>()?.recipeDetailBg,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.recipeDetailBorder, width: 2),
+          border: Border.all(
+            color:
+                Theme.of(context).extension<CustomColors>()!.recipeDetailBorder,
+            width: 2,
+          ),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -199,24 +223,28 @@ class RecipeDetailsCampfire extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _buildStatusItem(
+                context,
                 'assets/setting/status_health_64.png',
                 '健康值',
                 recipe.health.toString(),
                 Colors.redAccent,
               ),
               _buildStatusItem(
+                context,
                 'assets/setting/status_hunger_64.png',
                 '饥饿值',
                 recipe.hunger.toString(),
                 Colors.orangeAccent,
               ),
               _buildStatusItem(
+                context,
                 'assets/setting/status_sanity_64.png',
                 '理智值',
                 recipe.sanity.toString(),
                 Colors.deepOrange,
               ),
               _buildStatusItem(
+                context,
                 'assets/setting/status_spoil_64.png',
                 '保质期',
                 '${recipe.freshness} 天',
@@ -231,6 +259,7 @@ class RecipeDetailsCampfire extends StatelessWidget {
 
   // 三维组件统一的状态项构建方法
   Widget _buildStatusItem(
+    BuildContext context,
     String iconPath,
     String label,
     String value,
@@ -266,7 +295,7 @@ class RecipeDetailsCampfire extends StatelessWidget {
             style: TextStyle(
               // 全局基础样式
               fontSize: 20,
-              color: AppColors.recipePrimary,
+              color: Theme.of(context).extension<CustomColors>()!.recipePrimary,
               fontWeight: FontWeight.bold,
               height: 1.2, // 统一行高
             ),

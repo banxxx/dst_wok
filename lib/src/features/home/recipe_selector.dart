@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
-import '../../common/constants/app_colors.dart';
+import '../../common/constants/custom_colors.dart';
 import '../../common/enums/cooking_method.dart';
 import '../../models/base_recipe.dart';
 
@@ -118,9 +118,9 @@ class _RecipeCard extends StatelessWidget {
         innerBorderMargin + innerBorderWidth; // 内容区域的 Padding
 
     return Card(
-      color: _CardStyle.cardColor,
+      color: _CardStyle.cardColor(context),
       elevation: _CardStyle.elevation,
-      shape: _CardStyle.cardShape,
+      shape: _CardStyle.cardShape(context),
       clipBehavior: Clip.antiAlias,
       child: Stack(
         clipBehavior: Clip.none,
@@ -169,15 +169,27 @@ class _RecipeCard extends StatelessWidget {
 
 /// ---------------------- 样式常量 ----------------------
 class _CardStyle {
-  static const Color cardColor = AppColors.recipeSelectorBg;
   static const double elevation = 3;
-  static final ShapeBorder cardShape = RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(8),
-    side: const BorderSide(
-      color: AppColors.recipeSelectorBorderOut,
-      width: 3.2,
-    ),
-  );
+
+  static Color cardColor(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>();
+    return customColors!.recipeSelectorBg;
+  }
+
+  static ShapeBorder cardShape(BuildContext context) {
+    // 获取当前主题的自定义颜色
+    final customColors = Theme.of(context).extension<CustomColors>();
+    final borderColor = customColors!.recipeSelectorBorderOut;
+
+    // 返回带有圆角和边框的形状
+    return RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8),
+      side: BorderSide(
+        color: borderColor,
+        width: 3.2, // 外边框宽度
+      ),
+    );
+  }
 }
 
 /// ---------------------- 左侧图片区域 ----------------------
@@ -194,7 +206,7 @@ class _LeftSection extends StatelessWidget {
         customPath: _dashPath, // 缓存路径计算
         dashPattern: const [4, 4],
         radius: const Radius.circular(24),
-        color: AppColors.recipeSelectorBorderIn,
+        color: Theme.of(context).extension<CustomColors>()!.recipeSelectorBorderIn,
         strokeWidth: 2,
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: _RecipeContent(recipe: recipe),
@@ -298,7 +310,7 @@ class _RecipeName extends StatelessWidget {
             // 同时传入计算出的目标宽度
             Positioned.fill(
               // Positioned.fill 确保文字区域也填充 Stack 空间
-              child: Align(child: _buildTextLabel()),
+              child: Align(child: _buildTextLabel(context)),
             ),
           ],
         );
@@ -306,13 +318,13 @@ class _RecipeName extends StatelessWidget {
     );
   }
 
-  Widget _buildTextLabel() {
+  Widget _buildTextLabel(BuildContext context) {
     return FittedBox(
       fit: BoxFit.scaleDown, // 缩小文本以适应空间
       alignment: Alignment.center, // 文本居中
       child: Text(
         name,
-        style: _defaultTextStyle(),
+        style: _defaultTextStyle(context),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
@@ -322,11 +334,11 @@ class _RecipeName extends StatelessWidget {
   }
 
   // 默认文字样式（私有方法）
-  static TextStyle _defaultTextStyle() {
-    return const TextStyle(
+  static TextStyle _defaultTextStyle(BuildContext context) {
+    return TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w700, // 稳定字体渲染
-      color: AppColors.recipeTitle,
+      color: Theme.of(context).extension<CustomColors>()!.recipeTitle,
     ).copyWith(
       fontFeatures: const [FontFeature.tabularFigures()], // 优化文本渲染性能
     );
@@ -341,6 +353,7 @@ class _BackgroundImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image.asset(
       'assets/setting/bg.png',
+      color: Theme.of(context).extension<CustomColors>()!.bannerBg,
       fit: BoxFit.fill, // 填充父容器提供的空间
     );
   }
@@ -483,9 +496,9 @@ class _ValueIndicator extends StatelessWidget {
             Center(
               child: Text(
                 '$value',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
-                  color: AppColors.recipeTitle,
+                  color: Theme.of(context).extension<CustomColors>()!.recipeTitle,
                   fontWeight: FontWeight.w500, // 稳定字体渲染
                 ),
               ),
@@ -517,7 +530,7 @@ class _CardDecorationLayer extends StatelessWidget {
           borderRadius: BorderRadius.circular(6),
           border: Border.fromBorderSide(
             BorderSide(
-              color: AppColors.recipeSelectorBorderIn,
+              color: Theme.of(context).extension<CustomColors>()!.recipeSelectorBorderIn,
               width: borderWidth,
             ), // 应用 Border 宽度
           ),

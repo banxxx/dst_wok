@@ -11,14 +11,12 @@ class RecipeRepository {
   final List<BaseRecipe> _allRecipes = [
     ...campfireRecipes,
     ...crockpotRecipes,
-    ...portableCookerRecipe
+    ...portableCookerRecipe,
   ];
 
   /// 根据烹饪方式获取食谱列表
   List<BaseRecipe> getByMethod(CookingMethod method) {
-    return _allRecipes
-        .where((recipe) => recipe.method == method)
-        .toList()
+    return _allRecipes.where((recipe) => recipe.method == method).toList()
       ..sort((a, b) => b.priority.compareTo(a.priority));
   }
 
@@ -30,13 +28,16 @@ class RecipeRepository {
     } else {
       final lowerCaseKeyword = keyword.toLowerCase();
       return _allRecipes
-          .where((recipe) =>
-      recipe.method == method &&
-          recipe.name.toLowerCase().contains(lowerCaseKeyword))
+          .where(
+            (recipe) =>
+                recipe.method == method &&
+                recipe.name.toLowerCase().contains(lowerCaseKeyword),
+          )
           .toList()
         ..sort((a, b) => b.priority.compareTo(a.priority));
     }
   }
+
   // 新增方法：获取所有食谱列表 (如果其他地方需要)
   List<BaseRecipe> getAllRecipes() {
     return _allRecipes;

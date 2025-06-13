@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:dst_wok/routes/app_router.dart';
 import 'package:dst_wok/services/cache_manager.dart';
-import 'package:dst_wok/src/common/constants/app_colors.dart';
 import 'package:dst_wok/src/common/widgets/window_control_buttons.dart';
+import 'package:dst_wok/src/theme/app_theme.dart';
 import 'package:dst_wok/src/theme/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -100,11 +100,10 @@ class MyApp extends StatelessWidget {
       child: Consumer<ThemeManager>(
         builder: (context, themeManager, child) {
           return MaterialApp.router(
+            themeMode: themeManager.themeMode,
             title: '饥锅',
-            theme: ThemeData(
-              primarySwatch: Colors.brown, // 设置主题颜色
-              useMaterial3: true, // 启用Material 3设计
-            ),
+            theme: AppTheme.lightTheme(), // 应用亮色主题
+            darkTheme: AppTheme.darkTheme(), // 应用暗色主题
             // windows窗口装饰和拖拽区域
             builder: (context, child) {
               if (Platform.isWindows || Platform.isMacOS) {
@@ -120,7 +119,7 @@ class MyApp extends StatelessWidget {
                         // 标题栏容器（关键修正）
                         Container(
                           height: 30,
-                          color: AppColors.homeBg,
+                          color: Theme.of(context).appBarTheme.backgroundColor,
                           child: Row(
                             children: [
                               Expanded(child: MoveWindow()),

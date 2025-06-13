@@ -13,9 +13,7 @@ class LicenseDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: const Text('GPL-3.0 协议'),
-      ),
+      appBar: CustomAppBar(title: const Text('GPL-3.0 协议')),
       body: FutureBuilder<String>(
         future: _loadLicense(),
         builder: (context, snapshot) {
@@ -24,9 +22,7 @@ class LicenseDetailPage extends StatelessWidget {
           }
 
           if (snapshot.hasError) {
-            return Center(
-              child: Text('加载失败: ${snapshot.error}'),
-            );
+            return Center(child: Text('加载失败: ${snapshot.error}'));
           }
 
           return _buildScrollableContent(context, snapshot.data!);
@@ -36,14 +32,15 @@ class LicenseDetailPage extends StatelessWidget {
   }
 
   Widget _buildScrollableContent(BuildContext context, String text) {
-    return SingleChildScrollView( // 滚动容器
+    return SingleChildScrollView(
+      // 滚动容器
       padding: const EdgeInsets.all(16),
-      child: SelectableText( // 使用可选文本组件
+      child: SelectableText(
+        // 使用可选文本组件
         text,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-          height: 1.5,
-          fontSize: 14,
-        ),
+        style: Theme.of(
+          context,
+        ).textTheme.bodyMedium?.copyWith(height: 1.5, fontSize: 14),
       ),
     );
   }

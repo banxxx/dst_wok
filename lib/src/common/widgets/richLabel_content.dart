@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
-import '../constants/app_colors.dart';
+import '../constants/custom_colors.dart';
 import '../utils/TextParserUtil.dart';
 
 /// 通用图文混排组件
@@ -54,7 +54,7 @@ class RichLabelContent extends StatelessWidget {
               ),
               children: TextParserUtil.parseCondition(
                 content,
-                textStyle: TextStyle(color: AppColors.recipeTitle),
+                textStyle: TextStyle(color: Theme.of(context).extension<CustomColors>()!.recipeTitle),
                 imgSize: imageConfig.size,
               ),
             ),
