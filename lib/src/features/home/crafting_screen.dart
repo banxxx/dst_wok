@@ -41,6 +41,12 @@ class _CraftingScreenState extends State<CraftingScreen> {
   // 使用 ValueNotifier 来持有过滤后的食谱列表
   late ValueNotifier<List<BaseRecipe>> _filteredRecipesNotifier;
 
+  // 添加FocusNode来管理搜索框的焦点
+  final FocusNode _searchFocusNode = FocusNode();
+
+  // 添加一个标志来追踪是否应该保持键盘打开
+  bool _shouldKeepKeyboardOpen = false;
+
   // 数据仓库实例
   final _repo = RecipeRepository();
 
@@ -68,8 +74,16 @@ class _CraftingScreenState extends State<CraftingScreen> {
     _pageController.dispose(); // 释放资源
     _searchController.removeListener(_filterRecipes); // 移除监听器
     _searchController.dispose(); // 释放控制器
+    _searchFocusNode.dispose(); // 释放FocusNode
     _filteredRecipesNotifier.dispose(); // 释放 ValueNotifier
     super.dispose();
+  }
+
+  // 统一的键盘收起方法
+  void _dismissKeyboard() {
+    _shouldKeepKeyboardOpen = false;
+    _searchFocusNode.unfocus();
+    FocusScope.of(context).unfocus();
   }
 
   // 根据当前方法和搜索文本过滤食谱
@@ -85,7 +99,7 @@ class _CraftingScreenState extends State<CraftingScreen> {
       int compareResult = 0;
       switch (_currentSortField) {
         case SortField.health:
-          // 确保 health, hunger, sanity 是可比较的类型 (如 num)
+        // 确保 health, hunger, sanity 是可比较的类型 (如 num)
           compareResult = (a.health as num).compareTo(b.health as num);
           break;
         case SortField.hunger:
@@ -94,9 +108,9 @@ class _CraftingScreenState extends State<CraftingScreen> {
         case SortField.sanity:
           compareResult = (a.sanity as num).compareTo(b.sanity as num);
           break;
-        // case SortField.name: // 如果需要按名称排序
-        //   compareResult = a.name.compareTo(b.name);
-        //   break;
+      // case SortField.name: // 如果需要按名称排序
+      //   compareResult = a.name.compareTo(b.name);
+      //   break;
       }
       // 应用排序顺序
       return _currentSortOrder == SortOrder.ascending
@@ -109,6 +123,8 @@ class _CraftingScreenState extends State<CraftingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>();
+
     return Scaffold(
       backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       appBar: AppBar(
@@ -117,47 +133,47 @@ class _CraftingScreenState extends State<CraftingScreen> {
         title: MethodSelector(
           currentMethod: _currentMethod,
           onMethodChanged: (newMethod) {
-            // 切换方法时也收起键盘
-            FocusScope.of(context).unfocus();
+            // 切换方法时收起键盘
+            _dismissKeyboard();
             _updateMethodWithAnimation(newMethod);
           },
           pageController:
-              _pageController, // 将 PageController 传递给 MethodSelector
+          _pageController, // 将 PageController 传递给 MethodSelector
         ),
         centerTitle: false, // 关闭居中
         actions: [
           // 在右上角添加抽屉按钮
           Builder(
-            builder:
-                (context) => IconButton(
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(), // 可选：移除默认的最小点击区域约束
-                  icon: Padding(
-                    // 在图标外部添加 padding
-                    padding: const EdgeInsets.only(right: 12.0),
-                    child: SvgPicture.asset(
-                      'assets/setting/list-ui-mono.svg', // 使用 SVG 图标
-                      width: 38,
-                      height: 38,
-                    ),
-                  ),
-                  onPressed: () {
-                    FocusScope.of(context).unfocus(); // 点击抽屉按钮也收起键盘
-                    Scaffold.of(context).openEndDrawer();
-                  },
-                  hoverColor: Colors.transparent, // 移除悬停背景色
-                  highlightColor: Colors.transparent, // 移除按压高亮色
-                  splashColor: Colors.transparent, // 移除水波纹效果
+            builder: (context) => IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(), // 可选：移除默认的最小点击区域约束
+              icon: Padding(
+                // 在图标外部添加 padding
+                padding: const EdgeInsets.only(right: 12.0),
+                child: SvgPicture.asset(
+                  'assets/setting/list-ui-mono.svg', // 使用 SVG 图标
+                  width: 38,
+                  height: 38,
                 ),
+              ),
+              onPressed: () {
+                _dismissKeyboard(); // 点击抽屉按钮收起键盘
+                Scaffold.of(context).openEndDrawer();
+              },
+              hoverColor: Colors.transparent, // 移除悬停背景色
+              highlightColor: Colors.transparent, // 移除按压高亮色
+              splashColor: Colors.transparent, // 移除水波纹效果
+            ),
           ),
         ],
       ),
       endDrawer: const AppEndDrawer(),
-      body: Listener(
-        onPointerDown: (_) {
-          // 只有当当前有焦点（键盘可能弹出了）时才收起键盘
-          if (FocusManager.instance.primaryFocus?.hasFocus ?? false) {
-            FocusScope.of(context).unfocus();
+      body: GestureDetector(
+        // 使用GestureDetector替代Listener，提供更好的控制
+        onTap: () {
+          // 只有当搜索框有焦点时才收起键盘
+          if (_searchFocusNode.hasFocus) {
+            _dismissKeyboard();
           }
         },
         child: Column(
@@ -174,7 +190,11 @@ class _CraftingScreenState extends State<CraftingScreen> {
                   Expanded(
                     // 让搜索框占据 Row 的大部分空间
                     child: TextField(
+                      style: TextStyle(
+                        color: customColors?.recipeTitle, // 使用主题中的文字颜色
+                      ),
                       controller: _searchController,
+                      focusNode: _searchFocusNode, // 添加FocusNode
                       decoration: InputDecoration(
                         // hintText: '搜索食谱名称',
                         prefixIcon: Icon(
@@ -192,8 +212,14 @@ class _CraftingScreenState extends State<CraftingScreen> {
                           horizontal: 10.0,
                         ),
                       ),
-                      onSubmitted:
-                          (_) => FocusScope.of(context).unfocus(), // 提交时隐藏键盘
+                      onTap: () {
+                        // 当点击搜索框时，设置标志保持键盘打开
+                        _shouldKeepKeyboardOpen = true;
+                      },
+                      onSubmitted: (_) {
+                        // 提交时隐藏键盘
+                        _dismissKeyboard();
+                      },
                       onChanged: (_) => _filterRecipes(), // 输入变化时实时过滤和排序
                     ),
                   ),
@@ -207,8 +233,11 @@ class _CraftingScreenState extends State<CraftingScreen> {
                       color: Theme.of(context).iconTheme.color, // 使用主题颜色
                     ), // 筛选图标
                     onPressed: () {
-                      FocusScope.of(context).unfocus(); // 点击筛选按钮收起键盘
-                      _showSortOptions(context); // 显示排序选项底部弹窗
+                      _dismissKeyboard(); // 点击筛选按钮收起键盘
+                      // 延迟显示底部弹窗，确保键盘完全收起
+                      Future.delayed(const Duration(milliseconds: 100), () {
+                        _showSortOptions(context); // 显示排序选项底部弹窗
+                      });
                     },
                     // 根据需要调整按钮的视觉样式
                     splashColor: Colors.transparent, // 移除水波纹效果
@@ -222,6 +251,8 @@ class _CraftingScreenState extends State<CraftingScreen> {
               child: PageView.builder(
                 controller: _pageController,
                 onPageChanged: (index) {
+                  // 切换页面时收起键盘
+                  _dismissKeyboard();
                   _updateMethod(CookingMethod.values[index]);
                   _filterRecipes(); // 当页面改变时重新过滤并更新 ValueNotifier
                 },
@@ -273,6 +304,9 @@ class _CraftingScreenState extends State<CraftingScreen> {
   }
 
   void _handleSelectRecipe(BaseRecipe selectedRecipe) {
+    // 选择食谱时收起键盘
+    _dismissKeyboard();
+
     if (CookingMethod.campfire == selectedRecipe.method) {
       context.pushNamed(
         RouteNames.recipeDetailsCampfire,
@@ -290,6 +324,7 @@ class _CraftingScreenState extends State<CraftingScreen> {
   void _showSortOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true, // 添加这个属性
       builder: (BuildContext bc) {
         return SafeArea(
           // 确保内容不会被系统 UI 遮挡
@@ -301,7 +336,10 @@ class _CraftingScreenState extends State<CraftingScreen> {
                 title: Text(
                   '排序方式',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               // const Divider(), // 分隔线
@@ -320,10 +358,10 @@ class _CraftingScreenState extends State<CraftingScreen> {
 
   // 构建单个排序选项的 ListTile
   Widget _buildSortOptionTile(
-    BuildContext context,
-    SortField field,
-    String title,
-  ) {
+      BuildContext context,
+      SortField field,
+      String title,
+      ) {
     // 判断当前是否选中该字段
     bool isSelectedField = _currentSortField == field;
     final customColors = Theme.of(context).extension<CustomColors>();
@@ -343,20 +381,18 @@ class _CraftingScreenState extends State<CraftingScreen> {
               color: isSelectedField ? customColors?.sortText : null,
             ),
           ),
-          trailing:
-              isSelectedField
-                  ? (_currentSortOrder == SortOrder.ascending
-                      ? const Icon(Icons.arrow_upward)
-                      : const Icon(Icons.arrow_downward))
-                  : null, // 未选中时不显示图标
+          trailing: isSelectedField
+              ? (_currentSortOrder == SortOrder.ascending
+              ? const Icon(Icons.arrow_upward)
+              : const Icon(Icons.arrow_downward))
+              : null, // 未选中时不显示图标
           onTap: () {
             // 如果点击的是当前已选字段，则切换排序顺序
             if (isSelectedField) {
               setState(() {
-                _currentSortOrder =
-                    _currentSortOrder == SortOrder.ascending
-                        ? SortOrder.descending
-                        : SortOrder.ascending;
+                _currentSortOrder = _currentSortOrder == SortOrder.ascending
+                    ? SortOrder.descending
+                    : SortOrder.ascending;
               });
             } else {
               // 如果点击的是新的字段，则切换字段并重置排序顺序为降序 (或你希望的默认顺序)

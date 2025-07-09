@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../common/enums/cooking_method.dart';
 import 'method_selector_button.dart';
@@ -23,22 +24,26 @@ class MethodSelector extends StatelessWidget {
       child: Row(
         children:
             CookingMethod.values.map((method) {
-              return GestureDetector(
-                onTap: () {
-                  onMethodChanged(method);
-                  pageController?.animateToPage(
-                    // 点击时切换页面
-                    method.index,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  );
-                },
+              return Tooltip(
+                message: method.description,
+                waitDuration: const Duration(milliseconds: 500),
+                child: GestureDetector(
+                  onTap: () {
+                    onMethodChanged(method);
+                    pageController?.animateToPage(
+                      // 点击时切换页面
+                      method.index,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  },
 
-                child: MethodSelectorButton(
-                  method: method,
-                  imageAsset: _getAssetPath(method),
-                  isSelected: currentMethod == method,
-                  onTap: () => onMethodChanged(method),
+                  child: MethodSelectorButton(
+                    method: method,
+                    imageAsset: _getAssetPath(method),
+                    isSelected: currentMethod == method,
+                    onTap: () => onMethodChanged(method),
+                  ),
                 ),
               );
             }).toList(),

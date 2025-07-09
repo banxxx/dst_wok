@@ -40,7 +40,7 @@ var crockpotRecipes = [
     favorites: const {Character.Wilson},
     sideEffect: '无',
     condition: '肉度大于 1，蛋度大于 1',
-    notContain: '没有蔬菜度',
+    notContain: '蔬菜度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.smallmeat),
@@ -84,7 +84,7 @@ var crockpotRecipes = [
     favorites: const {Character.WX_78},
     sideEffect: '无',
     condition: '至少有一个蝴蝶翅膀[img:butterflywings]/月蛾翅膀[img:moonbutterflywings]，蔬菜度大于等于0.5',
-    notContain: '没有肉度',
+    notContain: '肉度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.butterflywings),
@@ -122,7 +122,7 @@ var crockpotRecipes = [
     favorites: {},
     sideEffect: '食用火龙果派能提升玩家的体感温度 10 度，持续 10 秒',
     condition: '至少有一个火龙果[img:dragonfruit]/烤火龙果[img:dragonfruit_cooked_64]',
-    notContain: '没有肉度',
+    notContain: '肉度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.dragonfruit),
@@ -218,7 +218,7 @@ var crockpotRecipes = [
     favorites: {},
     sideEffect: '无',
     condition: '水果度大于0',
-    notContain: '没有肉度、蔬菜度和不可食用度',
+    notContain: '肉度、蔬菜度和不可食用度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.berries),
@@ -289,7 +289,7 @@ var crockpotRecipes = [
     favorites: {},
     sideEffect: '食用水果圣代[img:fruitmedley_64]会使角色温度在5秒内持续下降',
     condition: '水果度大于等于 3',
-    notContain: '没有肉度、蔬菜度',
+    notContain: '肉度、蔬菜度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.durian),
@@ -327,7 +327,7 @@ var crockpotRecipes = [
     favorites: {},
     sideEffect: '食用蜜汁火腿[img:honeyham_64]能提升玩家的体感温度 10 度，持续 10 秒',
     condition: '至少有一个蜂蜜[img:honey]，肉度大于1.5',
-    notContain: '没有不可食用度',
+    notContain: '不可食用度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.monstermeat),
@@ -479,7 +479,7 @@ var crockpotRecipes = [
     favorites: const {},
     sideEffect: '无',
     condition: '肉度大于 0',
-    notContain: '没有不可食用度',
+    notContain: '不可食用度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.monstermeat),
@@ -511,7 +511,7 @@ var crockpotRecipes = [
     favorites: const {},
     sideEffect: '无',
     condition: '肉度大于等于 3',
-    notContain: '没有不可食用度',
+    notContain: '不可食用度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.meat),
@@ -555,7 +555,7 @@ var crockpotRecipes = [
     favorites: const {},
     sideEffect: '无',
     condition: '怪物度大于等于 2',
-    notContain: '没有不可食用度',
+    notContain: '不可食用度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.monstermeat),
@@ -593,7 +593,7 @@ var crockpotRecipes = [
     favorites: const {},
     sideEffect: '无',
     condition: '肉度大于 0，蛋度大于 0，蔬菜度大于等于 0.5',
-    notContain: '没有不可食用度',
+    notContain: '不可食用度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.monstermeat),
@@ -765,7 +765,7 @@ var crockpotRecipes = [
     favorites: const {Character.Wanda},
     sideEffect: '无',
     condition: '甜味剂度大于等于 3',
-    notContain: '没有肉度',
+    notContain: '肉度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.honey),
@@ -969,7 +969,7 @@ var crockpotRecipes = [
     favorites: const {Character.Webber},
     sideEffect: '食用冰淇淋会使角色温度在15秒内持续下降，最低下降至当前世界温度-40点',
     condition: '甜味剂度、冰度和乳制品度大于 0',
-    notContain: '没有肉度、蔬菜度、不可食用度和蛋度',
+    notContain: '肉度、蔬菜度、不可食用度和蛋度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.butter),
@@ -1183,7 +1183,7 @@ var crockpotRecipes = [
     freshness: '10',
     desc: '',
     favorites: const {},
-    sideEffect: '',
+    sideEffect: '无',
     condition: '鱼度大于等于 1，恰好 2 个海带叶[img:kelp]或熟海带叶[img:kelp_cooked_64]或干海带叶[img:kelp_dried_64]',
     notContain: '不包含蛋度和不可食用度',
     cookbook: [
@@ -1211,7 +1211,7 @@ var crockpotRecipes = [
     favorites: const {Character.Wendy},
     sideEffect: '食用香蕉冻会使角色温度在10秒内持续下降，最低下降至当前世界温度-40点',
     condition: '冰度大于0、至少一个树枝[img:twigs]、至少一个香蕉[img:cave_banana]或烤香蕉[img:cave_banana_cooked_64]',
-    notContain: '没有肉度和鱼度',
+    notContain: '肉度和鱼度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.caveBanana),
@@ -1363,7 +1363,7 @@ var crockpotRecipes = [
     favorites: const {},
     sideEffect: '食用爆炒填馅辣椒会使角色温度在15秒内持续上升，最高上升至当前世界温度+40点',
     condition: '肉度大于 0 小于等于 1.5 ，至少一个辣椒[img:pepper]/烤辣椒[img:pepper_cooked_64]',
-    notContain: '没有不可食用度',
+    notContain: '不可食用度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.pepper),
@@ -1395,7 +1395,7 @@ var crockpotRecipes = [
     favorites: const {},
     sideEffect: '无',
     condition: '至少一个番茄[img:tomato]/烤番茄[img:tomato_cooked_64]，至少一个洋葱[img:onion]/烤洋葱[img:onion_cooked_64]',
-    notContain: '没有蛋度、肉度和不可食用度',
+    notContain: '蛋度、肉度和不可食用度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.tomato),
@@ -1427,7 +1427,7 @@ var crockpotRecipes = [
     favorites: const {},
     sideEffect: '无',
     condition: '至少 2 个土豆[img:potato]/烤土豆[img:potato_cooked_64]，至少 1 个大蒜[img:garlic]/烤大蒜[img:garlic_cooked_64]',
-    notContain: '没有肉度和不可食用度',
+    notContain: '肉度和不可食用度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.potato),
@@ -1459,7 +1459,7 @@ var crockpotRecipes = [
     favorites: const {},
     sideEffect: '无',
     condition: '至少一个土豆[img:potato]/烤土豆[img:potato_cooked_64]，至少一个树枝[img:twigs]，怪物度小于等于1，不可食用度小于等于2',
-    notContain: '没有肉度和不可食用度',
+    notContain: '肉度和不可食用度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.potato),
@@ -2079,7 +2079,7 @@ var crockpotRecipes = [
     favorites: const {},
     sideEffect: '无',
     condition: '至少有一个无花果[img:fig]/熟无花果[img:fig_cooked_64]，蔬菜度大于等于2',
-    notContain: '没有肉度',
+    notContain: '肉度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.fig),
@@ -2175,7 +2175,7 @@ var crockpotRecipes = [
     favorites: const {},
     sideEffect: '食用后会在5秒内提升5点温度',
     condition: '肉度大于0且小于1，冰度大于等于2',
-    notContain: '没有不可食用度',
+    notContain: '不可食用度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.smallmeat),
@@ -2290,7 +2290,7 @@ var crockpotRecipes = [
     favorites: const {},
     sideEffect: '无',
     condition: '蛋度大于等于 1 ，蔬菜度大于等于 1',
-    notContain: '没有肉度和乳制品度',
+    notContain: '肉度和乳制品度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.birdEgg),
@@ -2366,7 +2366,7 @@ var crockpotRecipes = [
     favorites: const {},
     sideEffect: '无',
     condition: '不可食用度大于 0',
-    notContain: '没有怪物度、肉度、鱼度、蛋度、油脂度、乳制品度和魔法度',
+    notContain: '怪物度、肉度、鱼度、蛋度、油脂度、乳制品度和魔法度',
     cookbook: [
       RecipeExample(
         slot1: PositionalIngredient(ingredient: GameAssets.twigs),

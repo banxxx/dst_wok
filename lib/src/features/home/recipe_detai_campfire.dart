@@ -1,5 +1,6 @@
 import 'package:dst_wok/src/models/campfire_recipe.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../common/constants/custom_colors.dart';
 import '../../common/utils/TextParserUtil.dart';
@@ -92,11 +93,37 @@ class RecipeDetailsCampfire extends StatelessWidget {
             ),
           ),
           Image.asset('assets/setting/bottom.png', width: 150),
-          Text(
-            '代码: "${recipe.id}"',
-            style: TextStyle(
-              fontSize: 16,
-              color: Theme.of(context).extension<CustomColors>()!.recipePrimary,
+          RichText(
+            text: TextSpan(
+              style: TextStyle(
+                fontSize: 16,
+                color: Theme.of(context).extension<CustomColors>()!.recipePrimary,
+              ),
+              children: [
+                TextSpan(text: '代码: "'),
+                WidgetSpan(
+                  child: InkWell(
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(text: recipe.id));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('代码 "${recipe.id}" 已复制到剪贴板!')),
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(4.0), // 添加圆角
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      child: Text(
+                        recipe.id,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).extension<CustomColors>()!.recipePrimary,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                TextSpan(text: '"'),
+              ],
             ),
           ),
         ],

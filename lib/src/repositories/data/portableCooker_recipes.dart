@@ -180,8 +180,8 @@ var portableCookerRecipe = [
       desc: '只能由沃利[img:Warly]使用[img:portablecookpot]制作',
       favorites: {},
       sideEffect: '立刻清空玩家的潮湿度，并且维持干燥效果以及免疫酸雨对玩家的扣除血量的效果持续 5 分钟',
-      condition: '至少 2 个蛙腿[img:fishmeat]/熟蛙腿[img:froglegs_cooked_64]、鱼度大于等于 1 ；没有不可食用度',
-      notContain: '无',
+      condition: '至少 2 个蛙腿[img:fishmeat]/熟蛙腿[img:froglegs_cooked_64]、鱼度大于等于 1 ',
+      notContain: '不可食用度',
       cookbook: [
         RecipeExample(
           slot1: PositionalIngredient(
@@ -231,8 +231,8 @@ var portableCookerRecipe = [
       desc: '只能由沃利[img:Warly]使用[img:portablecookpot]制作',
       favorites: {},
       sideEffect: '',
-      condition: '怪物度大于等于 2 ；没有不可食用度',
-      notContain: '无',
+      condition: '怪物度大于等于 2',
+      notContain: '不可食用度',
       cookbook: [
         RecipeExample(
           slot1: PositionalIngredient(
@@ -292,7 +292,7 @@ var portableCookerRecipe = [
       favorites: {},
       sideEffect: '食用发光浆果慕斯的角色自身会成为光源提供照明，效果持续 2 天。随着游戏时间进行，照明范围会逐渐缩小',
       condition: '至少 2 个小发光浆果[img:wormlight_lesser]或至少一个发光浆果[img:wormlight]、水果度大于等于 2',
-      notContain: '不能有不可食用度和肉度',
+      notContain: '不可食用度和肉度',
       cookbook: [
         RecipeExample(
           slot1: PositionalIngredient(
@@ -397,7 +397,7 @@ var portableCookerRecipe = [
       sideEffect: '会快速升高玩家体温至高于世界温度 40 度，效果持续 5 分钟',
       condition: '至少有一个火龙果[img:dragonfruit]/熟火龙果[img:dragonfruit_cooked_64]、'
           '至少有一个辣椒[img:pepper]/烤辣椒[img:pepper_cooked_64]',
-      notContain: '不能有肉度、不可食用度、蛋度',
+      notContain: '肉度、不可食用度、蛋度',
       cookbook: [
         RecipeExample(
           slot1: PositionalIngredient(
@@ -438,7 +438,7 @@ var portableCookerRecipe = [
       sideEffect: '无',
       condition: '鱼度大于 0 ，至少有 1 个洋葱[img:onion]/烤洋葱[img:onion_cooked_64]，'
           '至少有 1 个番茄[img:tomato]/烤番茄[img:tomato_cooked_64]',
-      notContain: '不能有不可食用度',
+      notContain: '不可食用度',
       cookbook: [
         RecipeExample(
           slot1: PositionalIngredient(
@@ -538,7 +538,7 @@ var portableCookerRecipe = [
       favorites: {},
       sideEffect: '无',
       condition: '至少有 2 个土豆[img:potato]/烤土豆[img:potato_cooked_64]、蛋度大于 0 ',
-      notContain: '不能有肉度、不可食用度',
+      notContain: '肉度、不可食用度',
       cookbook: [
         RecipeExample(
           slot1: PositionalIngredient(

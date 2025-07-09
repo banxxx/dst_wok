@@ -8,3 +8,18 @@ enum CookingMethod {
   crockPot,
   portableCooker
 }
+
+/// 烹饪方式扩展 - 添加中文说明
+extension CookingMethodExtension on CookingMethod {
+  /// 获取中文说明
+  String get description {
+    switch (this) {
+      case CookingMethod.campfire:
+        return '火堆烧烤';
+      case CookingMethod.crockPot:
+        return '烹饪锅';
+      case CookingMethod.portableCooker:
+        return '便携料理锅';
+    }
+  }
+}
