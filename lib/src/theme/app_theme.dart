@@ -44,7 +44,7 @@ class AppTheme {
         backgroundColor: AppColors.homeBgDark,
       ),
       iconTheme: const IconThemeData(
-        color: AppColors.searchIconDark, // 设置图标颜色
+        color: AppColors.gray400, // 设置图标颜色
       ),
       cardColor: AppColors.cardBgDark,
       extensions: <ThemeExtension<dynamic>>{CustomColors.dark()},

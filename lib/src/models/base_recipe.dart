@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 
 import '../common/enums/character.dart';
 import '../common/enums/cooking_method.dart';
+import '../common/enums/ingredient_tag.dart';
+import '../repositories/constants/game_assets.dart';
 
 /// 所有食谱的抽象基类
 /// 定义通用属性和匹配方法
@@ -12,6 +14,18 @@ abstract class BaseRecipe {
 
   // 显示名称（如"肉丸"）
   final String name;
+
+  // 必须满足的标签条件
+  final Map<IngredientTag, double> requiredTags;
+
+  // 最大标签限制
+  final Map<IngredientTag, double> maxTags;
+
+  // 必须包含的食材ID
+  final List<String> mustContain;
+
+  // 不能包含的食材ID
+  final List<String> cannotContain;
 
   // 所属烹饪方式（火堆/烹饪锅/便携锅）
   final CookingMethod method;
@@ -59,6 +73,10 @@ abstract class BaseRecipe {
   const BaseRecipe({
     required this.id,
     required this.name,
+    required this.requiredTags,
+    required this.maxTags,
+    required this.mustContain,
+    required this.cannotContain,
     required this.method,
     required this.priority,
     required this.imageUrl,
@@ -77,7 +95,7 @@ abstract class BaseRecipe {
 
   /// 抽象方法：验证食材是否符合条件
   /// 参数：ingredients - 用户选择的食材列表
-  bool matches(List<String> ingredientIds);
+  bool matches(List<Ingredient> ingredientIds);
 
   // 添加抽象方法，让子类实现构建食材组件的逻辑
   Widget buildIngredientsWidget();

@@ -32,15 +32,33 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         focusColor: Colors.transparent, // 禁用聚焦效果
         constraints: const BoxConstraints(), // 移除默认按钮约束
         padding: EdgeInsets.zero, // 移除默认内边距
-        icon: Image.asset('assets/setting/back.png', width: 36, height: 36),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
+        icon: _buildThemeAwareBackIcon(context),
+        onPressed: () => Navigator.of(context).pop(),
       ),
       title: title,
       centerTitle: true,
       titleSpacing: 0,
       actions: actions,
+    );
+  }
+
+  Widget _buildThemeAwareBackIcon(BuildContext context) {
+    // 获取当前主题的图标颜色
+    final iconColor = Theme.of(context).iconTheme.color ?? Colors.black;
+
+    return Image.asset(
+      'assets/setting/back.png', // 只使用一个图标文件
+      width: 36,
+      height: 36,
+      color: iconColor, // 关键：应用主题颜色
+      colorBlendMode: BlendMode.srcIn, // 确保正确应用颜色
+      errorBuilder: (context, error, stackTrace) {
+        return Icon(
+          Icons.arrow_back_ios_rounded,
+          size: 24,
+          color: iconColor,
+        );
+      },
     );
   }
 

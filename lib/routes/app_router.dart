@@ -7,6 +7,7 @@ import '../src/features/home/recipe_detai_campfire.dart';
 import '../src/features/home/recipe_detail.dart';
 import '../src/features/other/about_page.dart';
 import '../src/features/other/license_detail_page.dart';
+import '../src/features/other/maketool_page.dart';
 import '../src/models/base_recipe.dart';
 
 final router = GoRouter(
@@ -25,7 +26,7 @@ final router = GoRouter(
     GoRoute(
       path: '/maketool',
       name: 'maketool',
-      builder: (context, state) => const AboutPage(),
+      builder: (context, state) => const MaketoolPage(),
     ),
     GoRoute(
       path: '/settings',

@@ -3,13 +3,11 @@ import 'package:flutter/cupertino.dart';
 import '../common/enums/cooking_method.dart';
 import '../common/enums/ingredient_tag.dart';
 import '../common/widgets/cookpot_ingredients.dart';
+import '../repositories/constants/game_assets.dart';
 import 'base_recipe.dart';
 
 /// 便携烹饪锅配方实现
 class PortableCookerRecipe extends BaseRecipe {
-
-  /// 必须满足的标签条件
-  final Map<IngredientTag, double> requiredTags;
 
   /// 填充位数量
   final int fillerSlots;
@@ -21,7 +19,10 @@ class PortableCookerRecipe extends BaseRecipe {
   const PortableCookerRecipe({
     required super.id,
     required super.name,
-    required this.requiredTags,
+    super.requiredTags = const {},
+    super.maxTags = const {},
+    super.mustContain = const [],
+    super.cannotContain = const [],
     required this.fillerSlots,
     this.allowedFillers = const {},
     required super.cookbook,
@@ -39,10 +40,47 @@ class PortableCookerRecipe extends BaseRecipe {
     required super.notContain,
   }) : super(method: CookingMethod.portableCooker);
 
+  /// 检查食材组合是否满足此配方
   @override
-  bool matches(List<String> ingredientIds) {
-    // 实现需要更复杂的食材标签计算
-    // 这里暂时返回true保持示例简单
+  bool matches(List<Ingredient> ingredients) {
+    if (ingredients.length != 4) return false;
+
+    // 计算总标签值
+    Map<IngredientTag, double> totalTags = {};
+    for (var ingredient in ingredients) {
+      ingredient.tags.forEach((tag, value) {
+        totalTags[tag] = (totalTags[tag] ?? 0) + value;
+      });
+    }
+
+    // 检查必须包含的食材
+    for (var requiredId in mustContain) {
+      if (!ingredients.any((ingredient) => ingredient.id == requiredId)) {
+        return false;
+      }
+    }
+
+    // 检查不能包含的食材
+    for (var forbiddenId in cannotContain) {
+      if (ingredients.any((ingredient) => ingredient.id == forbiddenId)) {
+        return false;
+      }
+    }
+
+    // 检查必须满足的标签条件
+    for (var entry in requiredTags.entries) {
+      if ((totalTags[entry.key] ?? 0) < entry.value) {
+        return false;
+      }
+    }
+
+    // 检查最大标签限制
+    for (var entry in maxTags.entries) {
+      if ((totalTags[entry.key] ?? 0) > entry.value) {
+        return false;
+      }
+    }
+
     return true;
   }
 

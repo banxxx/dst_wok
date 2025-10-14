@@ -37,11 +37,11 @@ class AppEndDrawer extends StatelessWidget {
         //     title: '食物图鉴',
         //     routeName: RouteNames.foodbook
         // ),
-        // DrawerListItem(
-        //     iconPath: 'assets/setting/maketool_98.png',
-        //     title: '合成工具',
-        //     routeName: RouteNames.maketool
-        // ),
+        DrawerListItem(
+            iconPath: 'assets/setting/maketool_98.png',
+            title: '合成工具',
+            routeName: RouteNames.maketool
+        ),
         // DrawerListItem(
         //     iconPath: 'assets/setting/setting_64.png',
         //     title: '设置',

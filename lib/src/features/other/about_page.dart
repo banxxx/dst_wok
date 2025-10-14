@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
+import 'dart:io';
 
 import '../../../routes/route_names.dart';
 import '../../../services/cache_manager.dart';
@@ -33,8 +34,8 @@ class _AboutPageState extends State<AboutPage> {
   static const _itemSpacing = 12.0;
 
   // GitHub 仓库信息
-  static const String _githubOwner = 'banxxx'; // 替换为你的 GitHub 用户名
-  static const String _githubRepo = 'dst_wok'; // 替换为你的 GitHub 仓库名
+  static const String _githubOwner = 'banxxx';
+  static const String _githubRepo = 'dst_wok';
   static const String _githubReleasesApi =
       'https://api.github.com/repos/$_githubOwner/$_githubRepo/releases/latest';
 
@@ -51,6 +52,10 @@ class _AboutPageState extends State<AboutPage> {
   // 主题管理器引用
   late ThemeManager _themeManager;
 
+  // 缓存Future，避免重复调用
+  late Future<String> _versionFuture;
+  late Future<String> _cacheSizeFuture;
+
   @override
   void initState() {
     super.initState();
@@ -63,6 +68,10 @@ class _AboutPageState extends State<AboutPage> {
 
     // 监听主题变化
     _themeManager.addListener(_handleThemeChange);
+
+    // 初始化缓存的Future，只在页面初始化时执行一次
+    _versionFuture = getAppVersion();
+    _cacheSizeFuture = _getCacheSize();
   }
 
   @override
@@ -93,14 +102,14 @@ class _AboutPageState extends State<AboutPage> {
           _currentPointerAngle = _angle60;
           break;
         case ThemeMode.system:
-          // 系统模式使用亮色角度（或根据实际需求）
+        // 系统模式使用亮色角度（或根据实际需求）
           _currentPointerAngle = _angle60;
           break;
       }
     });
   }
 
-  // 7. 统一处理主题切换
+  // 统一处理主题切换
   void _handleThemeToggle() {
     // 判断当前模式并切换到相反模式
     ThemeMode newThemeMode;
@@ -119,6 +128,13 @@ class _AboutPageState extends State<AboutPage> {
 
     // 立即更新指针（监听器也会触发，双保险）
     _updatePointerAngle(newThemeMode);
+  }
+
+  // 刷新缓存大小（用户主动点击清除缓存时调用）
+  void _refreshCacheSize() {
+    setState(() {
+      _cacheSizeFuture = _getCacheSize();
+    });
   }
 
   @override
@@ -296,7 +312,7 @@ class _AboutPageState extends State<AboutPage> {
             color: Colors.black12, // 颜色设置
           ),
           ...references.map(
-            (ref) => Material(
+                (ref) => Material(
               color: Colors.transparent,
               child: InkWell(
                 borderRadius: const BorderRadius.vertical(
@@ -325,7 +341,7 @@ class _AboutPageState extends State<AboutPage> {
       child: ListTile(
         title: const Text('清除缓存'),
         subtitle: FutureBuilder<String>(
-          future: _getCacheSize(),
+          future: _cacheSizeFuture, // 使用缓存的Future
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return Text('当前缓存：${snapshot.data ?? "未知"}');
@@ -358,7 +374,8 @@ class _AboutPageState extends State<AboutPage> {
         _snackBarController = messenger.showSnackBar(
           const SnackBar(content: Text('所有缓存已成功清理')),
         );
-        setState(() {}); // 刷新缓存大小显示
+        // 刷新缓存大小显示
+        _refreshCacheSize();
       }
     } catch (e) {
       // 确保 State 仍然挂载后才执行 UI 操作
@@ -379,7 +396,7 @@ class _AboutPageState extends State<AboutPage> {
         child: ListTile(
           title: const Text('检查更新'),
           subtitle: FutureBuilder<String>(
-            future: getAppVersion(),
+            future: _versionFuture, // 使用缓存的Future
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 return Text(
@@ -409,37 +426,61 @@ class _AboutPageState extends State<AboutPage> {
     });
   }
 
+  // 检查网络连接状态
+  Future<bool> _checkNetworkConnection() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+    } on SocketException catch (_) {
+      return false;
+    }
+  }
+
   // 检查更新逻辑 (实际的逻辑，现在由防抖函数调用)
   // 注意：此方法不再接收 BuildContext 参数，而是直接使用 this.context
   void _checkForUpdate() async {
     // 在显示加载指示器前确保 State 仍然挂载
     if (!mounted) return;
 
-    // 1. 显示加载指示器，防止用户疑惑
+    // 显示加载指示器，防止用户疑惑
     showDialog(
       context: context, // 使用 this.context
       barrierDismissible: false, // 不允许点击外部关闭
       builder:
           (ctx) => const AlertDialog(
-            // 这里的 ctx 是 dialog 自己的 context，总是安全的
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CircularProgressIndicator(),
-                SizedBox(height: 16),
-                Text('正在检查更新...'),
-              ],
-            ),
-          ),
+        // 这里的 ctx 是 dialog 自己的 context，总是安全的
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 16),
+            Text('正在检查更新...'),
+          ],
+        ),
+      ),
     );
 
     try {
+      // 首先检查网络连接
+      final hasNetwork = await _checkNetworkConnection();
+      if (!hasNetwork) {
+        // 在关闭加载指示器前确保 State 仍然挂载
+        if (!mounted) return;
+        Navigator.pop(context); // 关闭加载指示器
+
+        // 在显示错误弹窗前确保 State 仍然挂载
+        if (!mounted) return;
+        _showErrorDialog(context, '无网络连接，请检查网络设置后重试。');
+        return;
+      }
+
+      // 获取本地版本和远程版本
       final localVersion = await getAppVersion();
       final latestRelease = await _getLatestReleaseFromGitHub();
 
       // 在关闭加载指示器前确保 State 仍然挂载
       if (!mounted) return;
-      // 2. 关闭加载指示器
+      // 关闭加载指示器
       Navigator.pop(context); // 使用 this.context
 
       if (latestRelease != null) {
@@ -464,12 +505,28 @@ class _AboutPageState extends State<AboutPage> {
         if (!mounted) return;
         _showErrorDialog(context, '无法获取更新信息，请稍后再试。'); // 使用 this.context
       }
-    } catch (e) {
-      // 在关闭加载指示器前确保 State 仍然挂载
+    } on SocketException catch (_) {
+      // 网络连接异常
       if (!mounted) return;
-      // 3. 关闭加载指示器
-      Navigator.pop(context);
-      // 在显示错误弹窗前确保 State 仍然挂载
+      Navigator.pop(context); // 关闭加载指示器
+      if (!mounted) return;
+      _showErrorDialog(context, '无网络连接，请检查网络设置后重试。');
+    } on TimeoutException catch (_) {
+      // 请求超时
+      if (!mounted) return;
+      Navigator.pop(context); // 关闭加载指示器
+      if (!mounted) return;
+      _showErrorDialog(context, '网络连接超时，请稍后再试。');
+    } on HttpException catch (_) {
+      // HTTP异常
+      if (!mounted) return;
+      Navigator.pop(context); // 关闭加载指示器
+      if (!mounted) return;
+      _showErrorDialog(context, '服务器连接异常，请稍后再试。');
+    } catch (e) {
+      // 其他异常
+      if (!mounted) return;
+      Navigator.pop(context); // 关闭加载指示器
       if (!mounted) return;
       _showErrorDialog(
         context,
@@ -481,15 +538,35 @@ class _AboutPageState extends State<AboutPage> {
   // 从 GitHub API 获取最新发布信息
   Future<Map<String, dynamic>?> _getLatestReleaseFromGitHub() async {
     try {
-      final response = await http.get(Uri.parse(_githubReleasesApi));
+      final response = await http.get(
+        Uri.parse(_githubReleasesApi),
+        headers: {'User-Agent': 'Flutter-App'}, // 添加User-Agent头
+      ).timeout(const Duration(seconds: 10)); // 设置10秒超时
 
       if (response.statusCode == 200) {
         return json.decode(response.body) as Map<String, dynamic>;
+      } else if (response.statusCode == 403) {
+        // GitHub API 限制
+        throw HttpException('GitHub API 请求限制，请稍后再试');
+      } else if (response.statusCode == 404) {
+        // 仓库不存在或发布不存在
+        throw HttpException('未找到发布信息，请检查仓库配置');
       } else {
-        return null;
+        // 其他HTTP错误
+        throw HttpException('服务器返回错误: ${response.statusCode}');
       }
+    } on SocketException catch (_) {
+      // 网络连接异常
+      throw SocketException('网络连接失败');
+    } on TimeoutException catch (_) {
+      // 请求超时
+      throw TimeoutException('请求超时', const Duration(seconds: 10));
+    } on HttpException catch (_) {
+      // HTTP异常，重新抛出
+      rethrow;
     } catch (e) {
-      return null;
+      // 其他异常（如JSON解析错误等）
+      throw Exception('数据解析错误: ${e.toString()}');
     }
   }
 
@@ -498,9 +575,9 @@ class _AboutPageState extends State<AboutPage> {
   int _compareVersions(String version1, String version2) {
     // 移除版本号开头的 'v'，如果存在的话
     final cleanVersion1 =
-        version1.startsWith('v') ? version1.substring(1) : version1;
+    version1.startsWith('v') ? version1.substring(1) : version1;
     final cleanVersion2 =
-        version2.startsWith('v') ? version2.substring(1) : version2;
+    version2.startsWith('v') ? version2.substring(1) : version2;
 
     final v1Parts = cleanVersion1.split('.').map(int.parse).toList();
     final v2Parts = cleanVersion2.split('.').map(int.parse).toList();
@@ -516,41 +593,41 @@ class _AboutPageState extends State<AboutPage> {
 
   // 显示有可用更新的弹窗
   void _showUpdateDialog(
-    BuildContext context,
-    String githubVersion,
-    String releaseBody,
-    String releaseUrl,
-  ) {
+      BuildContext context,
+      String githubVersion,
+      String releaseBody,
+      String releaseUrl,
+      ) {
     showDialog(
       context: context,
       builder:
           (context) => AlertDialog(
-            title: Text('发现新版本：$githubVersion'),
-            content: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text('更新内容：'),
-                  const SizedBox(height: 8),
-                  Text(releaseBody),
-                ],
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('稍后更新'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context); // 关闭弹窗
-                  _launchUrl(releaseUrl); // 打开 GitHub 发布页面
-                },
-                child: const Text('立即更新'),
-              ),
+        title: Text('发现新版本：$githubVersion'),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('更新内容：'),
+              const SizedBox(height: 8),
+              Text(releaseBody),
             ],
           ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('稍后更新'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // 关闭弹窗
+              _launchUrl(releaseUrl); // 打开 GitHub 发布页面
+            },
+            child: const Text('立即更新'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -560,15 +637,15 @@ class _AboutPageState extends State<AboutPage> {
       context: context,
       builder:
           (context) => AlertDialog(
-            title: const Text('已是最新版本'),
-            content: const Text('当前已安装最新版本的应用。'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('确定'),
-              ),
-            ],
+        title: const Text('已是最新版本'),
+        content: const Text('当前已安装最新版本的应用。'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('确定'),
           ),
+        ],
+      ),
     );
   }
 
@@ -578,15 +655,15 @@ class _AboutPageState extends State<AboutPage> {
       context: context,
       builder:
           (context) => AlertDialog(
-            title: const Text('错误'),
-            content: Text(message),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('确定'),
-              ),
-            ],
+        title: const Text('错误'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('确定'),
           ),
+        ],
+      ),
     );
   }
 

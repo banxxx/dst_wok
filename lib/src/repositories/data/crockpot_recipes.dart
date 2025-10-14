@@ -26,7 +26,12 @@ var crockpotRecipes = [
   CrockpotRecipe(
     id: 'baconeggs',
     name: '培根煎蛋',
-    requiredTags: const {IngredientTag.meat: 0.5},
+    requiredTags: const {IngredientTag.meat: 1.0, IngredientTag.egg: 1.0},
+    maxTags: const {
+      IngredientTag.veggie: 0.0,
+    },
+    mustContain: const [],
+    cannotContain: const [],
     fillerSlots: 4,
     priority: 10,
     imageUrl: 'assets/crockPot/baconeggs.png',
@@ -71,7 +76,11 @@ var crockpotRecipes = [
   CrockpotRecipe(
     id: 'butterflymuffin',
     name: '蝴蝶松饼',
-    requiredTags: {IngredientTag.meat: 0.5},
+    requiredTags: {IngredientTag.veggie: 0.5},
+    maxTags: const {
+      IngredientTag.meat: 0.0,
+    },
+    mustContain: const ['butterflywings'],
     fillerSlots: 4,
     priority: 1,
     imageUrl: 'assets/crockPot/butterflymuffin.png',
@@ -109,7 +118,10 @@ var crockpotRecipes = [
   CrockpotRecipe(
     id: 'dragonpie',
     name: '火龙果派',
-    requiredTags: {IngredientTag.meat: 0.5},
+    maxTags: const {
+      IngredientTag.meat: 0.0,
+    },
+    mustContain: const ['dragonfruit'],
     fillerSlots: 4,
     priority: 1,
     imageUrl: 'assets/crockPot/dragonpie.png',
@@ -135,7 +147,7 @@ var crockpotRecipes = [
   CrockpotRecipe(
     id: 'fishtacos',
     name: '鱼肉玉米卷',
-    requiredTags: {IngredientTag.meat: 0.5},
+    requiredTags: {IngredientTag.fish: 0.0},
     fillerSlots: 4,
     priority: 10,
     imageUrl: 'assets/crockPot/fishtacos.png',
@@ -1855,6 +1867,7 @@ var crockpotRecipes = [
     id: 'dustmeringue',
     name: '琥珀美食',
     requiredTags: {},
+    mustContain: const ['refined_dust'],
     fillerSlots: 4,
     priority: 100,
     imageUrl: 'assets/crockPot/dustmeringue.png',
@@ -1892,7 +1905,8 @@ var crockpotRecipes = [
   CrockpotRecipe(
     id: 'batnosehat',
     name: '牛奶帽',
-    requiredTags: {},
+    requiredTags: {IngredientTag.dairy: 1.0},
+    mustContain: const ['batnose', 'kelp'],
     fillerSlots: 4,
     priority: 55,
     imageUrl: 'assets/crockPot/batnosehat.png',

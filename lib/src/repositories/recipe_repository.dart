@@ -1,3 +1,4 @@
+import 'package:dst_wok/src/models/crockpot_recipe.dart';
 import 'package:dst_wok/src/repositories/data/portableCooker_recipes.dart';
 
 import '../common/enums/cooking_method.dart';
@@ -42,4 +43,5 @@ class RecipeRepository {
   List<BaseRecipe> getAllRecipes() {
     return _allRecipes;
   }
+
 }

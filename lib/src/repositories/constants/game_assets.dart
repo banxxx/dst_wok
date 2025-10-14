@@ -1,18 +1,21 @@
 import 'dart:collection';
 
 import '../../common/enums/character.dart';
+import '../../common/enums/ingredient_tag.dart';
 
 /// 食材常量池
 class Ingredient {
   final String id; // 素材唯一标识符
   final String imageAsset; // 素材图片资源路径
   final String displayName; // 显示名称
+  final Map<IngredientTag, double> tags; // 食材的各种属性度数
 
   /// 常量构造函数
   const Ingredient({
     required this.id,
     required this.imageAsset,
     required this.displayName,
+    this.tags = const {},
   });
 
   // 重写 == 和 hashCode，基于 id 判断相等性
@@ -22,6 +25,9 @@ class Ingredient {
 
   @override
   int get hashCode => id.hashCode;
+
+  /// 获取特定标签的值
+  double getTagValue(IngredientTag tag) => tags[tag] ?? 0.0;
 }
 
 abstract class GameAssets {
@@ -1146,16 +1152,19 @@ abstract class GameAssets {
     id: 'acorn',
     imageAsset: '$_ingredientsPath/acorn.png',
     displayName: '桦栗果',
+    tags: {IngredientTag.seed: 1.0},
   );
   static const ancientfruitNightvision = Ingredient(
     id: 'ancientfruit_nightvision',
     imageAsset: '$_ingredientsPath/ancientfruit_nightvision.png',
     displayName: '夜莓',
+    tags: {IngredientTag.fruit: 1.0},
   );
   static const asparagus = Ingredient(
     id: 'asparagus',
     imageAsset: '$_ingredientsPath/asparagus.png',
     displayName: '芦笋',
+    tags: {IngredientTag.veggie: 1.0},
   );
   static const bandage = Ingredient(
     id: 'bandage',
@@ -1166,41 +1175,49 @@ abstract class GameAssets {
     id: 'barnacle',
     imageAsset: '$_ingredientsPath/barnacle.png',
     displayName: '藤壶',
+    tags: {IngredientTag.meat: 0.5, IngredientTag.fish: 0.5},
   );
   static const batnose = Ingredient(
     id: 'batnose',
     imageAsset: '$_ingredientsPath/batnose.png',
     displayName: '裸露鼻孔',
+    tags: {IngredientTag.fish: 0.5},
   );
   static const batwing = Ingredient(
     id: 'batwing',
     imageAsset: '$_ingredientsPath/batwing.png',
     displayName: '洞穴蝙蝠翅膀',
+    tags: {IngredientTag.fish: 0.5},
   );
   static const berries = Ingredient(
     id: 'berries',
     imageAsset: '$_ingredientsPath/berries.png',
     displayName: '浆果',
+    tags: {IngredientTag.fruit: 0.5},
   );
   static const berriesJuicy = Ingredient(
     id: 'berries_juicy',
     imageAsset: '$_ingredientsPath/berries_juicy.png',
     displayName: '多汁浆果',
+    tags: {IngredientTag.fruit: 0.5},
   );
   static const birdEgg = Ingredient(
     id: 'bird_egg',
     imageAsset: '$_ingredientsPath/bird_egg.png',
     displayName: '鸟蛋',
+    tags: {IngredientTag.egg: 1.0},
   );
   static const blueCap = Ingredient(
     id: 'blue_cap',
     imageAsset: '$_ingredientsPath/blue_cap.png',
     displayName: '采摘的蓝蘑菇',
+    tags: {IngredientTag.veggie: 0.5},
   );
   static const boneshard = Ingredient(
     id: 'boneshard',
     imageAsset: '$_ingredientsPath/boneshard.png',
     displayName: '骨头碎片',
+    tags: {IngredientTag.inedible: 1.0},
   );
   static const bullkelpRoot = Ingredient(
     id: 'bullkelp_root',
@@ -1211,21 +1228,25 @@ abstract class GameAssets {
     id: 'butter',
     imageAsset: '$_ingredientsPath/butter.png',
     displayName: '黄油',
+    tags: {IngredientTag.dairy: 1.0, IngredientTag.fat: 1.0},
   );
   static const butterflywings = Ingredient(
     id: 'butterflywings',
     imageAsset: '$_ingredientsPath/butterflywings.png',
     displayName: '蝴蝶翅膀',
+    tags: {IngredientTag.decoration: 2.0,},
   );
   static const cactusFlower = Ingredient(
     id: 'cactus_flower',
     imageAsset: '$_ingredientsPath/cactus_flower.png',
     displayName: '仙人掌花',
+    tags: {IngredientTag.veggie: 0.5,},
   );
   static const cactusMeat = Ingredient(
     id: 'cactus_meat',
     imageAsset: '$_ingredientsPath/cactus_meat.png',
     displayName: '仙人掌肉',
+    tags: {IngredientTag.veggie: 1.0,},
   );
   static const carnivalGametoken = Ingredient(
     id: 'carnival_gametoken',
@@ -1241,91 +1262,109 @@ abstract class GameAssets {
     id: 'carrot',
     imageAsset: '$_ingredientsPath/carrot.png',
     displayName: '胡萝卜',
+    tags: {IngredientTag.veggie: 1.0,},
   );
   static const caveBanana = Ingredient(
     id: 'cave_banana',
     imageAsset: '$_ingredientsPath/cave_banana.png',
     displayName: '香蕉',
+    tags: {IngredientTag.fruit: 1.0,},
   );
   static const corn = Ingredient(
     id: 'corn',
     imageAsset: '$_ingredientsPath/corn.png',
     displayName: '玉米',
+    tags: {IngredientTag.veggie: 1.0,},
   );
   static const cutlichen = Ingredient(
     id: 'cutlichen',
     imageAsset: '$_ingredientsPath/cutlichen.png',
     displayName: '苔藓',
+    tags: {IngredientTag.veggie: 1.0,},
   );
   static const dragonfruit = Ingredient(
     id: 'dragonfruit',
     imageAsset: '$_ingredientsPath/dragonfruit.png',
     displayName: '火龙果',
+    tags: {IngredientTag.fruit: 1.0,},
   );
   static const drumstick = Ingredient(
     id: 'drumstick',
     imageAsset: '$_ingredientsPath/drumstick.png',
     displayName: '鸟腿',
+    tags: {IngredientTag.meat: 0.5,},
   );
   static const durian = Ingredient(
     id: 'durian',
     imageAsset: '$_ingredientsPath/durian.png',
     displayName: '榴莲',
+    tags: {IngredientTag.fruit: 1.0, IngredientTag.monster: 1.0},
   );
   static const eel = Ingredient(
     id: 'eel',
     imageAsset: '$_ingredientsPath/eel.png',
     displayName: '鳗鱼',
+    tags: {IngredientTag.meat: 0.5, IngredientTag.fish: 1.0},
   );
   static const eggplant = Ingredient(
     id: 'eggplant',
     imageAsset: '$_ingredientsPath/eggplant.png',
     displayName: '茄子',
+    tags: {IngredientTag.veggie: 1.0,},
   );
   static const fig = Ingredient(
     id: 'fig',
     imageAsset: '$_ingredientsPath/fig.png',
     displayName: '无花果',
+    tags: {IngredientTag.fruit: 0.5,},
   );
   static const fish = Ingredient(
     id: 'fish',
     imageAsset: '$_ingredientsPath/fish.png',
     displayName: '鱼',
+    tags: {IngredientTag.meat: 0.5, IngredientTag.fish: 1.0},
   );
   static const fishmeat = Ingredient(
     id: 'fishmeat',
     imageAsset: '$_ingredientsPath/fishmeat.png',
     displayName: '生鱼肉',
+    tags: {IngredientTag.meat: 1.0, IngredientTag.fish: 1.0},
   );
   static const fishmeatSmall = Ingredient(
     id: 'fishmeat_small',
     imageAsset: '$_ingredientsPath/fishmeat_small.png',
     displayName: '小鱼块',
+    tags: {IngredientTag.meat: 0.5, IngredientTag.fish: 0.5},
   );
   static const forgetmelots = Ingredient(
     id: 'forgetmelots',
     imageAsset: '$_ingredientsPath/forgetmelots.png',
     displayName: '必忘我',
+    tags: {IngredientTag.decoration: 1.0,},
   );
   static const froglegs = Ingredient(
     id: 'froglegs',
     imageAsset: '$_ingredientsPath/froglegs.png',
     displayName: '蛙腿',
+    tags: {IngredientTag.meat: 0.5},
   );
   static const garlic = Ingredient(
     id: 'garlic',
     imageAsset: '$_ingredientsPath/garlic.png',
     displayName: '大蒜',
+    tags: {IngredientTag.veggie: 1.0,},
   );
   static const goatmilk = Ingredient(
     id: 'goatmilk',
     imageAsset: '$_ingredientsPath/goatmilk.png',
     displayName: '带电的羊奶',
+    tags: {IngredientTag.dairy: 1.0,},
   );
   static const greenCap = Ingredient(
     id: 'green_cap',
     imageAsset: '$_ingredientsPath/green_cap.png',
     displayName: '采摘的绿蘑菇',
+    tags: {IngredientTag.veggie: 0.5},
   );
   static const halloweencandy = Ingredient(
     id: 'halloweencandy',
@@ -1336,11 +1375,13 @@ abstract class GameAssets {
     id: 'honey',
     imageAsset: '$_ingredientsPath/honey.png',
     displayName: '蜂蜜',
+    tags: {IngredientTag.sweetener: 1.0},
   );
   static const honeycomb = Ingredient(
     id: 'honeycomb',
     imageAsset: '$_ingredientsPath/honeycomb.png',
     displayName: '蜜脾',
+    tags: {IngredientTag.sweetener: 1.0},
   );
   static const humanmeat = Ingredient(
     id: 'humanmeat',
@@ -1351,11 +1392,13 @@ abstract class GameAssets {
     id: 'ice',
     imageAsset: '$_ingredientsPath/ice.png',
     displayName: '冰',
+    tags: {IngredientTag.frozen: 1.0},
   );
   static const kelp = Ingredient(
     id: 'kelp',
     imageAsset: '$_ingredientsPath/kelp.png',
     displayName: '海带叶',
+    tags: {IngredientTag.veggie: 0.5},
   );
   static const lightbulb = Ingredient(
     id: 'lightbulb',
@@ -1366,6 +1409,7 @@ abstract class GameAssets {
     id: 'lightninggoathorn',
     imageAsset: '$_ingredientsPath/lightninggoathorn.png',
     displayName: '伏特羊角',
+    tags: {IngredientTag.inedible: 1.0},
   );
   static const lureplantbulb = Ingredient(
     id: 'lureplantbulb',
@@ -1376,61 +1420,73 @@ abstract class GameAssets {
     id: 'mandrake',
     imageAsset: '$_ingredientsPath/mandrake.png',
     displayName: '曼德拉草',
+    tags: {IngredientTag.magic: 1.0, IngredientTag.veggie: 1.0},
   );
   static const meat = Ingredient(
     id: 'meat',
     imageAsset: '$_ingredientsPath/meat.png',
     displayName: '肉',
+    tags: {IngredientTag.meat: 1.0},
   );
   static const milkywhites = Ingredient(
     id: 'milkywhites',
     imageAsset: '$_ingredientsPath/milkywhites.png',
     displayName: '乳白物',
+    tags: {IngredientTag.dairy: 1.0},
   );
   static const monstermeat = Ingredient(
     id: 'monstermeat',
     imageAsset: '$_ingredientsPath/monstermeat.png',
     displayName: '怪物肉',
+    tags: {IngredientTag.meat: 1.0, IngredientTag.monster: 1.0},
   );
   static const moonCap = Ingredient(
     id: 'moon_cap',
     imageAsset: '$_ingredientsPath/moon_cap.png',
     displayName: '月亮蘑菇',
+    tags: {IngredientTag.veggie: 0.5},
   );
   static const moonbutterflywings = Ingredient(
     id: 'moonbutterflywings',
     imageAsset: '$_ingredientsPath/moonbutterflywings.png',
     displayName: '月蛾翅膀',
+    tags: {IngredientTag.decoration: 2.0},
   );
   static const nightmarefuel = Ingredient(
     id: 'nightmarefuel',
     imageAsset: '$_ingredientsPath/nightmarefuel.png',
     displayName: '噩梦燃料',
+    tags: {IngredientTag.inedible: 1.0, IngredientTag.magic: 1.0},
   );
   static const oceanfishMedium5Inv = Ingredient(
     id: 'oceanfish_medium_5_inv',
     imageAsset: '$_ingredientsPath/oceanfish_medium_5_inv.png',
     displayName: '玉米鳕鱼',
+    tags: {IngredientTag.veggie: 1.0},
   );
   static const oceanfishMedium8Inv = Ingredient(
     id: 'oceanfish_medium_8_inv',
     imageAsset: '$_ingredientsPath/oceanfish_medium_8_inv.png',
     displayName: '冰鲷鱼',
+    tags: {IngredientTag.frozen: 1.0, IngredientTag.fish: 1.0, IngredientTag.meat: 1.0},
   );
   static const oceanfishSmall5Inv = Ingredient(
     id: 'oceanfish_small_5_inv',
     imageAsset: '$_ingredientsPath/oceanfish_small_5_inv.png',
     displayName: '爆米花鱼',
+    tags: {IngredientTag.veggie: 1.0},
   );
   static const onion = Ingredient(
     id: 'onion',
     imageAsset: '$_ingredientsPath/onion.png',
     displayName: '洋葱',
+    tags: {IngredientTag.veggie: 1.0},
   );
   static const pepper = Ingredient(
     id: 'pepper',
     imageAsset: '$_ingredientsPath/pepper.png',
     displayName: '辣椒',
+    tags: {IngredientTag.veggie: 1.0},
   );
   static const perdlingCrow = Ingredient(
     id: 'perdling_crow',
@@ -1451,56 +1507,67 @@ abstract class GameAssets {
     id: 'plantmeat',
     imageAsset: '$_ingredientsPath/plantmeat.png',
     displayName: '叶肉',
+    tags: {IngredientTag.meat: 1.0},
   );
   static const pomegranate = Ingredient(
     id: 'pomegranate',
     imageAsset: '$_ingredientsPath/pomegranate.png',
     displayName: '石榴',
+    tags: {IngredientTag.fruit: 1.0},
   );
   static const pondeel = Ingredient(
     id: 'pondeel',
     imageAsset: '$_ingredientsPath/pondeel.png',
     displayName: '活鳗鱼',
+    tags: {IngredientTag.meat: 0.5, IngredientTag.fish: 1.0},
   );
   static const pondfish = Ingredient(
     id: 'pondfish',
     imageAsset: '$_ingredientsPath/pondfish.png',
     displayName: '淡水鱼',
+    tags: {IngredientTag.meat: 0.5, IngredientTag.fish: 0.5},
   );
   static const potato = Ingredient(
     id: 'potato',
     imageAsset: '$_ingredientsPath/potato.png',
     displayName: '土豆',
+    tags: {IngredientTag.veggie: 1.0},
   );
   static const pumpkin = Ingredient(
     id: 'pumpkin',
     imageAsset: '$_ingredientsPath/pumpkin.png',
     displayName: '南瓜',
+    tags: {IngredientTag.veggie: 1.0},
   );
   static const redCap = Ingredient(
     id: 'red_cap',
     imageAsset: '$_ingredientsPath/red_cap.png',
     displayName: '采摘的红蘑菇',
+    tags: {IngredientTag.veggie: 0.5},
   );
   static const refinedDust = Ingredient(
     id: 'refined_dust',
     imageAsset: '$_ingredientsPath/refined_dust.png',
     displayName: '尘土块',
+    tags: {IngredientTag.decoration: 2.0},
   );
   static const rockAvocadoFruitRipe = Ingredient(
     id: 'rock_avocado_fruit_ripe',
     imageAsset: '$_ingredientsPath/rock_avocado_fruit_ripe.png',
     displayName: '成熟石果',
+    tags: {IngredientTag.veggie: 1.0},
   );
   static const royalJelly = Ingredient(
     id: 'royal_jelly',
     imageAsset: '$_ingredientsPath/royal_jelly.png',
     displayName: '蜂王浆',
+    tags: {IngredientTag.sweetener: 3.0},
   );
   static const salmon = Ingredient(
     id: 'salmon',
     imageAsset: '$_ingredientsPath/salmon.png',
     displayName: '三文鱼',
+    tags: {IngredientTag.meat: 0.5, IngredientTag.fish: 0.5},
   );
   static const saltrock = Ingredient(
     id: 'saltrock',
@@ -1516,6 +1583,7 @@ abstract class GameAssets {
     id: 'smallmeat',
     imageAsset: '$_ingredientsPath/smallmeat.png',
     displayName: '小肉',
+    tags: {IngredientTag.meat: 0.5},
   );
   static const spoiledFish = Ingredient(
     id: 'spoiled_fish',
@@ -1531,51 +1599,61 @@ abstract class GameAssets {
     id: 'tallbirdegg',
     imageAsset: '$_ingredientsPath/tallbirdegg.png',
     displayName: '高脚鸟蛋',
+    tags: {IngredientTag.egg: 4.0},
   );
   static const tomato = Ingredient(
     id: 'tomato',
     imageAsset: '$_ingredientsPath/tomato.png',
     displayName: '番茄',
+    tags: {IngredientTag.veggie: 1.0},
   );
   static const trunkSummer = Ingredient(
     id: 'trunk_summer',
     imageAsset: '$_ingredientsPath/trunk_summer.png',
     displayName: '象鼻',
+    tags: {IngredientTag.meat: 1.0},
   );
   static const trunkWinter = Ingredient(
     id: 'trunk_winter',
     imageAsset: '$_ingredientsPath/trunk_winter.png',
     displayName: '冬象鼻',
+    tags: {IngredientTag.meat: 1.0},
   );
   static const twigs = Ingredient(
     id: 'twigs',
     imageAsset: '$_ingredientsPath/twigs.png',
     displayName: '树枝',
+    tags: {IngredientTag.inedible: 1.0},
   );
   static const watermelon = Ingredient(
     id: 'watermelon',
     imageAsset: '$_ingredientsPath/watermelon.png',
     displayName: '西瓜',
+    tags: {IngredientTag.fruit: 1.0},
   );
   static const wobsterShellerDead = Ingredient(
     id: 'wobster_sheller_dead',
     imageAsset: '$_ingredientsPath/wobster_sheller_dead.png',
     displayName: '死龙虾',
+    tags: {IngredientTag.meat: 1.0, IngredientTag.fish: 1.0},
   );
   static const wobsterShellerLand = Ingredient(
     id: 'wobster_sheller_land',
     imageAsset: '$_ingredientsPath/wobster_sheller_land.png',
     displayName: '龙虾',
+    tags: {IngredientTag.meat: 1.0, IngredientTag.fish: 1.0},
   );
   static const wormlight = Ingredient(
     id: 'wormlight',
     imageAsset: '$_ingredientsPath/wormlight.png',
     displayName: '发光浆果',
+    tags: {IngredientTag.fruit: 1.0},
   );
   static const wormlightLesser = Ingredient(
     id: 'wormlight_lesser',
     imageAsset: '$_ingredientsPath/wormlight_lesser.png',
     displayName: '小发光浆果',
+    tags: {IngredientTag.fruit: 0.5},
   );
 
   ///便携锅烹饪

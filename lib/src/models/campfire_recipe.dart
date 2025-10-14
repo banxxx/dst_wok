@@ -18,6 +18,10 @@ class CampfireRecipe extends BaseRecipe {
   const CampfireRecipe({
     required super.id,
     required super.name,
+    super.requiredTags = const {},
+    super.maxTags = const {},
+    super.mustContain = const [],
+    super.cannotContain = const [],
     this.cookableItemIds = const {},
     required super.cookbook,
     required super.priority,
@@ -39,9 +43,9 @@ class CampfireRecipe extends BaseRecipe {
   /// 1. 只能选择1个食材
   /// 2. 食材必须在允许列表中
   @override
-  bool matches(List<String> ingredientIds) {
+  bool matches(List<Ingredient> ingredientIds) {
     return ingredientIds.length == 1 &&
-        cookableItemIds.contains(ingredientIds.first);
+        cookableItemIds.contains(ingredientIds.first.id);
   }
 
   @override
